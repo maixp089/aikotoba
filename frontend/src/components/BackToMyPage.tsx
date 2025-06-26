@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-const BackToUserHome = () => {
+const BackToMyPage = () => {
   return (
     <div>
       <Link to={"/userhome"}>マイページへ戻る</Link>
@@ -7,4 +7,4 @@ const BackToUserHome = () => {
   );
 };
 
-export default BackToUserHome;
+export default BackToMyPage;
