@@ -9,6 +9,7 @@ import {
   Presentation,
   Ranking,
   MyPage,
+  Record,
 } from "./pages/indexPages";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
       <Route path="/presentation" element={<Presentation />} />
       <Route path="/evaluation" element={<Evaluation />} />
       <Route path="/ranking" element={<Ranking />} />
+      <Route path="/record" element={<Record />} />
     </Routes>
   );
 }
