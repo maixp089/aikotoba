@@ -8,7 +8,7 @@ import {
   NewAccount,
   Presentation,
   Ranking,
-  UserHome,
+  MyPage,
 } from "./pages/indexPages";
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/newaccount" element={<NewAccount />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/home" element={<UserHome />} />
+      <Route path="/mypage" element={<MyPage />} />
       <Route path="/presentation" element={<Presentation />} />
       <Route path="/evaluation" element={<Evaluation />} />
       <Route path="/ranking" element={<Ranking />} />
