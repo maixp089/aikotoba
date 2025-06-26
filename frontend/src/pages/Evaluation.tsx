@@ -1,5 +1,4 @@
-import BackToMyPage from "../components/BackToMyPage";
-import ToRecord from "../components/ToRecord";
+import { BackToMyPage, ToRecord } from "../components";
 
 const Evaluation = () => {
   return (
