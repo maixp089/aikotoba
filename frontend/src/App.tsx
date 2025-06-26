@@ -10,7 +10,7 @@ import {
   Ranking,
   MyPage,
   Record,
-} from "./pages/indexPages";
+} from "./pages";
 
 function App() {
   return (
