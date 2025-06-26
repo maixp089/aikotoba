@@ -1,7 +1,8 @@
+import { Link } from "react-router-dom";
 const BackToHome = () => {
   return (
     <div>
-      <button>ホームへ戻る</button>
+      <Link to={"/"}>ホームへ戻る</Link>
     </div>
   );
 };
