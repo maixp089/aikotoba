@@ -1,12 +1,12 @@
-import { BackToMyPage, ToRecord } from "../components";
+import { BackToMyPage, ToRecord, Layout } from "../components";
 
 const Evaluation = () => {
   return (
-    <div>
+    <Layout>
       <h1>講評ページ</h1>
       <BackToMyPage />
       <ToRecord />
-    </div>
+    </Layout>
   );
 };
 

@@ -1,11 +1,11 @@
-import { BackToMyPage } from "../components";
+import { BackToMyPage, Layout } from "../components";
 
 const Ranking = () => {
   return (
-    <div>
+    <Layout>
       <h1>ランキングページ</h1>
       <BackToMyPage />
-    </div>
+    </Layout>
   );
 };
 

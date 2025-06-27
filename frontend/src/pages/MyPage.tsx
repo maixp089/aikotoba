@@ -1,14 +1,20 @@
-import { BackToHome, ToPresentation, ToRanking, ToRecord } from "../components";
+import {
+  BackToHome,
+  ToPresentation,
+  ToRanking,
+  ToRecord,
+  Layout,
+} from "../components";
 
 const UserHome = () => {
   return (
-    <div>
+    <Layout>
       <h1>ユーザホーム画面ページ</h1>
       <BackToHome />
       <ToPresentation />
       <ToRecord />
       <ToRanking />
-    </div>
+    </Layout>
   );
 };
 

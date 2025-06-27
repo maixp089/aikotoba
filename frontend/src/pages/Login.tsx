@@ -1,11 +1,11 @@
-import { BackToHome, BackToMyPage } from "../components";
+import { BackToHome, BackToMyPage, Layout } from "../components";
 const Login = () => {
   return (
-    <div>
+    <Layout>
       <h1>ログインページ</h1>
       <BackToHome />
       <BackToMyPage />
-    </div>
+    </Layout>
   );
 };
 

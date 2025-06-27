@@ -1,12 +1,12 @@
-import { BackToMyPage, ToEvaluation } from "../components";
+import { BackToMyPage, ToEvaluation, Layout } from "../components";
 
 const Presentation = () => {
   return (
-    <div>
+    <Layout>
       <h1>プレゼンページ</h1>
       <BackToMyPage />
       <ToEvaluation />
-    </div>
+    </Layout>
   );
 };
 

@@ -1,12 +1,12 @@
-import { ToLogin, ToNewAccount } from "../components";
+import { ToLogin, ToNewAccount, Layout } from "../components";
 
 const Home = () => {
   return (
-    <div>
+    <Layout>
       <h1>ホームページ</h1>
       <ToLogin />
       <ToNewAccount />
-    </div>
+    </Layout>
   );
 };
 
