@@ -1,8 +1,13 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const ToEvaluation = () => {
+  const navigate = useNavigate();
+
+  const onClick = () => {
+    navigate("/evaluation");
+  };
   return (
     <div>
-      <Link to={"/evaluation"}>評価ページへ</Link>
+      <button onClick={onClick}>各評価ページへ</button>{" "}
     </div>
   );
 };
