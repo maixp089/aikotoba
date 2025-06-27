@@ -28,14 +28,14 @@ const NewAccount = () => {
       }
 
       const resData = await res.json();
-      setResult("登録成功！user_id: " + resData.user_id);
-      // 入力リセット
-      setUserName("");
-      setGrade("");
-    } catch (error) {
-      setResult("通信エラー");
-    }
-  };
+    setResult("登録成功! user_id: " + resData.user_id);
+    // 入力リセット
+    setUserName("");
+    setGrade("");
+  } catch {
+    setResult("通信エラー");
+  }
+};
 
   return (
     <div style={{

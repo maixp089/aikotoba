@@ -1,9 +1,18 @@
-# app/main.py
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware  # ←追加
 from sqlalchemy.orm import Session
 from app.db import models, schemas, database
 
 app = FastAPI()
+
+# ここにCORSミドルウェア追加
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # フロント側のURL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 def get_db():
     db = database.SessionLocal()
@@ -25,3 +34,15 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     return new_user
+
+@app.get("/users", response_model=list[schemas.User])
+def read_users(db: Session = Depends(get_db)):
+    users = db.query(models.User).all()
+    return users
+
+@app.get("/users/{user_id}", response_model=schemas.User)
+def read_user(user_id: str, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.user_id == user_id).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="ユーザーが見つかりません")
+    return user
