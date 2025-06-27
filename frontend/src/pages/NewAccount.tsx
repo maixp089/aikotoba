@@ -1,5 +1,10 @@
 import { BackToHome, Layout } from "../components";
+import { useNavigate } from "react-router-dom";
 const NewAccount = () => {
+  const navigate = useNavigate();
+  const onClick = () => {
+    navigate("/login");
+  };
   return (
     <Layout>
       <div className="">
@@ -42,8 +47,11 @@ const NewAccount = () => {
               ></input>
             </div>
           </div>
-          <button className="p-2 rounded bg-green-500 hover:bg-green-600 text-white border-gray-700 mx-1">
-            登録する このボタン押したらマイページ飛ぶ
+          <button
+            className="p-2 rounded bg-green-500 hover:bg-green-600 text-white border-gray-700 mx-1"
+            onClick={onClick}
+          >
+            登録する このボタン押したらログインページ飛ぶ
           </button>
         </div>
       </div>
