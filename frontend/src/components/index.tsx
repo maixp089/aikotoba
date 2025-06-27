@@ -6,3 +6,4 @@ export { default as ToRecord } from "./ToRecord";
 export { default as ToNewAccount } from "./ToNewAccount";
 export { default as ToEvaluation } from "./ToEvaluation";
 export { default as ToLogin } from "./ToLogin";
+export { default as Layout } from "./Layout";
