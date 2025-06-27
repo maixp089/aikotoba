@@ -1,8 +1,13 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const ToPresentation = () => {
+  const navigate = useNavigate();
+
+  const onClick = () => {
+    navigate("/presentation");
+  };
   return (
     <div>
-      <Link to={"/presentation"}>プレゼン練習をする</Link>
+      <button onClick={onClick}>プレゼン練習をする</button>
     </div>
   );
 };
