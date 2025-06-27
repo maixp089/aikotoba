@@ -1,17 +1,19 @@
 # app/db/schemas.py
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
+from typing import Optional
+from uuid import UUID
+from datetime import datetime
 
-# クライアントから受け取るデータ（作成用）
 class UserCreate(BaseModel):
-    name: str
-    email: EmailStr
+    user_name: str
+    age: Optional[int]
 
-# クライアントに返すデータ（レスポンス用）
 class User(BaseModel):
-    id: int
-    name: str
-    email: EmailStr
+    user_id: UUID
+    user_name: str
+    age: Optional[int]
+    created_at: datetime
 
     class Config:
         orm_mode = True
