@@ -1,8 +1,13 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const BackToMyPage = () => {
+  const navigate = useNavigate();
+
+  const onClick = () => {
+    navigate("/mypage");
+  };
   return (
     <div>
-      <Link to={"/mypage"}>マイページへ戻る</Link>
+      <button onClick={onClick}>マイページ</button>
     </div>
   );
 };
