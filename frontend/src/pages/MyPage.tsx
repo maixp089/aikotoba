@@ -9,11 +9,18 @@ import {
 const UserHome = () => {
   return (
     <Layout>
-      <h1 className=" text-5xl text-center ">ユーザホーム画面ページ</h1>
-      <BackToHome />
-      <ToPresentation />
-      <ToRecord />
-      <ToRanking />
+      <div className="space-y-10">
+        <div className="">
+          <BackToHome />
+        </div>
+        <h1 className=" text-5xl text-center ">ユーザMyページ</h1>
+
+        <div className="flex justify-center items-center gap-10 ">
+          <ToPresentation />
+          <ToRecord />
+          <ToRanking />
+        </div>
+      </div>
     </Layout>
   );
 };
