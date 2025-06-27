@@ -1,8 +1,12 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const ToRanking = () => {
+  const navigate = useNavigate();
+  const onClick = () => {
+    navigate("/ranking");
+  };
   return (
     <div>
-      <Link to={"/ranking"}>ランキングをみる</Link>
+      <button onClick={onClick}>ランキング</button>
     </div>
   );
 };
