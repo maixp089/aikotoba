@@ -1,8 +1,15 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 const BackToHome = () => {
+  const navigate = useNavigate();
+
+  const onClick = () => {
+    navigate("/");
+  };
+
   return (
     <div>
-      <Link to={"/"}>ホームへ戻る</Link>
+      <button onClick={onClick}>ホームへ</button>
     </div>
   );
 };
