@@ -3,8 +3,10 @@ import { BackToMyPage, Layout } from "../components";
 const Ranking = () => {
   return (
     <Layout>
-      <h1 className=" text-5xl text-center ">ランキングページ</h1>
-      <BackToMyPage />
+      <div className="space-y-10">
+        <h1 className=" text-5xl text-center ">ランキングページ</h1>
+        <BackToMyPage />
+      </div>
     </Layout>
   );
 };
