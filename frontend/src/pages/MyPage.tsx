@@ -9,7 +9,7 @@ import {
 const UserHome = () => {
   return (
     <Layout>
-      <h1>ユーザホーム画面ページ</h1>
+      <h1 className=" text-5xl text-center ">ユーザホーム画面ページ</h1>
       <BackToHome />
       <ToPresentation />
       <ToRecord />
