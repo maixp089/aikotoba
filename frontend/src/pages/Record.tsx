@@ -1,5 +1,6 @@
 import { BackToMyPage, ToEvaluation, Layout } from "../components";
 import { mockScoreAdviceData } from "../mocks/evaluation";
+import {useNavigate} from "react-router-dom"
 
 
 const Record = () => {
@@ -16,6 +17,8 @@ const Record = () => {
   const minScore = Math.min(...sortedData.map((d) => d.score));
   const yRange = maxScore - minScore || 1;
   const xStep = (width - 2 * padding) / (sortedData.length - 1);
+  const navigate = useNavigate();
+  
 
   // 折れ線パス生成
   const points = sortedData
@@ -72,7 +75,8 @@ const Record = () => {
             <div
               key={entry.id}
               className="border border-black rounded text-center py-3 bg-white hover:bg-gray-100 cursor-pointer"
-              onClick={() => alert(`記録を見る: ${entry.date}`)} // 仮挙動
+              
+              onClick={()=> navigate(`/evaluation/${entry.date}T${entry.time}`)}
             >
               {new Date(entry.date).toLocaleDateString("ja-JP", {
                 month: "numeric",

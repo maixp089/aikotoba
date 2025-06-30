@@ -10,6 +10,7 @@ import {
   Ranking,
   MyPage,
   Record,
+  EvaluationDetail,
 } from "./pages";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
       <Route path="/evaluation" element={<Evaluation />} />
       <Route path="/ranking" element={<Ranking />} />
       <Route path="/record" element={<Record />} />
+      <Route path="/evaluation/:datetime" element={<EvaluationDetail />} />
     </Routes>
   );
 }
