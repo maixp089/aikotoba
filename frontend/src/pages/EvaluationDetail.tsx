@@ -1,7 +1,12 @@
 import { useParams } from "react-router-dom";
-import { Layout, BackToMyPage, ToRecord } from "../components";
+import {
+  Layout,
+  BackToMyPage,
+  ToRecord,
+  GoodDetail,
+  ChallengeDetail,
+} from "../components";
 import { mockScoreAdviceData } from "../mocks/evaluation";
-
 
 const EvaluationDetail = () => {
   const { datetime } = useParams(); // 例: "2025-06-30T09:15"
@@ -34,7 +39,8 @@ const EvaluationDetail = () => {
         {/* アドバイス枠 */}
         <div className="bg-gray-100 rounded-lg p-6 w-4/5 text-center shadow">
           <h2 className="text-lg font-semibold mb-2">AIアドバイス</h2>
-          <p className="text-gray-700">{record.advice}</p>
+          <GoodDetail />
+          <ChallengeDetail />
         </div>
 
         <BackToMyPage />
