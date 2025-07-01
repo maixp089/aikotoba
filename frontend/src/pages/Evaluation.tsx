@@ -25,7 +25,6 @@ const Evaluation = () => {
           <h2 className="text-lg font-semibold mb-2">AIアドバイス</h2>
           <Good />
           <Challenge />
-          <p className="text-gray-700">{latest.advice}</p>
         </div>
 
         {/* ホームへボタン */}
