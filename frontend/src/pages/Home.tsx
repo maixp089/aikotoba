@@ -1,14 +1,14 @@
-import { Link } from "react-router-dom";
+import { ToLogin, ToNewAccount, Layout } from "../components";
 
 const Home = () => {
   return (
-    <div>
-      <h1>ホームページ</h1>
-      <Link to={"/login"}>ログイン</Link>
-      <br />
-      <br />
-      <Link to={"/newaccount"}>新規登録</Link>
-    </div>
+    <Layout>
+      <div className="space-y-10">
+        <h1 className=" text-5xl text-center ">ホームページ</h1>
+        <ToLogin />
+        <ToNewAccount />
+      </div>
+    </Layout>
   );
 };
 

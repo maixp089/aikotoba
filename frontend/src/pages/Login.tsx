@@ -1,9 +1,8 @@
+
+import { BackToHome, BackToMyPage, Layout } from "../components";
+
 import { useEffect, useState } from "react";
 // Reactの本体読み込む
-
-import { BackToHome, BackToMyPage } from "../components";
-// 画面下部の「ホームへ戻る」「マイページへ戻る」
-
 
 type User = {
   user_id: string;
@@ -50,6 +49,7 @@ const Login = () => {
 
   // ここから画面に描画する内容（JSX）
   return (
+
     <div style={{
       minHeight: "100vh",
       background: "#f5f5f5",
