@@ -8,21 +8,18 @@ const Challenge = () => {
     return dateB.getTime() - dateA.getTime();
   })[0];
   return (
-    <>
-      {" "}
-      <div
-        className="
+    <div
+      className="
     text-2xl
     text-indigo-400 
     rounded-b-sm 
     text-center 
     shadow 
     shadow-blue-200"
-      >
-        つぎはここをがんばろう！
-        <p className="text-gray-700 text-xs">{latest.advice}</p>
-      </div>
-    </>
+    >
+      つぎはここをがんばろう！
+      <p className="text-gray-700 text-xs">{latest.advice}</p>
+    </div>
   );
 };
 
