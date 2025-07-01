@@ -1,6 +1,5 @@
-import { BackToMyPage, ToRecord, Layout } from "../components";
+import { BackToMyPage, ToRecord, Layout, Good, Challenge } from "../components";
 import { mockScoreAdviceData } from "../mocks/evaluation";
-
 
 const Evaluation = () => {
   // 日付 + 時間で降順ソート → 最新1件取得
@@ -24,6 +23,8 @@ const Evaluation = () => {
         {/* アドバイス枠 */}
         <div className="bg-gray-100 rounded-lg p-6 w-4/5 text-center shadow">
           <h2 className="text-lg font-semibold mb-2">AIアドバイス</h2>
+          <Good />
+          <Challenge />
           <p className="text-gray-700">{latest.advice}</p>
         </div>
 

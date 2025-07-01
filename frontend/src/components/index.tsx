@@ -7,3 +7,5 @@ export { default as ToNewAccount } from "./ToNewAccount";
 export { default as ToEvaluation } from "./ToEvaluation";
 export { default as ToLogin } from "./ToLogin";
 export { default as Layout } from "./Layout";
+export { default as Good } from "./Good";
+export { default as Challenge } from "./Challenge";
