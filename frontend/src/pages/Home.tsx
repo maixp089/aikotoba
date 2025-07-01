@@ -1,10 +1,11 @@
 import { ToLogin, ToNewAccount, Layout } from "../components";
+import Title from "../images/Title.png";
 
 const Home = () => {
   return (
     <Layout>
       <div className="space-y-10">
-        <h1 className=" text-5xl text-center ">ホームページ</h1>
+        <img src={Title} />
         <ToLogin />
         <ToNewAccount />
       </div>
