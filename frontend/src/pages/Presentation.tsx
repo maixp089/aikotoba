@@ -1,4 +1,5 @@
 import { BackToMyPage, ToEvaluation, Layout } from "../components";
+import "../App.css";
 
 const Presentation = () => {
   return (
