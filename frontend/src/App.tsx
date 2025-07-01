@@ -1,5 +1,3 @@
-// ルーティング、画面構成
-
 import { Routes, Route } from "react-router-dom";
 import {
   Home,
@@ -18,7 +16,8 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/newaccount" element={<NewAccount />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/mypage" element={<MyPage />} />
+      {/* 重要！user_id付きのルート */}
+      <Route path="/mypage/:user_id" element={<MyPage />} />
       <Route path="/presentation" element={<Presentation />} />
       <Route path="/evaluation" element={<Evaluation />} />
       <Route path="/ranking" element={<Ranking />} />
