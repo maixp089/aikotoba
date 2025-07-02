@@ -12,16 +12,20 @@ const Evaluation = () => {
   return (
     <Layout>
       <div className="flex flex-col items-center  py-10">
-        <h1 className="text-3xl font-semibold">今日は</h1>
+        <h1 className="text-3xl font-semibold">今回は</h1>
 
         {/* 得点 */}
-        <div className="text-8xl font-bold text-orange-600">{latest.score}</div>
-        <p className="text-5xl"> 点</p>
+        <div className="flex items-center">
+          <div className="text-9xl font-bold text-orange-600">
+            {latest.score}
+          </div>
+          <p className="text-5xl"> 点</p>
+        </div>
 
         {/* アドバイス枠 */}
-        <div className="bg-gray-100 rounded-lg p-6 w-4/5 text-center shadow">
+        <div className="bg-gray-100 rounded-lg p-20 w-4/5 text-center shadow ">
           <h2 className="text-lg font-semibold mb-2">AIアドバイス</h2>
-          <div className="flex justify-center gap-15">
+          <div className=" justify-center ">
             <Good />
             <Challenge />
           </div>

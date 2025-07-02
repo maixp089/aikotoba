@@ -33,8 +33,13 @@ const EvaluationDetail = () => {
         <h1 className="text-2xl font-semibold">{record.date} の点数は</h1>
 
         {/* 得点 */}
-        <div className="text-8xl font-bold text-orange-600">{record.score}</div>
-        <p className="text-5xl"> 点でした</p>
+        <div className="flex items-center gap-2">
+          <div className="text-8xl font-bold text-orange-600">
+            {record.score}
+          </div>
+          <p className="text-5xl"> 点</p>
+        </div>
+        <p className="text-3xl"> でした</p>
 
         {/* アドバイス枠 */}
         <div className="bg-gray-100 rounded-lg p-6 w-4/5 text-center shadow">

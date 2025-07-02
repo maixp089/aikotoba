@@ -17,7 +17,7 @@ const Challenge = () => {
     shadow 
     shadow-blue-200"
     >
-      つぎはここをがんばろう！
+      もっとチャレンジ！
       <p className="text-gray-700 text-xs">{latest.advice}</p>
     </div>
   );

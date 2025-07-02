@@ -16,7 +16,7 @@ const Good = () => {
       text-center shadow 
       shadow-pink-200"
     >
-      ここはなまる💮！
+      はなまる💮！
       <p className="text-gray-700 text-xs">{latest.advice}</p>
     </div>
   );
