@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-// ここでどうぶつの森風キャラクターリストを用意
+// キャラクターリスト
 const iconList = [
-  { name: "ねこ", value: "neko", src: "/assets/neko.png" },
-  { name: "とり", value: "tori", src: "/assets/tori.png" },
-  { name: "わし", value: "washi", src: "/assets/washi.png" },
-  { name: "くま", value: "kuma", src: "/assets/kuma.png" },
+  { name: "ねこ", value: "neko", src: "/neko.png" },
+  { name: "とり", value: "tori", src: "/tori.png" },
+  { name: "わし", value: "washi", src: "/washi.png" },
+  { name: "くま", value: "kuma", src: "/kuma.png" },
 ];
 
 const NewAccount = () => {
   const [userName, setUserName] = useState("");
   const [age, setAge] = useState("");
-  const [selectedIcon, setSelectedIcon] = useState<string | null>(null); // ← 追加
+  const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
   const [result, setResult] = useState<string | null>(null);
 
   const navigate = useNavigate();
@@ -26,12 +26,15 @@ const NewAccount = () => {
       return;
     }
 
-    // 通常のAPI送信部分（今回はAPI送信だけ！アイコンはDB未保存）
+    // 通常のAPI送信（アイコンはlocalStorageのみ）
     const data = {
       user_name: userName,
       age: age ? Number(age) : null,
-      // icon: selectedIcon,  // ← DB保存したい場合はここで送る
     };
+
+    // ★ここでlocalStorageに保存
+    // "icon_ユーザー名" というキーで保存
+    localStorage.setItem("icon_" + userName, selectedIcon);
 
     try {
       const res = await fetch("http://localhost:8000/users", {
@@ -51,7 +54,7 @@ const NewAccount = () => {
 
       setUserName("");
       setAge("");
-      setSelectedIcon(null); // アイコン選択もリセット
+      setSelectedIcon(null);
 
       setTimeout(() => {
         navigate("/login");
