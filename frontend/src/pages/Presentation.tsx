@@ -10,7 +10,7 @@ const Presentation = () => {
   const [audioState, setAudioState] = useState<"ready" | "recording" | "done">(
     "ready"
   );
-  const [file, setFile] = useState<Blob | null>(null);
+  const [setFile] = useState<Blob | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef<MediaRecorder | null>(null);
   const stopTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -53,7 +53,7 @@ const Presentation = () => {
       // 1分後に自動停止
       stopTimerRef.current = setTimeout(() => {
         mediaRecorder.stop();
-      }, 60 * 1000);
+      }, 30 * 1000);
     });
 
     mediaRecorder.addEventListener("stop", () => {
@@ -131,10 +131,6 @@ const Presentation = () => {
               ? "おはなしきいてるよ！"
               : "れんしゅうをはじめる"}
           </button>
-
-          {file && (
-            <audio controls src={URL.createObjectURL(file)} className="mt-3" />
-          )}
 
           {isLoading && (
             <p className="text-3xl text-red-600 mt-2">まるつけ中...</p>
