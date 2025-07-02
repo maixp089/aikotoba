@@ -1,4 +1,4 @@
-import { BackToMyPage, ToEvaluation, Layout } from "../components";
+import { BackToMyPage, Layout } from "../components";
 import { mockScoreAdviceData } from "../mocks/evaluation";
 import { useNavigate } from "react-router-dom";
 
