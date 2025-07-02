@@ -12,7 +12,7 @@ const EvaluationDetail = () => {
   const { datetime } = useParams(); // 例: "2025-06-30T09:15"
 
   const record = mockScoreAdviceData.find(
-    (entry) => `${entry.date}T${entry.time}` === datetime,
+    (entry) => `${entry.date}T${entry.time}` === datetime
   );
 
   if (!record) {
@@ -27,14 +27,16 @@ const EvaluationDetail = () => {
 
   return (
     <Layout>
-      <div className="flex flex-col items-center space-y-10 py-10">
-        <h1 className="text-2xl font-semibold">{record.date} の得点</h1>
-
-        {/* 得点 */}
-        <div className="text-6xl font-bold">{record.score}点</div>
-
+      <div className="flex flex-col items-center space-y-5 py-10">
         {/* 振り返りボタン */}
         <ToRecord />
+
+        <BackToMyPage />
+        <h1 className="text-2xl font-semibold">{record.date} の点数は</h1>
+
+        {/* 得点 */}
+        <div className="text-8xl font-bold text-orange-600">{record.score}</div>
+        <p className="text-5xl"> 点でした</p>
 
         {/* アドバイス枠 */}
         <div className="bg-gray-100 rounded-lg p-6 w-4/5 text-center shadow">
@@ -42,8 +44,6 @@ const EvaluationDetail = () => {
           <GoodDetail />
           <ChallengeDetail />
         </div>
-
-        <BackToMyPage />
       </div>
     </Layout>
   );
