@@ -1,13 +1,15 @@
 import { Layout } from "../components";
 
-const Home = () => {
+const Scoring = () => {
   return (
     <Layout>
-      <div className="space-y-10">
-        <p className="text-5xl text-red-600">〇○.まるつけちゅう.○〇</p>
+      <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
+        <h1 className="text-3xl font-bold">まるつけちゅう...</h1>
+
+        <div className="animate-spin rounded-full h-50 w-50 border-b-4 border-red-500"></div>
       </div>
     </Layout>
   );
 };
 
-export default Home;
+export default Scoring;
