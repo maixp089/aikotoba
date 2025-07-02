@@ -11,7 +11,7 @@ const Presentation = () => {
   if (window.location.pathname === "/presentation") {
     setTimeout(() => {
       window.location.href = "/evaluation";
-    }, 5 * 1000); //5秒で画面遷移
+    }, 10 * 1000); //10秒で画面遷移
   }
 
   useEffect(() => {
