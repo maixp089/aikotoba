@@ -1,5 +1,5 @@
 import { ToLogin, ToNewAccount, Layout } from "../components";
-import Title from "../../public/images/Title.png";
+import Title from "../assets/images/Title.png";
 
 const Home = () => {
   return (

@@ -1,8 +1,10 @@
 import { BackToMyPage, ToEvaluation, Layout } from "../components";
 import "../App.css";
 import { useState, useEffect, useRef } from "react";
+import robo1 from "../assets/images/robo1.jpg";
+import robo2 from "../assets/images/robo2.jpg";
 
-const images = ["/images/robo1.jpg", "/images/robo2.jpg"];
+const images = [robo1, robo2];
 const durations = [3000, 370]; // 1枚目：3秒、2枚目：0.37秒（ミリ秒）
 
 const Presentation = () => {
@@ -10,7 +12,7 @@ const Presentation = () => {
   const [audioState, setAudioState] = useState<"ready" | "recording" | "done">(
     "ready"
   );
-  const [setFile] = useState<Blob | null>(null);
+  const [, setFile] = useState<Blob | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef<MediaRecorder | null>(null);
   const stopTimerRef = useRef<NodeJS.Timeout | null>(null);
