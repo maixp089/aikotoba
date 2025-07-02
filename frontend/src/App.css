@@ -2,7 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: auto;
+  min-height: 100vh;
   text-align: center;
   flex-direction: column;
+  background: linear-gradient(120deg, #d4efd7 0%, #f8f5e1 100%);
 }

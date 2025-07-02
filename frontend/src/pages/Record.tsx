@@ -1,7 +1,6 @@
-import { BackToMyPage, ToEvaluation, Layout } from "../components";
+import { BackToMyPage, Layout } from "../components";
 import { mockScoreAdviceData } from "../mocks/evaluation";
-import {useNavigate} from "react-router-dom"
-
+import { useNavigate } from "react-router-dom";
 
 const Record = () => {
   const sortedData = [...mockScoreAdviceData].sort((a, b) => {
@@ -18,14 +17,15 @@ const Record = () => {
   const yRange = maxScore - minScore || 1;
   const xStep = (width - 2 * padding) / (sortedData.length - 1);
   const navigate = useNavigate();
-  
 
   // 折れ線パス生成
   const points = sortedData
     .map((d, i) => {
       const x = padding + i * xStep;
       const y =
-        height - padding - ((d.score - minScore) / yRange) * (height - 2 * padding);
+        height -
+        padding -
+        ((d.score - minScore) / yRange) * (height - 2 * padding);
       return `${x},${y}`;
     })
     .join(" ");
@@ -36,7 +36,9 @@ const Record = () => {
         {/* 上部ボタン */}
         <div className="flex justify-between w-full max-w-md">
           <BackToMyPage />
-          <div className="bg-black text-white rounded px-4 py-2 text-sm">Aくん</div>
+          <div className="bg-black text-white rounded px-4 py-2 text-sm">
+            Aくん
+          </div>
         </div>
 
         {/* 折れ線グラフ（SVG） */}
@@ -75,13 +77,15 @@ const Record = () => {
             <div
               key={entry.id}
               className="border border-black rounded text-center py-3 bg-white hover:bg-gray-100 cursor-pointer"
-              
-              onClick={()=> navigate(`/evaluation/${entry.date}T${entry.time}`)}
+              onClick={() =>
+                navigate(`/evaluation/${entry.date}T${entry.time}`)
+              }
             >
               {new Date(entry.date).toLocaleDateString("ja-JP", {
                 month: "numeric",
                 day: "numeric",
-              })}の記録
+              })}
+              の記録
             </div>
           ))}
         </div>
