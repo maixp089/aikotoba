@@ -18,7 +18,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/newaccount" element={<NewAccount />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/mypage" element={<MyPage />} />
+            <Route path="/mypage/:user_id" element={<MyPage />} />
       <Route path="/presentation" element={<Presentation />} />
       <Route path="/evaluation" element={<Evaluation />} />
       <Route path="/ranking" element={<Ranking />} />
