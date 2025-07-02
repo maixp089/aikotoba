@@ -1,31 +1,30 @@
-import { BackToMyPage, ToEvaluation, Layout } from "../components";
+import { BackToMyPage, Layout } from "../components";
 import "../App.css";
 import { useState, useEffect, useRef } from "react";
 import robo1 from "../assets/images/robo1.jpg";
 import robo2 from "../assets/images/robo2.jpg";
 
 const images = [robo1, robo2];
-const durations = [3000, 370]; // 1枚目：3秒、2枚目：0.37秒（ミリ秒）
+const durations = [3000, 370];
 
 const Presentation = () => {
   const [index, setIndex] = useState(0);
   const [audioState, setAudioState] = useState<"ready" | "recording" | "done">(
     "ready"
   );
-  const [, setFile] = useState<Blob | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef<MediaRecorder | null>(null);
   const stopTimerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // スライド画像切り替え処理
   useEffect(() => {
     const timer = setTimeout(() => {
       setIndex((prev) => (prev + 1) % images.length);
     }, durations[index]);
-
     return () => clearTimeout(timer);
   }, [index]);
 
-  // 初期マイク取得
+  // マイクアクセス許可とMediaRecorderの設定
   useEffect(() => {
     navigator.mediaDevices
       .getUserMedia({ audio: true })
@@ -36,9 +35,8 @@ const Presentation = () => {
       });
   }, []);
 
-  // 録音成功後のMediaRecorder設定
   const handleSuccess = (stream: MediaStream) => {
-    const mediaRecorder = new MediaRecorder(stream);
+    const mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
     audioRef.current = mediaRecorder;
 
     const chunks: Blob[] = [];
@@ -51,21 +49,15 @@ const Presentation = () => {
 
     mediaRecorder.addEventListener("start", () => {
       setAudioState("recording");
-
-      // 1分後に自動停止
       stopTimerRef.current = setTimeout(() => {
         mediaRecorder.stop();
-      }, 30 * 1000);
+      }, 15 * 1000); // 自動停止60秒
     });
 
     mediaRecorder.addEventListener("stop", () => {
       setAudioState("done");
-
-      const blob = new Blob(chunks, { type: "audio/m4a" }); // 実体はwebm
-      setFile(blob);
-
-      // 自動API送信
-      sendAudioToAPI(blob);
+      const blob = new Blob(chunks, { type: "audio/webm" });
+      sendAudioToAPI(blob); // ←録音後にAPIへ送信
     });
   };
 
@@ -76,26 +68,19 @@ const Presentation = () => {
     }
   };
 
-  // API送信 → 成功したら画面遷移
+  // API送信 → 成功したら/scoringに遷移（今はモック）
   const sendAudioToAPI = async (blob: Blob) => {
     setIsLoading(true);
+
     const formData = new FormData();
-    formData.append("file", blob, "recording.m4a");
+    formData.append("file", blob, "recording.webm");
 
     try {
-      // ★★★APIpath要確認☆☆☆
-      const res = await fetch("https://your-api-endpoint/upload", {
-        method: "POST",
-        body: formData,
-      });
+      // モックAPI：2秒後に成功したことにする
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      if (!res.ok) throw new Error("アップロード失敗");
-
-      const result = await res.json();
-      console.log("API応答:", result);
-
-      // 遷移処理（API応答後）
-      window.location.href = "/evaluation";
+      console.log("モックAPI送信完了");
+      window.location.href = "/scoring"; // 遷移テスト
     } catch (err) {
       alert("音声の送信に失敗しました");
       console.error(err);
@@ -109,6 +94,7 @@ const Presentation = () => {
         <BackToMyPage />
         <h1 className="text-5xl text-center">プレゼンページ</h1>
 
+        {/* スライド */}
         <div className="relative w-full max-w-3xl mx-auto h-96 overflow-hidden rounded-xl shadow-lg">
           {images.map((src, i) => (
             <img
@@ -122,7 +108,7 @@ const Presentation = () => {
           ))}
         </div>
 
-        {/* 録音UI */}
+        {/* 録音ボタン */}
         <div className="flex flex-col items-center space-y-2 mt-5">
           <button
             onClick={handleStart}
@@ -135,11 +121,11 @@ const Presentation = () => {
           </button>
 
           {isLoading && (
-            <p className="text-3xl text-red-600 mt-2">まるつけ中...</p>
+            <p className="text-3xl text-red-600 mt-2">
+              まるつけするね！ちょっとまっててね...
+            </p>
           )}
         </div>
-
-        <ToEvaluation />
       </div>
     </Layout>
   );
