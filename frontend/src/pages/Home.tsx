@@ -6,8 +6,10 @@ const Home = () => {
     <Layout>
       <div className="space-y-10">
         <img src={Title} />
-        <ToLogin />
-        <ToNewAccount />
+        <div className="flex justify-center gap-15">
+          <ToLogin />
+          <ToNewAccount />
+        </div>
       </div>
     </Layout>
   );
