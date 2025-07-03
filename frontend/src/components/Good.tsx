@@ -21,7 +21,7 @@ const Good = () => {
     pt-2 px-5 py-2"
     >
       はなまる💮！
-      <p className="text-gray-700 text-xs">{latest.advice}</p>
+      <p className="text-gray-700 text-[14px]">{latest.advice}</p>
     </div>
   );
 };
