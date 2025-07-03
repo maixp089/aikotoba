@@ -11,6 +11,7 @@ class User(Base):
     __tablename__ = "users"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
     firebase_uid = Column(String(128), unique=True, nullable=False)
+    name = Column(String(128), nullable=False)
     age = Column(Integer)
     icon_image = Column(String(255))
     created_at = Column(DateTime, default=datetime.datetime.utcnow)

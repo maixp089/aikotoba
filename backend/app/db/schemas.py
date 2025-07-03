@@ -4,6 +4,7 @@ from datetime import datetime
 
 class UserBase(BaseModel):
     firebase_uid: str
+    name: str    
     age: int | None = None
     icon_image: str | None = None
 
