@@ -43,20 +43,16 @@ const EvaluationDetail = () => {
           </div>
           <p className="text-3xl"> でした</p>
 
-          {/* アドバイス枠 */}
-          <div className="bg-gray-100 rounded-lg p-6 w-4/5 text-center shadow">
-            <h2 className="text-lg font-semibold mb-2">AIアドバイス</h2>
-            <div className="flex justify-center gap-15">
-              <GoodDetail />
-              <ChallengeDetail />
-            </div>
+          <div className=" space-y-4 justify-center gap-15 px-6">
+            <GoodDetail />
+            <ChallengeDetail />
           </div>
-          <div className="flex justify-center gap-15">
-            {/* 振り返りボタン */}
-            <ToRecord />
-            {/* ホームへボタン */}
-            <BackToMyPage />
-          </div>
+        </div>
+        <div className="flex justify-center gap-15">
+          {/* 振り返りボタン */}
+          <ToRecord />
+          {/* ホームへボタン */}
+          <BackToMyPage />
         </div>
       </Card>
     </Layout>
