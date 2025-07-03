@@ -5,11 +5,13 @@ const Home = () => {
   return (
     <Layout>
       <Card>
-        <div className="space-y-10">
-          <img src={Title} />
-          <div className="flex justify-center gap-15">
-            <ToLogin />
-            <ToNewAccount />
+        <div className="flex items-center justify-center h-full">
+          <div className="flex flex-col items-center space-y-10">
+            <img src={Title} className="w-auto md-w-100" />
+            <div className="flex justify-center gap-12">
+              <ToLogin />
+              <ToNewAccount />
+            </div>
           </div>
         </div>
       </Card>
