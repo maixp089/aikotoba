@@ -15,7 +15,7 @@ const Scoring = () => {
   return (
     <Layout>
       <Card>
-        <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
+        <div className="h-full  flex flex-col items-center justify-center">
           <h1 className="text-3xl font-bold">まるつけちゅう...</h1>
           <div className="animate-spin rounded-full h-24 w-24 border-b-4 border-red-500"></div>
         </div>
