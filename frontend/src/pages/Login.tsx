@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import BackToHome from "../components/BackToHome";
+import { useNavigate, Link } from "react-router-dom";
 
 // --- アイコン名と画像パスのマップ ---
 const iconSrcMap: { [key: string]: string } = {
-  neko: "/neko.png",
-  tori: "/tori.png",
-  washi: "/washi.png",
-  kuma: "/kuma.png",
+  neko: "/icons/neko.png",
+  tori: "/icons/tori.png",
+  washi: "/icons/washi.png",
+  kuma: "/icons/kuma.png",
 };
 
 type User = {
@@ -74,7 +73,7 @@ const Login = () => {
 
   const getIconSrc = (userName: string) => {
     const iconName = localStorage.getItem(`icon_${userName}`);
-    return iconSrcMap[iconName as keyof typeof iconSrcMap] || "/neko.png";
+    return iconSrcMap[iconName as keyof typeof iconSrcMap] || "/icons/neko.png";
   };
 
   return (
@@ -93,29 +92,31 @@ const Login = () => {
           background: "#fff8e7",
           borderRadius: "28px",
           boxShadow: "0 6px 28px #b7d7bb66, 0 1.5px 0 #fffbe9 inset",
-          padding: "48px 24px 38px 24px",
+          padding: "26px 12px 20px 12px",
           width: "100%",
-          maxWidth: "530px",
+          maxWidth: "375px",   // iPhoneXサイズ
+          minWidth: "320px",
           textAlign: "center",
           border: "3px solid #e8debe",
+          boxSizing: "border-box",
         }}
       >
         <h1
           style={{
-            marginBottom: "32px",
-            fontSize: "2.2rem",
+            marginBottom: "20px",
+            fontSize: "2.0rem",
             fontWeight: "bold",
             letterSpacing: "0.03em",
             color: "#5a7042",
             textShadow: "1px 2px 0 #fffbe9, 0 4px 6px #b7d7bb55",
           }}
         >
-          ログインページ
+          アカウントページ
         </h1>
         {loading ? (
           <div>読み込み中...</div>
         ) : error ? (
-          <div style={{ color: "red", marginBottom: "18px" }}>{error}</div>
+          <div style={{ color: "red", marginBottom: "16px" }}>{error}</div>
         ) : users.length === 0 ? (
           <div>ユーザーがいません</div>
         ) : (
@@ -123,8 +124,11 @@ const Login = () => {
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: "36px", // 余白広げる
-              marginBottom: "32px",
+              gap: "20px",
+              marginBottom: "18px",
+              width: "100%",
+              maxWidth: "335px",
+              margin: "0 auto 18px auto",
             }}
           >
             {users.map(user => (
@@ -137,23 +141,23 @@ const Login = () => {
                   border: "2.5px solid #e8debe",
                   borderRadius: "20px",
                   boxShadow: "2px 5px 0 #e8debe44, 0 1px 8px #f3e7c233",
-                  padding: "26px 38px 26px 28px", // 左右広め
+                  padding: "15px 11px 15px 15px",
                   minWidth: 0,
-                  maxWidth: 520,
+                  maxWidth: 330,
                   margin: "0 auto",
                   position: "relative",
-                  justifyContent: "space-between", // ← 横並び
+                  justifyContent: "space-between",
                   gap: "0px",
                 }}
               >
                 {/* アイコン */}
                 <div
                   style={{
-                    width: 80,
-                    height: 80,
+                    width: 54,
+                    height: 54,
                     background: "#fff",
                     border: "2.5px solid #b7d7bb",
-                    borderRadius: "18px",
+                    borderRadius: "15px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -164,10 +168,10 @@ const Login = () => {
                   <img
                     src={getIconSrc(user.user_name)}
                     alt="icon"
-                    style={{ width: 60, height: 60 }}
+                    style={{ width: 38, height: 38 }}
                   />
                 </div>
-                {/* ユーザー名＋年齢（縦並び） */}
+                {/* ユーザー名＋年齢 */}
                 <div
                   style={{
                     display: "flex",
@@ -175,7 +179,7 @@ const Login = () => {
                     alignItems: "flex-start",
                     flex: 1,
                     minWidth: 0,
-                    marginLeft: "32px", // アイコンとユーザー名の間隔広め
+                    marginLeft: "18px",
                     cursor: "pointer",
                   }}
                   onClick={() => handleLogin(user)}
@@ -184,13 +188,13 @@ const Login = () => {
                 >
                   <span
                     style={{
-                      fontSize: "2.3rem",
+                      fontSize: "1.36rem",
                       fontWeight: 700,
                       color: "#595241",
                       letterSpacing: "0.03em",
                       fontFamily: "'M PLUS Rounded 1c','Kosugi Maru',sans-serif",
                       lineHeight: 1.1,
-                      marginBottom: "8px",
+                      marginBottom: "6px",
                       wordBreak: "break-all",
                     }}
                   >
@@ -199,7 +203,7 @@ const Login = () => {
                   {user.age !== undefined && user.age !== null && user.age !== 0 && (
                     <span
                       style={{
-                        fontSize: "1.18rem",
+                        fontSize: "1.00rem",
                         color: "#ad9f84",
                         fontWeight: 600,
                         letterSpacing: "0.03em",
@@ -217,11 +221,11 @@ const Login = () => {
                   onClick={() => handleDelete(user.user_id)}
                   disabled={deleteLoading === user.user_id}
                   style={{
-                    marginLeft: "40px",
+                    marginLeft: "12px",
                     background: "none",
                     color: "#fa4a7a",
                     fontWeight: 900,
-                    fontSize: "2.05rem",
+                    fontSize: "1.28rem",
                     border: "none",
                     boxShadow: "none",
                     cursor: deleteLoading ? "not-allowed" : "pointer",
@@ -238,7 +242,39 @@ const Login = () => {
             ))}
           </div>
         )}
-        <BackToHome />
+        {/* ← ★ ここを書き換え */}
+        <div
+          style={{
+            marginTop: "18px",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center"
+          }}
+        >
+          <Link
+            to="/"
+            style={{
+              flex: 1,
+              maxWidth: "175px",    // ← 小さめサイズ
+              padding: "13px 0",
+              background: "#19848e",
+              color: "#fff",
+              borderRadius: "34px",
+              fontSize: "1.1rem",
+              fontWeight: "bold",
+              textDecoration: "none",
+              boxShadow: "0 5px #10676c",
+              letterSpacing: "1.4px",
+              fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', sans-serif",
+              border: "none",
+              textAlign: "center",
+              outline: "none",
+              transition: "background 0.2s",
+            }}
+          >
+            ← ホームへ戻る
+          </Link>
+        </div>
       </div>
     </div>
   );
