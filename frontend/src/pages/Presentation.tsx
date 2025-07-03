@@ -10,7 +10,7 @@ const durations = [3000, 370];
 const Presentation = () => {
   const [index, setIndex] = useState(0);
   const [audioState, setAudioState] = useState<"ready" | "recording" | "done">(
-    "ready",
+    "ready"
   );
   const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef<MediaRecorder | null>(null);
@@ -30,7 +30,7 @@ const Presentation = () => {
       .getUserMedia({ audio: true })
       .then(handleSuccess)
       .catch((err) => {
-        alert("マイクの使用が許可されていません");
+        alert("マイクがつかえません。許可（きょか）してね。");
         console.error(err);
       });
   }, []);
@@ -51,7 +51,7 @@ const Presentation = () => {
       setAudioState("recording");
       stopTimerRef.current = setTimeout(() => {
         mediaRecorder.stop();
-      }, 15 * 1000); // 自動停止60秒
+      }, 10 * 1000); // 自動停止60秒
     });
 
     mediaRecorder.addEventListener("stop", () => {
@@ -91,9 +91,11 @@ const Presentation = () => {
   return (
     <Layout>
       <Card>
-        <div className="space-y-10">
+        <div className="space-y-4">
           <BackToMyPage />
-          <h1 className="text-5xl text-center">プレゼンページ</h1>
+          <h1 className="text-green-500 text-3xl text-center">
+            ろぼにはなしてね
+          </h1>
 
           {/* スライド */}
           <div className="relative w-full max-w-3xl mx-auto h-96 overflow-hidden rounded-xl shadow-lg">
@@ -114,7 +116,7 @@ const Presentation = () => {
             <button
               onClick={handleStart}
               disabled={audioState !== "ready" || isLoading}
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-green-600"
+              className="text-xl bg-red-500 text-white px-10 py-4 rounded hover:bg-green-600"
             >
               {audioState === "recording"
                 ? "おはなしきいてるよ！"
@@ -122,8 +124,10 @@ const Presentation = () => {
             </button>
 
             {isLoading && (
-              <p className="text-3xl text-red-600 mt-2">
-                まるつけするね！ちょっとまっててね...
+              <p className="text-xl text-red-600 mt-2">
+                まるつけするね！
+                <br />
+                ちょっとまっててね...
               </p>
             )}
           </div>
