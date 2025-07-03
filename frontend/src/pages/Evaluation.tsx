@@ -23,9 +23,9 @@ const Evaluation = () => {
         </div>
 
         {/* アドバイス枠 */}
-        <div className="bg-gray-100 rounded-lg p-20 w-4/5 text-center shadow ">
+        <div className="bg-gray-100 rounded-lg p-6 w-4/5 text-center shadow ">
           <h2 className="text-lg font-semibold mb-2">AIアドバイス</h2>
-          <div className=" justify-center ">
+          <div className=" flex justify-center gap-15 ">
             <Good />
             <Challenge />
           </div>
