@@ -11,6 +11,7 @@ import {
   MyPage,
   Record,
   EvaluationDetail,
+  Scoring,
 } from "./pages";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
       <Route path="/evaluation" element={<Evaluation />} />
       <Route path="/ranking" element={<Ranking />} />
       <Route path="/record" element={<Record />} />
+      <Route path="/scoring" element={<Scoring />} />
       <Route path="/evaluation/:datetime" element={<EvaluationDetail />} />
     </Routes>
   );
