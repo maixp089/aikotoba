@@ -11,6 +11,7 @@ import {
   MyPage,
   Record,
   EvaluationDetail,
+  Scoring,
 } from "./pages";
 
 function App() {
@@ -19,13 +20,12 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/newaccount" element={<NewAccount />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/mypage" element={<MyPage />} />
-      {/* 重要！user_id付きのルート */}
-      <Route path="/mypage/:user_id" element={<MyPage />} />
+            <Route path="/mypage/:user_id" element={<MyPage />} />
       <Route path="/presentation" element={<Presentation />} />
       <Route path="/evaluation" element={<Evaluation />} />
       <Route path="/ranking" element={<Ranking />} />
       <Route path="/record" element={<Record />} />
+      <Route path="/scoring" element={<Scoring />} />
       <Route path="/evaluation/:datetime" element={<EvaluationDetail />} />
     </Routes>
   );

@@ -1,22 +1,27 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const BackToHome = () => {
-  const navigate = useNavigate();
-
-  const onClick = () => {
-    navigate("/");
-  };
-
-  return (
-    <div>
-      <button
-        onClick={onClick}
-        className="flex h-9 items-center justify-center rounded-full bg-gradient-to-b from-blue-400 from-50% to-blue-500 to-50% px-3 text-blue-50 hover:from-blue-500 hover:to-blue-600 active:from-blue-600 active:to-blue-700"
-      >
-        ホームへ
-      </button>
-    </div>
-  );
-};
+const BackToHome = () => (
+  <div style={{ marginTop: "32px" }}>
+    <Link
+      to="/"
+      style={{
+        display: "inline-block",
+        padding: "12px 0",
+        width: "100%",
+        background: "#e3eded",
+        borderRadius: "8px",
+        fontSize: "1.1rem",
+        fontWeight: "bold",
+        color: "#222",
+        textDecoration: "none",
+        textAlign: "center",
+        boxShadow: "0 2px 8px #eee",
+        border: "none",
+      }}
+    >
+      ホームへ戻る
+    </Link>
+  </div>
+);
 
 export default BackToHome;
