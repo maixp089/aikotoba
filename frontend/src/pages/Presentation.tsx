@@ -10,7 +10,7 @@ const durations = [3000, 370];
 const Presentation = () => {
   const [index, setIndex] = useState(0);
   const [audioState, setAudioState] = useState<"ready" | "recording" | "done">(
-    "ready",
+    "ready"
   );
   const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef<MediaRecorder | null>(null);
@@ -94,7 +94,7 @@ const Presentation = () => {
         <div className="space-y-4">
           <BackToMyPage />
           <h1 className="text-green-500 text-3xl text-center">
-            ろぼにはなしてね
+            ろぼにはなしてね🎙️
           </h1>
 
           {/* スライド */}
