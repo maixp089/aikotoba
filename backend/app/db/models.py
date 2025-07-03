@@ -1,17 +1,44 @@
-# app/db/models.py
-
-import uuid
-from datetime import datetime
-from sqlalchemy import Column, String, Integer, DateTime
+from sqlalchemy import Column, String, Integer, Text, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+import uuid
+import datetime
 
 Base = declarative_base()
 
 class User(Base):
     __tablename__ = "users"
-
-    user_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_name = Column(String(50), nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False)
+    firebase_uid = Column(String(128), unique=True, nullable=False)
     age = Column(Integer)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    icon_image = Column(String(255))
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    presentations = relationship("Presentation", back_populates="user", cascade="all, delete-orphan") #１ユーザー複数発表
+    feedbacks = relationship("Feedback", back_populates="user", cascade="all, delete-orphan") #1ユーザー複数フィードバック
+
+class Presentation(Base):
+    __tablename__ = "presentations"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    transcript = Column(Text)
+    audio_url = Column(String(255))
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    user = relationship("User", back_populates="presentations") 
+    feedbacks = relationship("Feedback", back_populates="presentation", cascade="all, delete-orphan")
+
+class Feedback(Base):
+    __tablename__ = "feedbacks"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    presentation_id = Column(Integer, ForeignKey("presentations.id"), nullable=False)
+    total_score = Column(Integer)
+    well_done = Column(Text)
+    next_challenge = Column(Text)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    user = relationship("User", back_populates="feedbacks") #
+    presentation = relationship("Presentation", back_populates="feedbacks")
+
