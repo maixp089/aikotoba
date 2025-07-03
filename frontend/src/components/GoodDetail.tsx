@@ -22,15 +22,18 @@ const GoodDetail = () => {
   return (
     <div
       className="
+      w-80
     text-2xl
     text-pink-400 
     rounded-b-sm 
     text-center 
     shadow 
-    shadow-pink-200"
+    shadow-pink-200
+    bg-pink-100
+    pt-2 px-5 py-2"
     >
-      ここはなまる💮！
-      <p className="text-gray-700 text-xs">{record.advice}</p>
+      はなまる💮！
+      <p className="text-gray-700 text-[14px]">{record.advice}</p>
     </div>
   );
 };

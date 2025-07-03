@@ -10,15 +10,18 @@ const Challenge = () => {
   return (
     <div
       className="
+    w-80
     text-2xl
     text-indigo-400 
     rounded-b-sm 
     text-center 
     shadow 
-    shadow-blue-200"
+    shadow-blue-200
+     bg-blue-100 
+    pt-2 px-5 py-2"
     >
-      つぎはここをがんばろう！
-      <p className="text-gray-700 text-xs">{latest.advice}</p>
+      もっとチャレンジ！
+      <p className="text-gray-700 text-[14px]">{latest.advice}</p>
     </div>
   );
 };

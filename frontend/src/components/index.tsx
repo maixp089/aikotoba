@@ -11,3 +11,4 @@ export { default as Good } from "./Good";
 export { default as Challenge } from "./Challenge";
 export { default as ChallengeDetail } from "./ChallengeDetail";
 export { default as GoodDetail } from "./GoodDetail";
+export { default as Card } from "./Card";
