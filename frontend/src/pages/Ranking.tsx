@@ -8,7 +8,10 @@ const Ranking = () => {
   return (
     <Layout>
       <Card>
-        <BackToMyPage />
+        <div className="flex justify-between w-full max-w-md">
+          {" "}
+          <BackToMyPage />
+        </div>
 
         <div className="space-y-10 py-10 flex flex-col items-center ">
           <h1 className="text-[30px] text-center text-amber-300">
