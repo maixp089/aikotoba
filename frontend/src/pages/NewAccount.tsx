@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-// キャラクターリスト
 const iconList = [
-  { name: "ねこ", value: "neko", src: "/neko.png" },
-  { name: "とり", value: "tori", src: "/tori.png" },
-  { name: "わし", value: "washi", src: "/washi.png" },
-  { name: "くま", value: "kuma", src: "/kuma.png" },
+  { name: "ネコ", value: "neko", src: "/icons/neko.png" },
+  { name: "トリ", value: "tori", src: "/icons/tori.png" },
+  { name: "ワシ", value: "washi", src: "/icons/washi.png" },
+  { name: "クマ", value: "kuma", src: "/icons/kuma.png" },
 ];
 
 const NewAccount = () => {
@@ -19,43 +18,30 @@ const NewAccount = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // アイコンが未選択の場合はエラー
     if (!selectedIcon) {
       setResult("アイコンを選択してください");
       return;
     }
-
-    // 通常のAPI送信（アイコンはlocalStorageのみ）
     const data = {
       user_name: userName,
       age: age ? Number(age) : null,
     };
-
-    // ★ここでlocalStorageに保存
-    // "icon_ユーザー名" というキーで保存
-    localStorage.setItem("icon_" + userName, selectedIcon);
-
     try {
       const res = await fetch("http://localhost:8000/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-
       if (!res.ok) {
         const err = await res.json();
         setResult("エラー：" + (err.detail || "登録に失敗しました"));
         return;
       }
-
       const resData = await res.json();
       setResult("登録成功! user_id: " + resData.user_id);
-
       setUserName("");
       setAge("");
       setSelectedIcon(null);
-
       setTimeout(() => {
         navigate("/login");
       }, 800);
@@ -80,9 +66,9 @@ const NewAccount = () => {
           background: "#fff8e7",
           borderRadius: "28px",
           boxShadow: "0 6px 28px #b7d7bb66, 0 1.5px 0 #fffbe9 inset",
-          padding: "46px 24px 42px 24px",
+          padding: "30px 12px 32px 12px",
           width: "100%",
-          maxWidth: "400px",
+          maxWidth: "375px",
           textAlign: "center",
           position: "relative",
           border: "3px solid #b7d7bb",
@@ -91,8 +77,8 @@ const NewAccount = () => {
       >
         <h2
           style={{
-            marginBottom: "32px",
-            fontSize: "2.3rem",
+            marginBottom: "24px",
+            fontSize: "2.1rem",
             fontWeight: "bold",
             letterSpacing: "0.03em",
             color: "#5a7042",
@@ -109,11 +95,11 @@ const NewAccount = () => {
             onChange={e => setUserName(e.target.value)}
             style={{
               width: "100%",
-              padding: "14px 16px",
-              marginBottom: "16px",
-              borderRadius: "16px",
+              padding: "11px 12px",
+              marginBottom: "13px",
+              borderRadius: "14px",
               border: "2px solid #aad5bb",
-              fontSize: "1.13em",
+              fontSize: "1.09em",
               background: "#f6ffef",
               fontFamily: "inherit",
               boxShadow: "0 2px 10px #cce7d266",
@@ -124,7 +110,7 @@ const NewAccount = () => {
             required
           />
 
-          <div style={{ marginBottom: "18px" }}>
+          <div style={{ marginBottom: "12px" }}>
             <input
               id="age"
               type="number"
@@ -135,10 +121,10 @@ const NewAccount = () => {
               onChange={e => setAge(e.target.value)}
               style={{
                 width: "100%",
-                padding: "14px 16px",
-                borderRadius: "16px",
+                padding: "11px 12px",
+                borderRadius: "14px",
                 border: "2px solid #aad5bb",
-                fontSize: "1.13em",
+                fontSize: "1.09em",
                 background: "#f6ffef",
                 fontFamily: "inherit",
                 boxShadow: "0 2px 10px #cce7d266",
@@ -154,21 +140,21 @@ const NewAccount = () => {
           {/* --- キャラクターアイコン選択エリア --- */}
           <div
             style={{
-              border: "2.5px dashed #aad5bb",
-              borderRadius: "22px",
-              minHeight: "120px",
+              border: "2px dashed #aad5bb",
+              borderRadius: "20px",
+              minHeight: "90px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               color: "#a5b499",
-              marginBottom: "26px",
+              marginBottom: "19px",
               background: "#fcfff5",
-              fontSize: "1.13em",
+              fontSize: "1.04em",
               fontFamily: "inherit",
               boxSizing: "border-box",
-              gap: "16px",
+              gap: "10px",
               flexWrap: "wrap",
-              padding: "12px"
+              padding: "7px",
             }}
           >
             {iconList.map(icon => (
@@ -177,18 +163,24 @@ const NewAccount = () => {
                 onClick={() => setSelectedIcon(icon.value)}
                 style={{
                   border: selectedIcon === icon.value ? "3px solid #f2687b" : "2px solid #aad5bb",
-                  borderRadius: "18px",
-                  padding: "6px 8px",
+                  borderRadius: "15px",
+                  padding: "4px 5px",
                   margin: "0 2px",
                   background: selectedIcon === icon.value ? "#fff0ef" : "#fff",
                   cursor: "pointer",
                   textAlign: "center",
-                  boxShadow: selectedIcon === icon.value ? "0 2px 8px #f2687b55" : "",
-                  transition: "border 0.2s, background 0.2s"
+                  boxShadow: selectedIcon === icon.value ? "0 2px 8px #f2687b33" : "",
+                  transition: "border 0.2s, background 0.2s",
+                  minWidth: 52,
+                  minHeight: 70,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                <img src={icon.src} alt={icon.name} style={{ width: 44, height: 44, marginBottom: 2 }} />
-                <div style={{ fontSize: "0.98em" }}>{icon.name}</div>
+                <img src={icon.src} alt={icon.name} style={{ width: 38, height: 38, marginBottom: 1 }} />
+                <div style={{ fontSize: "0.92em" }}>{icon.name}</div>
               </div>
             ))}
           </div>
@@ -197,10 +189,10 @@ const NewAccount = () => {
           <div
             style={{
               display: "flex",
-              gap: "18px",
+              gap: "8px",
               justifyContent: "center",
               width: "100%",
-              padding: "16px 0 4px 0",
+              padding: "8px 0 0 0",
               background: "none",
               boxSizing: "border-box",
             }}
@@ -210,20 +202,19 @@ const NewAccount = () => {
               style={{
                 flex: 1,
                 display: "inline-block",
-                padding: "18px 0",
+                padding: "13px 0",
                 background: "#19848e",
                 color: "#fff",
-                borderRadius: "38px",
-                fontSize: "1.35rem",
+                borderRadius: "34px",
+                fontSize: "1.1rem",
                 fontWeight: "bold",
                 textDecoration: "none",
-                boxShadow: "0 6px #10676c",
-                letterSpacing: "2px",
+                boxShadow: "0 5px #10676c",
+                letterSpacing: "1.4px",
                 fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', sans-serif",
                 border: "none",
                 textAlign: "center",
                 outline: "none",
-                borderBottom: "none",
                 transition: "background 0.2s",
               }}
             >
@@ -235,17 +226,16 @@ const NewAccount = () => {
                 flex: 1,
                 background: "#f2687b",
                 color: "#fff",
-                borderRadius: "38px",
-                fontSize: "1.35rem",
+                borderRadius: "34px",
+                fontSize: "1.1rem",
                 fontWeight: "bold",
-                boxShadow: "0 6px #c35665",
-                letterSpacing: "2px",
+                boxShadow: "0 5px #c35665",
+                letterSpacing: "1.4px",
                 fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', sans-serif",
                 border: "none",
                 textAlign: "center",
                 outline: "none",
-                borderBottom: "none",
-                padding: "18px 0",
+                padding: "13px 0",
                 margin: 0,
                 cursor: "pointer",
                 transition: "background 0.2s",
@@ -259,43 +249,15 @@ const NewAccount = () => {
         {result && (
           <div
             style={{
-              marginTop: "20px",
+              marginTop: "16px",
               color: result.startsWith("登録成功") ? "#48915b" : "#b75552",
               fontWeight: "bold",
+              fontSize: "1em"
             }}
           >
             {result}
           </div>
         )}
-        <div
-          style={{
-            marginTop: "32px",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <Link
-            to="/"
-            style={{
-              display: "inline-block",
-              padding: "15px 36px",
-              background: "linear-gradient(90deg,#fcfff5 60%, #d4efd7 100%)",
-              color: "#47704c",
-              borderRadius: "14px",
-              fontSize: "1.1rem",
-              fontWeight: "bold",
-              textDecoration: "none",
-              boxShadow: "0 2px 8px #b7d7bb44",
-              border: "2px solid #aad5bb",
-              letterSpacing: "0.02em",
-              fontFamily: "inherit",
-              transition: "background 0.2s",
-              boxSizing: "border-box",
-            }}
-          >
-            ← ホームへ戻る
-          </Link>
-        </div>
       </div>
     </div>
   );
