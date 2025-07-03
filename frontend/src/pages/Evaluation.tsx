@@ -20,7 +20,7 @@ const Evaluation = () => {
     <Layout>
       <Card>
         <div className="flex flex-col items-center  py-10">
-          <h1 className="text-3xl font-semibold">今回は</h1>
+          <h1 className="text-3xl font-semibold">今のおはなし…</h1>
 
           {/* 得点 */}
           <div className="flex items-center">
@@ -31,19 +31,16 @@ const Evaluation = () => {
           </div>
 
           {/* アドバイス枠 */}
-          <div className="bg-gray-100 rounded-lg p-6 w-4/5 text-center shadow ">
-            <h2 className="text-lg font-semibold mb-2">AIアドバイス</h2>
-            <div className=" flex justify-center gap-15 ">
-              <Good />
-              <Challenge />
-            </div>
+          <div className=" space-y-4 px-6 pt-10 justify-center gap-15 ">
+            <Good />
+            <Challenge />
           </div>
-          <div className="flex justify-center gap-15">
-            {/* 振り返りボタン */}
-            <ToRecord />
-            {/* ホームへボタン */}
-            <BackToMyPage />
-          </div>
+        </div>
+        <div className="flex justify-center gap-15">
+          {/* 振り返りボタン */}
+          <ToRecord />
+          {/* ホームへボタン */}
+          <BackToMyPage />
         </div>
       </Card>
     </Layout>
