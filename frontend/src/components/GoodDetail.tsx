@@ -6,7 +6,7 @@ const GoodDetail = () => {
   const { datetime } = useParams(); // 例: "2025-06-30T09:15"
 
   const record = mockScoreAdviceData.find(
-    (entry) => `${entry.date}T${entry.time}` === datetime
+    (entry) => `${entry.date}T${entry.time}` === datetime,
   );
 
   if (!record) {
