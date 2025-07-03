@@ -1,11 +1,11 @@
 import { ToLogin, ToNewAccount, Layout } from "../components";
-import Title from "../../public/images/Title.png";
 
 const Home = () => {
   return (
     <Layout>
       <div className="space-y-10">
-        <img src={Title} />
+        {/* public/images/Title.png をURLで指定 */}
+        <img src="/images/Title.png" alt="タイトル画像" />
         <ToLogin />
         <ToNewAccount />
       </div>
