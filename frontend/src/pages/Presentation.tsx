@@ -1,4 +1,4 @@
-import { BackToMyPage, Layout } from "../components";
+import { BackToMyPage, Layout, Card } from "../components";
 import "../App.css";
 import { useState, useEffect, useRef } from "react";
 import robo1 from "../assets/images/robo1.jpg";
@@ -90,43 +90,45 @@ const Presentation = () => {
 
   return (
     <Layout>
-      <div className="space-y-10">
-        <BackToMyPage />
-        <h1 className="text-5xl text-center">プレゼンページ</h1>
+      <Card>
+        <div className="space-y-10">
+          <BackToMyPage />
+          <h1 className="text-5xl text-center">プレゼンページ</h1>
 
-        {/* スライド */}
-        <div className="relative w-full max-w-3xl mx-auto h-96 overflow-hidden rounded-xl shadow-lg">
-          {images.map((src, i) => (
-            <img
-              key={i}
-              src={src}
-              className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ${
-                i === index ? "opacity-100" : "opacity-0"
-              }`}
-              alt={`slide-${i}`}
-            />
-          ))}
+          {/* スライド */}
+          <div className="relative w-full max-w-3xl mx-auto h-96 overflow-hidden rounded-xl shadow-lg">
+            {images.map((src, i) => (
+              <img
+                key={i}
+                src={src}
+                className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                  i === index ? "opacity-100" : "opacity-0"
+                }`}
+                alt={`slide-${i}`}
+              />
+            ))}
+          </div>
+
+          {/* 録音ボタン */}
+          <div className="flex flex-col items-center space-y-2 mt-5">
+            <button
+              onClick={handleStart}
+              disabled={audioState !== "ready" || isLoading}
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-green-600"
+            >
+              {audioState === "recording"
+                ? "おはなしきいてるよ！"
+                : "れんしゅうをはじめる"}
+            </button>
+
+            {isLoading && (
+              <p className="text-3xl text-red-600 mt-2">
+                まるつけするね！ちょっとまっててね...
+              </p>
+            )}
+          </div>
         </div>
-
-        {/* 録音ボタン */}
-        <div className="flex flex-col items-center space-y-2 mt-5">
-          <button
-            onClick={handleStart}
-            disabled={audioState !== "ready" || isLoading}
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-green-600"
-          >
-            {audioState === "recording"
-              ? "おはなしきいてるよ！"
-              : "れんしゅうをはじめる"}
-          </button>
-
-          {isLoading && (
-            <p className="text-3xl text-red-600 mt-2">
-              まるつけするね！ちょっとまっててね...
-            </p>
-          )}
-        </div>
-      </div>
+      </Card>
     </Layout>
   );
 };

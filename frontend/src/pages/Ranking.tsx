@@ -1,13 +1,13 @@
 import React from "react";
-import { BackToMyPage, Layout } from "../components";
+import { BackToMyPage, Card, Layout } from "../components";
 import { mockRankingData } from "../mocks/ranking";
 
 const crownColors = ["text-yellow-400", "text-gray-400", "text-red-400"];
 
 const Ranking = () => {
   return (
-    <>
-      <Layout>
+    <Layout>
+      <Card>
         <BackToMyPage />
 
         <div className="space-y-10 py-10 flex flex-col items-center">
@@ -32,8 +32,8 @@ const Ranking = () => {
             ))}
           </div>
         </div>
-      </Layout>
-    </>
+      </Card>
+    </Layout>
   );
 };
 
