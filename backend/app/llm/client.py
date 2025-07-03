@@ -86,12 +86,12 @@ def call_gpt4o_mini(transcript: str):
 
 
 
-#============動作確認初期の最小単位の内容で記述したapp/llm/client.py
-# app/llm/client.py
-import os
-from openai import OpenAI
-from dotenv import load_dotenv
+# #============動作確認初期の最小単位の内容で記述したapp/llm/client.py
+# # app/llm/client.py
+# import os
+# from openai import OpenAI
+# from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
 
-client = OpenAI(api_key=os.getenv("LLM_API_KEY"))
+# client = OpenAI(api_key=os.getenv("LLM_API_KEY"))
