@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
 const iconList = [
   { name: "ネコ", value: "neko", src: "/icons/neko.png" },
@@ -14,17 +14,22 @@ const NewAccount = () => {
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // 親画面(Home)からfirebase_uidを受け取る
+  const firebase_uid = location.state?.firebase_uid;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedIcon) {
-      // アイコン未選択なら何もしない（メッセージも出さない）
-      return;
-    }
+    if (!selectedIcon || !firebase_uid) return; // 必須チェック
+
     const data = {
-      user_name: userName,
+      firebase_uid, // ← 必須！
+      name: userName, // ← 指示通りnameに！
       age: age ? Number(age) : null,
+      icon_image: `${selectedIcon}.png`, // or 画像URL
     };
+
     try {
       const res = await fetch("http://localhost:8000/users", {
         method: "POST",
@@ -32,18 +37,19 @@ const NewAccount = () => {
         body: JSON.stringify(data),
       });
       if (!res.ok) {
-        // エラーが起きても何も表示しない
+        // 重複などのエラーもここに入る
+        const err = await res.json();
+        alert(err.detail ?? "登録に失敗しました");
         return;
       }
-      // 成功時のメッセージも表示しない
+      const user = await res.json();
       setUserName("");
       setAge("");
       setSelectedIcon(null);
-      setTimeout(() => {
-        navigate("/login");
-      }, 800);
+      // 登録完了時はマイページへ遷移
+      navigate(`/mypage/${user.id}`);
     } catch {
-      // 通信エラー時も何も表示しない
+      alert("通信エラーが発生しました");
     }
   };
 
@@ -134,7 +140,7 @@ const NewAccount = () => {
             />
           </div>
 
-          {/* --- キャラクターアイコン選択エリア --- */}
+          {/* アイコン選択エリア */}
           <div
             style={{
               border: "2px dashed #aad5bb",
@@ -181,8 +187,7 @@ const NewAccount = () => {
               </div>
             ))}
           </div>
-
-          {/* --- ボタンエリアここから --- */}
+          {/* --- ボタンエリア --- */}
           <div
             style={{
               display: "flex",
@@ -241,9 +246,7 @@ const NewAccount = () => {
               登録
             </button>
           </div>
-          {/* --- ボタンエリアここまで --- */}
         </form>
-        {/* resultやメッセージ表示は一切なし */}
       </div>
     </div>
   );
