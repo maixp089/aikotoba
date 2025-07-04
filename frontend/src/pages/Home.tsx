@@ -1,4 +1,4 @@
-import { ToLogin, ToNewAccount, Layout } from "../components";
+import { Layout } from "../components";
 import Title from "../assets/images/Title.png";
 
 const Home = () => {
@@ -15,8 +15,7 @@ const Home = () => {
         <div className="relative z-10 flex flex-col items-center space-y-10">
           <img src={Title} className="w-auto md:w-[400px]" />
           <div className="flex justify-center gap-12">
-            <ToLogin />
-            <ToNewAccount />
+            <button>firebase認証遷移ボタン</button>
           </div>
         </div>
       </div>
