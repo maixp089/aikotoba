@@ -3,16 +3,16 @@
 ## 1. 権限の付与（最初だけ）
 
 ```sh
-chmod +x tool/menu.sh
+chmod +x tool.sh
 ```
 
 ## 2. スクリプトの実行（直ルートのみ）
 ```sh
-./tool/menu.sh
+./tool.sh
 ```
 ※ユーザー辞書等に登録してご使用ください
 
 ## 3. 一つ下の階層(例：/back)の時
 ```sh
-../tool/munu.sh
+../tool.sh
 ```
