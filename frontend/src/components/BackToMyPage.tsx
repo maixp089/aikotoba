@@ -9,9 +9,10 @@ const BackToMyPage = () => {
     <div>
       <button
         onClick={onClick}
+        className="inline-block hover:brightness-95 transition duration-200 "
         style={{
           display: "inline-block",
-          padding: "3px 10px",
+          padding: "6px 20px",
           background: "linear-gradient(90deg,#fcfff5 60%, #d4efd7 100%)",
           color: "#47704c",
           borderRadius: "14px",
@@ -22,7 +23,6 @@ const BackToMyPage = () => {
           border: "2px solid #aad5bb",
           letterSpacing: "0.02em",
           fontFamily: "inherit",
-          transition: "background 0.2s",
           boxSizing: "border-box",
         }}
       >
