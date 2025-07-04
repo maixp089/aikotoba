@@ -13,6 +13,7 @@ type User = {
   user_id: string;
   user_name: string;
   age: number;
+  icon: string;    // ←ここ追加
 };
 
 const Login = () => {
@@ -57,8 +58,7 @@ const Login = () => {
         setError(data?.detail ? "削除失敗: " + data.detail : "削除に失敗しました");
         return;
       }
-      const deletedUser = users.find(u => u.user_id === userId);
-      if (deletedUser) localStorage.removeItem(`icon_${deletedUser.user_name}`);
+      // localStorage関係は削除OK
       const refetch = async () => {
         const res2 = await fetch("http://localhost:8000/users");
         setUsers(await res2.json());
@@ -71,8 +71,8 @@ const Login = () => {
     }
   };
 
-  const getIconSrc = (userName: string) => {
-    const iconName = localStorage.getItem(`icon_${userName}`);
+  // icon名から画像パスを返す
+  const getIconSrc = (iconName: string) => {
     return iconSrcMap[iconName as keyof typeof iconSrcMap] || "/icons/neko.png";
   };
 
@@ -94,7 +94,7 @@ const Login = () => {
           boxShadow: "0 6px 28px #b7d7bb66, 0 1.5px 0 #fffbe9 inset",
           padding: "26px 12px 20px 12px",
           width: "100%",
-          maxWidth: "375px",   // iPhoneXサイズ
+          maxWidth: "375px",
           minWidth: "320px",
           textAlign: "center",
           border: "3px solid #e8debe",
@@ -166,7 +166,7 @@ const Login = () => {
                   }}
                 >
                   <img
-                    src={getIconSrc(user.user_name)}
+                    src={getIconSrc(user.icon)} // ←ここを user.icon で！
                     alt="icon"
                     style={{ width: 38, height: 38 }}
                   />
@@ -242,7 +242,6 @@ const Login = () => {
             ))}
           </div>
         )}
-        {/* ← ★ ここを書き換え */}
         <div
           style={{
             marginTop: "18px",
@@ -255,7 +254,7 @@ const Login = () => {
             to="/"
             style={{
               flex: 1,
-              maxWidth: "175px",    // ← 小さめサイズ
+              maxWidth: "175px",
               padding: "13px 0",
               background: "#19848e",
               color: "#fff",

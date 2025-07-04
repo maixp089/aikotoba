@@ -12,14 +12,13 @@ const NewAccount = () => {
   const [userName, setUserName] = useState("");
   const [age, setAge] = useState("");
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
-  const [result, setResult] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedIcon) {
-      setResult("アイコンを選択してください");
+      // アイコン未選択なら何もしない（メッセージも出さない）
       return;
     }
     const data = {
@@ -33,12 +32,10 @@ const NewAccount = () => {
         body: JSON.stringify(data),
       });
       if (!res.ok) {
-        const err = await res.json();
-        setResult("エラー：" + (err.detail || "登録に失敗しました"));
+        // エラーが起きても何も表示しない
         return;
       }
-      const resData = await res.json();
-      setResult("登録成功! user_id: " + resData.user_id);
+      // 成功時のメッセージも表示しない
       setUserName("");
       setAge("");
       setSelectedIcon(null);
@@ -46,7 +43,7 @@ const NewAccount = () => {
         navigate("/login");
       }, 800);
     } catch {
-      setResult("通信エラー");
+      // 通信エラー時も何も表示しない
     }
   };
 
@@ -246,18 +243,7 @@ const NewAccount = () => {
           </div>
           {/* --- ボタンエリアここまで --- */}
         </form>
-        {result && (
-          <div
-            style={{
-              marginTop: "16px",
-              color: result.startsWith("登録成功") ? "#48915b" : "#b75552",
-              fontWeight: "bold",
-              fontSize: "1em"
-            }}
-          >
-            {result}
-          </div>
-        )}
+        {/* resultやメッセージ表示は一切なし */}
       </div>
     </div>
   );

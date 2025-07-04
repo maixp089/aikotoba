@@ -28,11 +28,12 @@ def get_db():
 # --- 新規登録API（ユーザーは最大4人まで） ---
 @app.post("/users", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    MAX_USERS = 4  # 上限人数
+    
+    # MAX_USERS = 4  # 上限人数
 
-    user_count = db.query(models.User).count()  # 現在登録されている人数を数える
-    if user_count >= MAX_USERS:
-        raise HTTPException(status_code=400, detail=f"ユーザー上限（{MAX_USERS}人）に達しました")
+    # user_count = db.query(models.User).count()  # 現在登録されている人数を数える
+    # if user_count >= MAX_USERS:
+    #     raise HTTPException(status_code=400, detail=f"ユーザー上限（{MAX_USERS}人）に達しました")
 
     # ユーザー名がすでに使われていないかチェック
     db_user = db.query(models.User).filter(models.User.user_name == user.user_name).first()
