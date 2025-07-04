@@ -9,7 +9,22 @@ const ToPresentation = () => {
     <div>
       <button
         onClick={onClick}
-        className="flex h-9 items-center justify-center rounded-full bg-gradient-to-b from-blue-400 from-50% to-blue-500 to-50% px-3 text-blue-50 hover:from-blue-500 hover:to-blue-600 active:from-blue-600 active:to-blue-700"
+        className="inline-block hover:brightness-95 transition duration-200 "
+        style={{
+          display: "inline-block",
+          padding: "6px 20px",
+          background: "linear-gradient(90deg,#fcfff5 60%, #d4efd7 100%)",
+          color: "#47704c",
+          borderRadius: "14px",
+          fontSize: "1.1rem",
+          fontWeight: "bold",
+          textDecoration: "none",
+          boxShadow: "0 2px 8px #b7d7bb44",
+          border: "2px solid #aad5bb",
+          letterSpacing: "0.02em",
+          fontFamily: "inherit",
+          boxSizing: "border-box",
+        }}
       >
         プレゼン練習をする
       </button>
