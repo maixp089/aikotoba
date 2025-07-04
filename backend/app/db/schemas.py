@@ -1,19 +1,18 @@
-# app/db/schemas.py
-
 from pydantic import BaseModel
-from typing import Optional
 from uuid import UUID
 from datetime import datetime
 
-class UserCreate(BaseModel):
-    user_name: str
-    age: Optional[int]
+class UserBase(BaseModel):
+    firebase_uid: str
+    name: str    
+    age: int | None = None
+    icon_image: str | None = None
 
-class User(BaseModel):
-    user_id: UUID
-    user_name: str
-    age: Optional[int]
+class UserCreate(UserBase):
+    pass
+
+class User(UserBase):
+    id: UUID
     created_at: datetime
-
     class Config:
         orm_mode = True

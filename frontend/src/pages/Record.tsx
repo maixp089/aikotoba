@@ -78,15 +78,31 @@ const Record = () => {
               <div
                 key={entry.id}
                 className="border border-black rounded text-center py-3 bg-white hover:bg-gray-100 cursor-pointer"
+                style={{
+                  width: "100%",
+                  padding: "10px ",
+                  marginBottom: "10px",
+                  borderRadius: "16px",
+                  border: "2px solid #aad5bb",
+                  fontSize: "1.13em",
+                  background: "#f6ffef",
+                  fontFamily: "inherit",
+                  boxShadow: "0 2px 10px #cce7d266",
+                  outline: "none",
+                  transition: "border 0.2s",
+                  boxSizing: "border-box",
+                }}
                 onClick={() =>
                   navigate(`/evaluation/${entry.date}T${entry.time}`)
                 }
               >
                 {new Date(entry.date).toLocaleDateString("ja-JP", {
                   month: "numeric",
+                })}
+                {new Date(entry.date).toLocaleDateString("ja-JP", {
                   day: "numeric",
                 })}
-                の記録
+                のきろくを見る
               </div>
             ))}
           </div>

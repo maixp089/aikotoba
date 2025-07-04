@@ -10,7 +10,7 @@ const Challenge = () => {
   return (
     <div
       className="
-    w-80
+    w-75
     text-2xl
     text-indigo-400 
     rounded-b-sm 
