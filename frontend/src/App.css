@@ -5,5 +5,8 @@
   min-height: 100vh;
   text-align: center;
   flex-direction: column;
-  background: linear-gradient(120deg, #d4efd7 0%, #f8f5e1 100%);
+  background-image: url("/bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }

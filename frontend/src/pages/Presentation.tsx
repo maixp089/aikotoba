@@ -92,7 +92,10 @@ const Presentation = () => {
     <Layout>
       <Card>
         <div className="space-y-4">
-          <BackToMyPage />
+          <div className="flex justify-between w-full max-w-md">
+            {" "}
+            <BackToMyPage />
+          </div>
           <h1 className="text-green-500 text-3xl text-center">
             ろぼにはなしてね🎙️
           </h1>
