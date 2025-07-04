@@ -1,8 +1,13 @@
-// src/components/Layout.tsx
-// 中央ぞろえのコンポーネント
 import React from "react";
-import "../App.css"; // または index.css
+import "../App.css";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return <div className="page-center">{children}</div>;
+  return (
+    <div
+      className="min-h-screen bg-cover bg-center"
+      style={{ backgroundImage: "url('/bg.png')" }}
+    >
+      {children}
+    </div>
+  );
 }
