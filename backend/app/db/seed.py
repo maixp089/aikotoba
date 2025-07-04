@@ -17,6 +17,7 @@ def seed():
         user = User(
             id=uuid.uuid4(),
             firebase_uid="test_uid_001",
+            name="テスト太郎",
             age=10,
             icon_image="sample_icon.png",
             created_at=datetime.utcnow()
