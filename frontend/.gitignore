@@ -22,3 +22,21 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+__pycache__/
+*.pyc
+
+# Firebase 環境変数（追加推奨！）
+.env
+.env.*
+firebaseConfig.js
+firebase.config.js
+src/firebase.js
+src/config/firebase.js
+
+# Firebase Emulatorのデータ
+.firebase/
+
+# Firebase関連のバックアップや秘密鍵（もし生成してたら）
+serviceAccountKey.json
+firebase-adminsdk.json

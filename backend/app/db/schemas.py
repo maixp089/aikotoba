@@ -1,17 +1,18 @@
-# app/db/schemas.py
+from pydantic import BaseModel
+from uuid import UUID
+from datetime import datetime
 
-from pydantic import BaseModel, EmailStr
+class UserBase(BaseModel):
+    firebase_uid: str
+    name: str    
+    age: int | None = None
+    icon_image: str | None = None
 
-# クライアントから受け取るデータ（作成用）
-class UserCreate(BaseModel):
-    name: str
-    email: EmailStr
+class UserCreate(UserBase):
+    pass
 
-# クライアントに返すデータ（レスポンス用）
-class User(BaseModel):
-    id: int
-    name: str
-    email: EmailStr
-
+class User(UserBase):
+    id: UUID
+    created_at: datetime
     class Config:
         orm_mode = True

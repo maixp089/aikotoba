@@ -6,3 +6,5 @@ export { default as Ranking } from "./Ranking";
 export { default as MyPage } from "./MyPage";
 export { default as Home } from "./Home";
 export { default as Record } from "./Record";
+export { default as EvaluationDetail } from "./EvaluationDetail";
+export { default as Scoring } from "./Scoring";
