@@ -16,5 +16,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # アプリケーション本体をコピー
 COPY ./app ./app
 
+# test_openai.py をコピー
+COPY ./test_openai.py ./test_openai.py
+
 # サーバー起動コマンド（FastAPI）
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
