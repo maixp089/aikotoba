@@ -26,3 +26,15 @@ class ScoreRecord(BaseModel):
     well_done: str
     next_challenge: str
     feedback_created_at: datetime
+
+class Feedback(BaseModel):
+    id: int
+    user_id: UUID  
+    presentation_id: int
+    total_score: int
+    well_done: str
+    next_challenge: str
+    created_at: datetime
+
+    class Config:
+        orm_mode = True
