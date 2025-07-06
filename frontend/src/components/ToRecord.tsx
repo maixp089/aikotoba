@@ -30,7 +30,7 @@ const ToRecord = ({ userId }: ToRecordProps) => {
           boxSizing: "border-box",
         }}
       >
-        記録一覧
+        き
       </button>
     </div>
   );

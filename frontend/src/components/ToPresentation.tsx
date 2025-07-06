@@ -26,7 +26,7 @@ const ToPresentation = () => {
           boxSizing: "border-box",
         }}
       >
-        プレゼン練習をする
+        プ
       </button>
     </div>
   );
