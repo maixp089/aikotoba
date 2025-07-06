@@ -16,3 +16,13 @@ class User(UserBase):
     created_at: datetime
     class Config:
         orm_mode = True
+
+class ScoreRecord(BaseModel):
+    presentation_id: int
+    transcript: str
+    audio_url: str
+    presentation_created_at: datetime
+    total_score: int
+    well_done: str
+    next_challenge: str
+    feedback_created_at: datetime
