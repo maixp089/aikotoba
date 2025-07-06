@@ -4,11 +4,24 @@ import {
   Layout,
   Card,
 } from "../components";
-import { useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const Evaluation = () => {
+  const { userId } = useParams();
   const location = useLocation();
   const feedback = location.state?.feedback;
+
+  const [user, setUser] = useState(null);
+
+  // ユーザー情報をfetch
+  useEffect(() => {
+    if (!userId) return;
+    fetch(`http://localhost:8000/api/users/${userId}`)
+      .then((res) => res.json())
+      .then((data) => setUser(data))
+      .catch(() => setUser(null));
+  }, [userId]);
 
   if (!feedback) {
     return (
@@ -100,7 +113,7 @@ const Evaluation = () => {
           {/* 振り返りボタン */}
           <ToRecord />
           {/* ホームへボタン */}
-          <BackToMyPage />
+          <BackToMyPage userId={userId!} />
         </div>
       </Card>
     </Layout>

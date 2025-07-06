@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import {
   Home,
-  // Evaluation,
+  Evaluation,
   Login,
   NewAccount,
   Presentation,
@@ -26,12 +26,12 @@ function App() {
       <Route path="/users/:userId/presentation" element={<Presentation />} />
       <Route path="/users/:userId/record" element={<Record />} />
       <Route path="/users/:userId/scoring" element={<Scoring />} />
+      <Route path="/users/:userId/evaluation" element={<Evaluation />} />
        {/* 評価詳細（発表IDや日付で絞る場合） */}
       <Route path="/evaluation/:presentationId" element={<EvaluationDetail />} />
        {/* 音声テスト用 */}
       <Route path="/audio-test" element={<AudioRecorderTest />} />
 
-      {/* <Route path="/evaluation" element={<Evaluation />} /> */}
     </Routes>
   );
 }
