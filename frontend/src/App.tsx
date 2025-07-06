@@ -38,7 +38,7 @@ export default App;
 
 
 
-// // frontend/src/main.tsx　修正前のコード
+// // frontend/src/main.tsx修正前のコード
 // // ルーティング、画面構成
 
 // import { Routes, Route } from "react-router-dom";
