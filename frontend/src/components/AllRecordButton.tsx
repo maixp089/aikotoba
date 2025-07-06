@@ -1,14 +1,15 @@
 import { useNavigate } from "react-router-dom";
 
-type ToRecordProps = {
+type SeeAllRecordsProps = {
   userId: string;
 };
 
-const ToRecord = ({ userId }: ToRecordProps) => {
+const SeeAllRecordsButton = ({ userId }: SeeAllRecordsProps) => {
   const navigate = useNavigate();
   const onClick = () => {
-    navigate(`/record/${userId}`);
+    navigate(`/all-records/${userId}`); // ここは遷移先パスに合わせて変えてね！
   };
+
   return (
     <div>
       <button
@@ -30,10 +31,10 @@ const ToRecord = ({ userId }: ToRecordProps) => {
           boxSizing: "border-box",
         }}
       >
-        記録一覧
+        ぜんぶ見る
       </button>
     </div>
   );
 };
 
-export default ToRecord;
+export default SeeAllRecordsButton;

@@ -25,7 +25,7 @@ function App() {
       <Route path="/presentation" element={<Presentation />} />
       <Route path="/evaluation" element={<Evaluation />} />
       <Route path="/ranking" element={<Ranking />} />
-      <Route path="/record" element={<Record />} />
+      <Route path="/record/:userId" element={<Record />} />
       <Route path="/audio-test" element={<AudioRecorderTest />} /> {/* 追加 */}
       <Route path="/scoring" element={<Scoring />} />
       <Route path="/evaluation/:datetime" element={<EvaluationDetail />} />
