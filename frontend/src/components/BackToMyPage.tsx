@@ -6,7 +6,7 @@ type BackToMyPageProps = {
 const BackToMyPage = ({ userId }: BackToMyPageProps) => {
   const navigate = useNavigate();
   const onClick = () => {
-    navigate(`/mypage/${userId}`);
+    navigate(`/users/${userId}/mypage`);
    };
   
   return (

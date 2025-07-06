@@ -15,24 +15,24 @@ const menuButtons = [
     key: "back",
     img: "/icons/back.png",
     alt: "もどる",
-    to: "/",
+    to: () => "/",
   },
   {
     key: "practice",
     img: "/icons/practice.png",
     alt: "練習する",
-    to: "/presentation",
+    to: (userId?: string) => `/users/${userId}/presentation`,
   },
   {
     key: "record",
     img: "/icons/record.png",
     alt: "きろく",
-    to: "/record",
+    to: (userId: string) => `/users/${userId}/record`,
   },
 ];
 
 const MyPage = () => {
-  const { user_id } = useParams<{ user_id: string }>();
+  const { userId } = useParams<{ userId: string }>();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -42,8 +42,8 @@ const MyPage = () => {
   };
 
   useEffect(() => {
-    if (!user_id) return;
-    fetch(`http://localhost:8000/users/${user_id}`)
+    if (!userId) return;
+    fetch(`http://localhost:8000/users/${userId}`)
       .then((res) => {
         if (!res.ok) throw new Error("ユーザー取得失敗");
         return res.json();
@@ -55,7 +55,7 @@ const MyPage = () => {
       .catch(() => {
         setLoading(false);
       });
-  }, [user_id]);
+  }, [userId]);
 
   // 下部バー
   const bottomBar = (
@@ -75,7 +75,13 @@ const MyPage = () => {
       {menuButtons.map((btn) => (
         <button
           key={btn.key}
-          onClick={() => navigate(btn.to)}
+          onClick={() => {
+            if ((btn.key === "practice" || btn.key === "record") && !userId) {
+              alert("ユーザー情報が取得できていません");
+              return;
+            }
+            navigate(btn.to(userId!)); // ←「!」をつけてstringに断言
+          }}
           style={{
             background: "none",
             border: "none",
@@ -191,4 +197,3 @@ const MyPage = () => {
 };
 
 export default MyPage;
-

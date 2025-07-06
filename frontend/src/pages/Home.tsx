@@ -25,7 +25,7 @@ const Home = () => {
 
       if (data) {
         // 登録済み→マイページ遷移
-        navigate(`/mypage/${data.id}`);
+        navigate(`/users/${data.id}/mypage`);
       } else {
 
         // 未登録→新規登録画面へ
