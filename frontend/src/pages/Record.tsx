@@ -74,28 +74,7 @@ const Record = () => {
       parseDate(a.presentation_created_at).getTime()
   );
   // 直近3件に絞る
-  const recent3 = sortedData.slice(0, 3);
-
-  // グラフ用計算
-  const width = 300;
-  const height = 150;
-  const padding = 20;
-  const maxScore = Math.max(...sortedData.map((d) => d.total_score), 0);
-  const minScore = Math.min(...sortedData.map((d) => d.total_score), 0);
-  const yRange = maxScore - minScore || 1;
-  const xStep = (width - 2 * padding) / Math.max(sortedData.length - 1, 1);
-
-  // 折れ線パス生成
-  const points = sortedData
-    .map((d, i) => {
-      const x = padding + i * xStep;
-      const y =
-        height -
-        padding -
-        ((d.total_score - minScore) / yRange) * (height - 2 * padding);
-      return `${x},${y}`;
-    })
-    .join(" ");
+  const recent5 = sortedData.slice(0, 5);
 
   return (
     <Layout>
@@ -118,38 +97,9 @@ const Record = () => {
             <div>まだ記録がありません</div>
           ) : (
             <>
-              {/* 折れ線グラフ（SVG） */}
-              <div className="w-full max-w-md bg-blue-50 p-4 rounded shadow flex justify-center">
-                <svg width={width} height={height}>
-                  {/* 背景 */}
-                  <rect width={width} height={height} fill="#f0f9ff" rx={10} />
-                  {/* 折れ線 */}
-                  <polyline
-                    fill="none"
-                    stroke="#ef4444"
-                    strokeWidth="2"
-                    points={points}
-                  />
-                  {/* 各点 */}
-                  {points.split(" ").map((p, idx) => {
-                    const [x, y] = p.split(",");
-                    return (
-                      <circle
-                        key={idx}
-                        cx={x}
-                        cy={y}
-                        r="3"
-                        fill="#ef4444"
-                        stroke="white"
-                        strokeWidth="1"
-                      />
-                    );
-                  })}
-                </svg>
-              </div>
               {/* 記録一覧 */}
               <div className="w-full max-w-md space-y-2">
-                {recent3.map((entry) => {
+                {recent5.map((entry) => {
                   const date = parseDate(entry.presentation_created_at);
                   // 月・日・時刻を整形
                   const month = date.getMonth() + 1;
