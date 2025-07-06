@@ -1,4 +1,4 @@
-import Back from "../assets/images/back.png"; // ビーチ画像をimport
+import Back from "../assets/images/main.png"; // ビーチ画像をimport
 import { useNavigate } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../lib/firebase"; // ←firebase設定ファイル

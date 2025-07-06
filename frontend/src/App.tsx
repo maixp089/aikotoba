@@ -7,7 +7,6 @@ import {
   Login,
   NewAccount,
   Presentation,
-  Ranking,
   MyPage,
   Record,
   EvaluationDetail,
@@ -24,7 +23,6 @@ function App() {
             <Route path="/mypage/:user_id" element={<MyPage />} />
       <Route path="/presentation" element={<Presentation />} />
       <Route path="/evaluation" element={<Evaluation />} />
-      <Route path="/ranking" element={<Ranking />} />
       <Route path="/record" element={<Record />} />
       <Route path="/audio-test" element={<AudioRecorderTest />} /> {/* 追加 */}
       <Route path="/scoring" element={<Scoring />} />

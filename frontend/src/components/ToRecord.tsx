@@ -25,7 +25,7 @@ const ToRecord = () => {
           boxSizing: "border-box",
         }}
       >
-        記録一覧
+        き
       </button>
     </div>
   );

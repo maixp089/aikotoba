@@ -1,12 +1,23 @@
-.page-center {
+
+/* ────────────────────────────────── */
+/* 新規：カードを包むラッパー */
+/* 左画面とまったく同じ大きさ・見た目に揃えます */
+.page-wrapper {
+  /* DevTools で測定した左画面カードのサイズに合わせる */
+  width: 300px;
+  height: 520px;
+
+  /* カードの見た目 */
+  background: #FCFCE3;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  /* 内側余白を固定 */
+  box-sizing: border-box;
+  padding: 16px;
+
+  /* 中身を縦に揃えて中央寄せ */
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  text-align: center;
   flex-direction: column;
-  background-image: url("/bg.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  align-items: center;
 }
