@@ -1,0 +1,122 @@
+
+# Secrets
+.env
+.env.local
+.env.*.local
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.env/
+
+# IDE settings
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build
+build/
+dist/
+*.egg-info/
+
+
+# ---- 共通 ----
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+
+# ---- フロントエンド ----
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Next.js / React
+.next/
+out/
+dist/
+build/
+coverage/
+.env*
+*.local
+*.env
+*.log
+
+# ---- バックエンド ----
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+.Python
+
+# FastAPI/SQLAlchemy
+.env
+*.db
+*.sqlite3
+alembic/versions/*.pyc
+alembic/versions/__pycache__/
+
+# ---- Docker ----
+*.pid
+*.pid.lock
+db_data/
+postgres_data/
+*.sock
+
+# ---- その他 ----
+# Test/coverage tools
+.coverage
+htmlcov/
+coverage.xml
+.cache/
+
+# OS generated files
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# 本番アップロード時の不要ファイル
+uploads/
+tmp/
+temp/
+*.bak
+
+# ---- Firebase/外部サービス秘密鍵 ----
+firebase-service-account.json
+*.key
+*.pem
+*.crt
+secrets/
+secret.*
+private.*
+
+# ---- VSCode/JetBrains IDEs ----
+.history/
+*.code-workspace
+
+# ---- Misc ----
+# 不要な一時フォルダ・個別プロジェクトで使っていれば追加
+uploads/
+logs/
+*.log
+

@@ -1,3 +1,34 @@
+# ディレクトリ構成（7/1現在）
+```
+backend/
+└── app/
+    ├── main.py                # ⚙️ エントリーポイント／アプリ設定・ルーティング登録
+    ├── whisper/               # 🎙️ Whisper関連処理まとめパッケージ
+    │   ├── __init__.py        # 📦 パッケージ初期化ファイル（空でもOK）
+    │   ├── transcription.py   # ⚙️ Whisper API呼び出し処理
+    │   ├── client.py          # ⚙️ Whisper用のOpenAIクライアント初期化（WHISPER_API_KEYを使用）
+    │   └── schemas.py         # ✅ API型定義（Pydanticスキーマ：音声入力・文字起こし結果）
+    ├── llm/                   # 🤖 LLM（OpenAI）関連処理まとめパッケージ
+    │   ├── __init__.py        # 📦 パッケージ初期化ファイル（空でもOK）
+    │   ├── client.py          # ⚙️ LLM用のOpenAIクライアント初期化・共通API呼び出し
+    │   └── schemas.py         # ✅ API型定義（プロンプトやフィードバックの構造）
+    ├── api/                   # 🚪 APIルーティング＆URLごとに実行する関数（ハンドラ）を管理
+    │   ├── __init__.py        # 📦 パッケージ初期化ファイル（空でもOK）
+    │   ├── audio.py           # 🚪 /api/audio-to-text エンドポイント（音声受け付け）
+    │   └── feedback.py        # 🚪 LLM評価・フィードバックAPI（将来用）
+    └── db/                    # 💾 データベース関連処理まとめパッケージ
+        ├── crud.py            # ⚙️ DB操作関数群（Create, Read, Update, Delete）
+        ├── database.py        # ⚙️ DB接続設定・セッション管理
+        ├── models.py          # 🏗️ ORMモデル定義（DBテーブル設計）
+        ├── schemas.py         # ✅ DB関連API用スキーマ（リクエスト・レスポンス型）
+        └── seed.py            # ⚙️ DB初期データ投入スクリプト
+
+
+```
+
+
+
+
 # バックエンド開発環境構築手順（Docker利用）
 
 バックエンド（FastAPI）、DB（PostgreSQL・pgAdmin）の3つのDockerコンテナを利用。 環境構築手順は下記の通り。
@@ -94,7 +125,6 @@ docker compose down
 
 * `.env` ファイルの設定は環境に合わせて変更する
 ---
-
 以上
 
 

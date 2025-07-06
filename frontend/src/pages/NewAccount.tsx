@@ -16,7 +16,6 @@ const NewAccount = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  
 
   // 親画面(Home)からfirebase_uidを受け取る
   const firebase_uid = location.state?.firebase_uid;
@@ -170,7 +169,9 @@ const NewAccount = () => {
               required
             />
           </div>
-          {/* アイコン選択 */}
+
+          {/* アイコン選択エリア */}
+
           <div
             style={{
               border: "2px dashed #aad5bb",
