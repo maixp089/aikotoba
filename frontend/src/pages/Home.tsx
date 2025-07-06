@@ -1,19 +1,39 @@
-import Back from "../assets/images/back.png"; // ビーチ画像をimport
+import Back from "../assets/images/main.png"; // ビーチ画像をimport
 import { useNavigate } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "../lib/firebase";
+import { auth, googleProvider } from "../lib/firebase"; // ←firebase設定ファイル
 
 const Home = () => {
   const navigate = useNavigate();
 
+  // 「はじめる」ボタン押下時
   const handleStart = async () => {
-    console.log("押した！");
+    console.log("押した！"); // ← ここで押されたタイミングを出力
+
     try {
+      // 1. Google認証（ポップアップでアカウント選択）
       const result = await signInWithPopup(auth, googleProvider);
-      const firebase_uid = result.user.uid;
-      navigate("/new-account", { state: { firebase_uid } });
+      const firebase_uid = result.user.uid; 
+
+
+      // 2. APIでユーザー存在チェック
+       const res = await fetch(
+        `http://localhost:8000/users/search?firebase_uid=${firebase_uid}`
+      );
+      const data = await res.json();
+      console.log("サーバーからの返却値:", data); // ← 追加：何が返ってきているか出力
+
+      if (data) {
+        // 登録済み→マイページ遷移
+        navigate(`/mypage/${data.id}`);
+      } else {
+
+        // 未登録→新規登録画面へ
+        navigate("/new-account", { state: { firebase_uid } });
+      } 
+    
     } catch (e) {
-      console.error(e);
+      console.error(e); // ← エラー内容も出力
       alert("Googleログインに失敗しました");
     }
   };
@@ -22,7 +42,11 @@ const Home = () => {
     <div
       style={{
         minHeight: "100vh",
-        background: "linear-gradient(120deg, #e3f9f5 0%, #f5ffe6 100%)",
+        width: "100vw",
+        backgroundImage: `url(${Back})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -30,10 +54,7 @@ const Home = () => {
     >
       <div
         style={{
-          backgroundImage: `url(${Back})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
+          background: "#fff8e7cc", // ちょっと透過で中身を見やすくする
           borderRadius: 32,
           boxShadow: "0 6px 28px #b7d7bb66, 0 1.5px 0 #fffbe9 inset",
           border: "3px solid #e8debe",
@@ -45,12 +66,9 @@ const Home = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          position: "relative",
-          overflow: "hidden",
         }}
       >
-        {/* タイトル画像なし */}
-
+        {/* ここにタイトル画像など入れてもOK */}
         {/* はじめるボタン */}
         <button
           onClick={handleStart}
@@ -66,7 +84,7 @@ const Home = () => {
             boxShadow: "0 6px 22px #78dbe499, 0 1.5px 0 #fffbe9 inset",
             cursor: "pointer",
             margin: "0 auto",
-            marginTop: 200,
+            marginTop: 12,
             marginBottom: 40,
           }}
         >

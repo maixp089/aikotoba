@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import Card from "../components/Card";
 
 const iconList = [
   { name: "ネコ", value: "neko", src: "/icons/neko.png" },
@@ -14,17 +15,23 @@ const NewAccount = () => {
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  
+
+  // 親画面(Home)からfirebase_uidを受け取る
+  const firebase_uid = location.state?.firebase_uid;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedIcon) {
-      // アイコン未選択なら何もしない（メッセージも出さない）
-      return;
-    }
+    if (!selectedIcon || !firebase_uid) return; // 必須チェック
+
     const data = {
-      user_name: userName,
+      firebase_uid, // ← 必須！
+      name: userName, // ← 指示通りnameに！
       age: age ? Number(age) : null,
+      icon_image: `${selectedIcon}.png`, // or 画像URL
     };
+
     try {
       const res = await fetch("http://localhost:8000/users", {
         method: "POST",
@@ -32,20 +39,74 @@ const NewAccount = () => {
         body: JSON.stringify(data),
       });
       if (!res.ok) {
-        // エラーが起きても何も表示しない
+        // 重複などのエラーもここに入る
+        const err = await res.json();
+        alert(err.detail ?? "登録に失敗しました");
         return;
       }
-      // 成功時のメッセージも表示しない
+      const user = await res.json();
       setUserName("");
       setAge("");
       setSelectedIcon(null);
-      setTimeout(() => {
-        navigate("/login");
-      }, 800);
+      // 登録完了時はマイページへ遷移
+      navigate(`/mypage/${user.id}`);
     } catch {
-      // 通信エラー時も何も表示しない
+      alert("通信エラーが発生しました");
     }
   };
+
+  // ボタンエリアをJSXで定義（下帯に渡す！）
+  const bottomBar = (
+    <>
+      <Link
+        to="/"
+        style={{
+          flex: 1,
+          display: "inline-block",
+          padding: "13px 0",
+          background: "#19848e",
+          color: "#fff",
+          borderRadius: "34px",
+          fontSize: "1.1rem",
+          fontWeight: "bold",
+          textDecoration: "none",
+          boxShadow: "0 5px #10676c",
+          letterSpacing: "1.4px",
+          fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', sans-serif",
+          border: "none",
+          textAlign: "center",
+          outline: "none",
+          transition: "background 0.2s",
+        }}
+      >
+        ← もどる
+      </Link>
+      <button
+        type="submit"
+        form="register-form"
+        style={{
+          flex: 1,
+          background: "#f2687b",
+          color: "#fff",
+          borderRadius: "34px",
+          fontSize: "1.1rem",
+          fontWeight: "bold",
+          boxShadow: "0 5px #c35665",
+          letterSpacing: "1.4px",
+          fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', sans-serif",
+          border: "none",
+          textAlign: "center",
+          outline: "none",
+          padding: "13px 0",
+          margin: 0,
+          cursor: "pointer",
+          transition: "background 0.2s",
+        }}
+      >
+        登録
+      </button>
+    </>
+  );
 
   return (
     <div
@@ -58,33 +119,9 @@ const NewAccount = () => {
         fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', 'sans-serif'",
       }}
     >
-      <div
-        style={{
-          background: "#fff8e7",
-          borderRadius: "28px",
-          boxShadow: "0 6px 28px #b7d7bb66, 0 1.5px 0 #fffbe9 inset",
-          padding: "30px 12px 32px 12px",
-          width: "100%",
-          maxWidth: "375px",
-          textAlign: "center",
-          position: "relative",
-          border: "3px solid #b7d7bb",
-          boxSizing: "border-box",
-        }}
-      >
-        <h2
-          style={{
-            marginBottom: "24px",
-            fontSize: "2.1rem",
-            fontWeight: "bold",
-            letterSpacing: "0.03em",
-            color: "#5a7042",
-            textShadow: "1px 2px 0 #fffbe9, 0 4px 6px #b7d7bb55",
-          }}
-        >
-          新規登録
-        </h2>
-        <form onSubmit={handleSubmit}>
+      <Card title="はじめる" bottomBar={bottomBar}>
+        <form id="register-form" onSubmit={handleSubmit}>
+          {/* ユーザー名 */}
           <input
             type="text"
             placeholder="おなまえ"
@@ -106,7 +143,7 @@ const NewAccount = () => {
             }}
             required
           />
-
+          {/* 年齢 */}
           <div style={{ marginBottom: "12px" }}>
             <input
               id="age"
@@ -133,8 +170,7 @@ const NewAccount = () => {
               required
             />
           </div>
-
-          {/* --- キャラクターアイコン選択エリア --- */}
+          {/* アイコン選択 */}
           <div
             style={{
               border: "2px dashed #aad5bb",
@@ -181,70 +217,8 @@ const NewAccount = () => {
               </div>
             ))}
           </div>
-
-          {/* --- ボタンエリアここから --- */}
-          <div
-            style={{
-              display: "flex",
-              gap: "8px",
-              justifyContent: "center",
-              width: "100%",
-              padding: "8px 0 0 0",
-              background: "none",
-              boxSizing: "border-box",
-            }}
-          >
-            <Link
-              to="/"
-              style={{
-                flex: 1,
-                display: "inline-block",
-                padding: "13px 0",
-                background: "#19848e",
-                color: "#fff",
-                borderRadius: "34px",
-                fontSize: "1.1rem",
-                fontWeight: "bold",
-                textDecoration: "none",
-                boxShadow: "0 5px #10676c",
-                letterSpacing: "1.4px",
-                fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', sans-serif",
-                border: "none",
-                textAlign: "center",
-                outline: "none",
-                transition: "background 0.2s",
-              }}
-            >
-              ← ホームへ戻る
-            </Link>
-            <button
-              type="submit"
-              style={{
-                flex: 1,
-                background: "#f2687b",
-                color: "#fff",
-                borderRadius: "34px",
-                fontSize: "1.1rem",
-                fontWeight: "bold",
-                boxShadow: "0 5px #c35665",
-                letterSpacing: "1.4px",
-                fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', sans-serif",
-                border: "none",
-                textAlign: "center",
-                outline: "none",
-                padding: "13px 0",
-                margin: 0,
-                cursor: "pointer",
-                transition: "background 0.2s",
-              }}
-            >
-              登録
-            </button>
-          </div>
-          {/* --- ボタンエリアここまで --- */}
         </form>
-        {/* resultやメッセージ表示は一切なし */}
-      </div>
+      </Card>
     </div>
   );
 };

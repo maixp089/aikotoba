@@ -28,7 +28,7 @@ const ToNewAccount = () => {
           boxSizing: "border-box",
         }}
       >
-        新規登録
+        はじめる
       </button>
     </div>
   );
