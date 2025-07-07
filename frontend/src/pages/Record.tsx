@@ -9,6 +9,7 @@ type User = {
 };
 
 type Score = {
+  feedback_id: string;
   presentation_id: string;
   presentation_created_at: string;
   total_score: number;
@@ -109,7 +110,7 @@ const Record = () => {
                   <div
                     key={entry.presentation_id}
                     onClick={() =>
-                      navigate(`/evaluation/${entry.presentation_id}`)
+                      navigate(`/users/${userId}/evaluation/${entry.feedback_id}`)
                     }
                   >
                     {month}月{day}日 {hour}時{min}分 のきろく
