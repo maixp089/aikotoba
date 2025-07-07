@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from uuid import UUID
 from datetime import datetime
+from typing import Optional
 
 class UserBase(BaseModel):
     firebase_uid: str
@@ -20,7 +21,7 @@ class User(UserBase):
 class ScoreRecord(BaseModel):
     presentation_id: int
     transcript: str
-    audio_url: str
+    audio_url: Optional[str]
     presentation_created_at: datetime
     total_score: int
     well_done: str

@@ -73,12 +73,7 @@ case "$num" in
     ;;
   15)
     echo "★今のブランチにorigin/developをrebaseします（履歴がきれいに並びます）"
-    git fetch
     git rebase origin/develop
-    ;;
-  16)
-    echo "3001ポートでRails-localサーバーを立ち上げます "
-    rails s -p 3001 
     ;;
   0)
     echo "またね！"

@@ -70,9 +70,9 @@ const Record = () => {
   );
   // 直近3件に絞る
   const recent5 = sortedData.slice(0, 5);
-  
+
   // ここでheaderTitle/footerBarを定義する！
-  const headerTitle = user ? `${user.name} さんの記録` : "きろく";
+  const headerTitle = user ? `${user.name} さんのきろく` : "きろく";
   const footerBar = (
     <BackToMyPage userId={userId!} />
   );

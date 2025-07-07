@@ -3,12 +3,8 @@ import { useParams, useLocation } from "react-router-dom";
 
 const Evaluation = () => {
   const { userId } = useParams();
-  console.log("userId:", userId);
   const location = useLocation();
   const feedback = location.state?.feedback;
-
-  // ログでuserIdの値が確認できる（デバッグ用、不要なら消してOK）
-  console.log("userId:", userId);
 
   if (!feedback) {
     return (
