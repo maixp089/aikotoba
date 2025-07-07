@@ -1,14 +1,9 @@
-import {
-  BackToMyPage,
-  ToRecord,
-  Layout,
-  Card,
-} from "../components";
+import { BackToMyPage, ToRecord, Layout, Card } from "../components";
 import { useParams, useLocation } from "react-router-dom";
 
 const Evaluation = () => {
   const { userId } = useParams();
-  console.log("userId:", userId)
+  console.log("userId:", userId);
   const location = useLocation();
   const feedback = location.state?.feedback;
 
@@ -24,10 +19,12 @@ const Evaluation = () => {
       </Layout>
     );
   }
-
+  // ここでheaderTitle/footerBarを定義する！
+  const footerBar = <BackToMyPage userId={userId!} />;
+  // title="けっかはっぴょう" bottomBar={footerBar}
   return (
     <Layout>
-      <Card>
+      <Card title="けっかはっぴょう" bottomBar={footerBar}>
         <div className="flex flex-col items-center py-10">
           <h1 className="text-3xl font-semibold">今のおはなし…</h1>
 
@@ -113,8 +110,6 @@ const Evaluation = () => {
 };
 
 export default Evaluation;
-
-
 
 // // // // 修正前のコード（developの内容保存）
 // import {
