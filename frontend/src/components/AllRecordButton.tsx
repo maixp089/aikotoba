@@ -1,13 +1,15 @@
 import { useNavigate } from "react-router-dom";
-type BackToMyPageProps = {
-  userId: string;  // ユーザーIDがstring型なら
+
+type SeeAllRecordsProps = {
+  userId: string;
 };
-const BackToMyPage = ({ userId }: BackToMyPageProps) => {
+
+const SeeAllRecordsButton = ({ userId }: SeeAllRecordsProps) => {
   const navigate = useNavigate();
   const onClick = () => {
-    navigate(`/users/${userId}/mypage`);
-   };
-  
+    navigate(`/all-records/${userId}`); // ここは遷移先パスに合わせて変えてね！
+  };
+
   return (
     <div>
       <button
@@ -29,10 +31,10 @@ const BackToMyPage = ({ userId }: BackToMyPageProps) => {
           boxSizing: "border-box",
         }}
       >
-        もどる
+        ぜんぶ見る
       </button>
     </div>
   );
 };
 
-export default BackToMyPage;
+export default SeeAllRecordsButton;

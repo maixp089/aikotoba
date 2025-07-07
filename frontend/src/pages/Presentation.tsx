@@ -1,7 +1,7 @@
 import { BackToMyPage, Layout, Card } from "../components";
 import "../App.css";
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import robo1 from "../assets/images/robo1.jpg";
 import robo2 from "../assets/images/robo2.jpg";
 
@@ -9,6 +9,7 @@ const images = [robo1, robo2];
 const durations = [3000, 370];
 
 const Presentation = () => {
+  const { userId } = useParams<{ userId: string }>(); //追加：BackToMyPageを適用するため
   const [index, setIndex] = useState(0);
   const [audioState, setAudioState] = useState<"ready" | "recording" | "done">("ready");
   const [isLoading, setIsLoading] = useState(false);
@@ -79,7 +80,11 @@ const Presentation = () => {
   // 録音データをAPIに送信し、レスポンス受信後に評価ページへ遷移
   const sendAudioToAPI = async (blob: Blob) => {
     // ここにユーザーIDをセット（仮に固定値）
-    const userId = "94c729a8-491c-4ea4-b47c-d96258e4414e";
+    // const userId = "a787f6df-1ebb-41fb-ae56-78c8159378aa";
+    if (!userId) {
+    alert("ユーザー情報が取得できませんでした");
+    return;
+  }
 
     setIsLoading(true);
     const formData = new FormData();
@@ -97,7 +102,7 @@ const Presentation = () => {
       console.log("APIレスポンス", data);
 
       // フィードバックをstateで渡して評価ページへ遷移
-      navigate("/evaluation", { state: { feedback: data } });
+      navigate(`/users/${userId}/evaluation`, { state: { feedback: data } });
     } catch (error) {
       alert("音声送信に失敗しました");
       console.error(error);
@@ -111,7 +116,7 @@ const Presentation = () => {
       <Card>
         <div className="space-y-4">
           <div className="flex justify-between w-full max-w-md">
-            <BackToMyPage />
+            <BackToMyPage userId={userId!} />{" "}
           </div>
           <h1 className="text-green-500 text-3xl text-center">ろぼにはなしてね🎙️</h1>
 

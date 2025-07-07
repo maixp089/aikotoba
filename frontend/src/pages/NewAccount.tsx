@@ -102,7 +102,7 @@ const NewAccount = () => {
           transition: "background 0.2s",
         }}
       >
-        登録
+        とうろく
       </button>
     </>
   );
