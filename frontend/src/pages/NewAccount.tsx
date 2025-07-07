@@ -48,7 +48,7 @@ const NewAccount = () => {
       setAge("");
       setSelectedIcon(null);
       // 登録完了時はマイページへ遷移
-      navigate(`/mypage/${user.id}`);
+      navigate(`/users/${user.id}/mypage`);
     } catch {
       alert("通信エラーが発生しました");
     }
