@@ -28,7 +28,7 @@ function App() {
       <Route path="/users/:userId/scoring" element={<Scoring />} />
       <Route path="/users/:userId/evaluation" element={<Evaluation />} />
        {/* 評価詳細（発表IDや日付で絞る場合） */}
-      <Route path="/evaluation/:feedback_id" element={<EvaluationDetail />} />
+      <Route path="/users/:userId/evaluation/:feedback_id" element={<EvaluationDetail />} />
        {/* 音声テスト用 */}
       <Route path="/audio-test" element={<AudioRecorderTest />} />
 
