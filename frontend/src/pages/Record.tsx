@@ -18,7 +18,6 @@ type Score = {
 };
 
 const Record = () => {
- 
   const { userId } = useParams<{ userId: string }>();
   const [scores, setScores] = useState<Score[]>([]);
   const [user, setUser] = useState<User | null>(null);
@@ -70,67 +69,104 @@ const Record = () => {
       parseDate(a.presentation_created_at).getTime()
   );
   // 直近3件に絞る
-  const recent5 = sortedData.slice(0, 5);
+  const recent3 = sortedData.slice(0, 3);
 
   // ここでheaderTitle/footerBarを定義する！
   const headerTitle = user ? `${user.name} さんのきろく` : "きろく";
-  const footerBar = (
-    <BackToMyPage userId={userId!} />
-  );
+  const footerBar = <BackToMyPage userId={userId!} />;
+  // スコアごとの色マッピング関数
+  const getScoreColor = (score: number) => {
+    if (score >= 90) return "#e53935"; // 赤#e53935
+    if (score >= 80) return "#ff8fab"; // さくら#ff8fab
+    if (score >= 70) return "#fb8c00"; // オレンジfb8c00
+    if (score >= 60) return "#43a047"; // 緑#43a047
+    if (score >= 50) return "#1e88e5"; // 青#1e88e5
+    return "#47704c";
+  };
 
   return (
-  <Layout>
-    <Card title={headerTitle} bottomBar={footerBar}>
-      <div>
-        {/* 上部ボタン */}
+    <Layout>
+      <Card title={headerTitle} bottomBar={footerBar}>
         <div>
-          <BackToMyPage userId={userId!} />
-          <div>
-            {user ? `${user.name} さん` : "ユーザー名取得中..."}
-          </div>
-        </div>
-        {/* ここから表示を条件分岐 */}
-        {loading ? (
-          <div>読み込み中...</div>
-        ) : !user ? (
-          <div>ユーザー情報が見つかりません</div>
-        ) : sortedData.length === 0 ? (
-          <div>まだ記録がありません</div>
-        ) : (
-          <>
-            {/* 記録一覧 */}
-            <div>
-              {recent5.map((entry) => {
-                const date = parseDate(entry.presentation_created_at);
-                const month = date.getMonth() + 1;
-                const day = date.getDate();
-                const hour = date.getHours();
-                const min = date.getMinutes().toString().padStart(2, "0");
-                return (
-                  <div
-                    key={entry.presentation_id}
-                    onClick={() =>
-                      navigate(`/users/${userId}/evaluation/${entry.feedback_id}`)
-                    }
-                  >
-                    {month}月{day}日 {hour}時{min}分 のきろく
-                  </div>
-                );
-              })}
-            </div>
-            {/* 全部見るボタンの配置 */}
-            <div>
-              <button
-                onClick={() => alert("全記録画面へ（本番はnavigateでOK）")}
+          {/* ここから表示を条件分岐 */}
+          {loading ? (
+            <div>読み込み中...</div>
+          ) : !user ? (
+            <div>ユーザー情報が見つかりません</div>
+          ) : sortedData.length === 0 ? (
+            <div>まだ記録がありません</div>
+          ) : (
+            <>
+              {/* 案内ラベル */}
+              <div
+                style={{
+                  color: "#4bb3a7",
+                  fontSize: "1rem",
+                  textAlign: "center",
+                  marginTop: "8px",
+                  marginBottom: "30px",
+                  fontWeight: "bold",
+                  letterSpacing: "0.04em",
+                }}
               >
-                ぜんぶ見る
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-    </Card>
-  </Layout>
+                ここには新しい3つだけ出てるよ
+                <br/>
+                <span style={{ fontWeight: "normal", fontSize: "0.97em" }}>ぜんぶは下のボタンで見られるよ</span>
+             
+              </div>
+              {/* 記録一覧 */}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "14px",
+                }}
+              >
+                {recent3.map((entry) => {
+                  const date = parseDate(entry.presentation_created_at);
+                  const month = date.getMonth() + 1;
+                  const day = date.getDate();
+                  const hour = date.getHours();
+                  const min = date.getMinutes().toString().padStart(2, "0");
+                  const color = getScoreColor(entry.total_score);
+                  return (
+                    <button
+                      key={entry.presentation_id}
+                      onClick={() =>
+                        navigate(
+                          `/users/${userId}/evaluation/${entry.feedback_id}`
+                        )
+                      }
+                      style={{
+                        display: "block",
+                        width: "100%",
+                        padding: "12px 0",
+                        background:
+                          "linear-gradient(90deg,#fcfff5 60%, #d4efd7 100%)",
+                        color,
+                        borderRadius: "14px",
+                        fontSize: "1.1rem",
+                        fontWeight: "bold",
+                        boxShadow: "0 2px 8px #b7d7bb44",
+                        border: "2px solid #aad5bb",
+                        letterSpacing: "0.02em",
+                        fontFamily: "inherit",
+                        cursor: "pointer",
+                        margin: "0 auto",
+                        transition: "filter .2s",
+                      }}
+                      className="hover:brightness-95"
+                    >
+                      {month}月{day}日 {hour}時{min}分 のきろく
+                    </button>
+                  );
+                })}
+              </div>
+            </>
+          )}
+        </div>
+      </Card>
+    </Layout>
   );
 };
 
