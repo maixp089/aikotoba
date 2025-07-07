@@ -1,7 +1,8 @@
-import { BackToMyPage, Card, Layout } from "../components";
+import { Card, Layout } from "../components";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import IconButton from "../components/IconButton";
 
 type User = {
   id: string;
@@ -73,7 +74,33 @@ const Record = () => {
 
   // ここでheaderTitle/footerBarを定義する！
   const headerTitle = user ? `${user.name} さんのきろく` : "きろく";
-  const footerBar = <BackToMyPage userId={userId!} />;
+  const footerBar = (
+  <div
+    style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-around",
+      width: "100%",
+      padding: "0 18px",
+      background: "#4bb3a7",
+      borderBottomLeftRadius: 16,
+      borderBottomRightRadius: 16,
+      minHeight: 80,
+    }}
+  >
+    <IconButton
+      onClick={() => navigate(`/users/${userId}/mypage`)}
+      label=""
+      iconSrc="/icons/back.png"
+    />
+    <IconButton
+      onClick={() => alert("このページはまだ準備中です！")}
+      label=""
+      iconSrc="/icons/watch.png"
+    />
+  </div>
+);
+
   // スコアごとの色マッピング関数
   const getScoreColor = (score: number) => {
     if (score >= 90) return "#e53935"; // 赤#e53935
