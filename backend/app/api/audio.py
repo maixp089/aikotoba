@@ -32,7 +32,7 @@ async def audio_feedback(
     # 1) 文字起こし実行
     transcript = await transcribe_audio(file)
 
-    # 2) LLMにフィードバック依頼 (例外キャッチで原因確認)
+    # LLMで文字起こしテキストに対してフィードバックを取得
     try:
         feedback_result = call_gpt4o_mini(transcript)
         print("== LLMの戻り値 ==", feedback_result)
@@ -137,13 +137,15 @@ async def audio_feedback(
 #     # 1) 文字起こし実行
 #     transcript = await transcribe_audio(file)
 
-#     # 2) LLMにフィードバック依頼
-#     feedback_result = call_gpt4o_mini(transcript)
+#     # 2) LLMにフィードバック依頼 (例外キャッチで原因確認)
+#     try:
+#         feedback_result = call_gpt4o_mini(transcript)
+#         print("== LLMの戻り値 ==", feedback_result)
+#     except Exception as e:
+#         print("== LLM呼び出しで例外 ==", e)
+#         raise HTTPException(status_code=500, detail="LLMの呼び出しに失敗しました")
 
-#     print("== LLMの戻り値 ==", feedback_result)
-
-
-#      # 3) フラットなレスポンスで返す
+#     # 3) フラットなレスポンスで返す
 #     return {
 #         "transcript": transcript,
 #         "word_score": feedback_result["word_score"],
@@ -155,32 +157,4 @@ async def audio_feedback(
 #         "well_done": feedback_result["well_done"],
 #         "next_challenge": feedback_result["next_challenge"]
 #     }
-
-
-    # # 3) 文字起こしとフィードバックをまとめて返す
-    # return {
-    #     "transcript": transcript,
-    #     "feedback": feedback_result
-    # }
-
-
-
-
-
-
-# ========WhisperとLLMのエンドポイント統合前
-# # app/api/audio.py
-
-# from fastapi import APIRouter, UploadFile, File, HTTPException
-# from ..whisper.transcription import transcribe_audio
-
-# router = APIRouter()
-
-# @router.post("/audio-to-text")
-# async def audio_to_text(file: UploadFile = File(...)):
-#     if not file.filename.endswith((".wav", ".mp3", ".m4a", ".webm")):
-#         raise HTTPException(status_code=400, detail="Unsupported file type")
-
-#     text = await transcribe_audio(file)
-#     return {"text": text}
 
