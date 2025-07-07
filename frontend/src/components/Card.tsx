@@ -13,9 +13,8 @@ const Card = ({ children, title, bottomBar, style }: Props) => (
   <div
     style={{
       background: "#fff8e7",
-      borderRadius: 2,
+      borderRadius: 24,
       boxShadow: "0 6px 28px #b7d7bb66, 0 1.5px 0 #fffbe9 inset",
-      /* 左画面と同一の固定サイズ */
       width: 320,
       height: 520,
       textAlign: "center",
@@ -29,7 +28,7 @@ const Card = ({ children, title, bottomBar, style }: Props) => (
       ...style,
     }}
   >
-    {/* 上部バー */}
+    {/* 上部バー（ヘッダー） */}
     {title && (
       <div
         style={{
@@ -46,14 +45,24 @@ const Card = ({ children, title, bottomBar, style }: Props) => (
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          flex: "0 0 auto",
         }}
       >
         {title}
       </div>
     )}
-    {/* メイン */}
-    <div style={{ padding: "30px 18px 24px 18px", flex: 1 }}>{children}</div>
-    {/* 下部バー */}
+    {/* メイン（中央だけスクロール領域！） */}
+    <div
+      style={{
+        flex: "1 1 0",
+        overflowY: "auto",
+        minHeight: 0, // ←スクロールバグ防止(Safari対応)
+        padding: "30px 18px 24px 18px",
+      }}
+    >
+      {children}
+    </div>
+    {/* 下部バー（フッター） */}
     {bottomBar && (
       <div
         style={{
@@ -67,6 +76,7 @@ const Card = ({ children, title, bottomBar, style }: Props) => (
           alignItems: "center",
           gap: 24,
           padding: "0 18px",
+          flex: "0 0 auto",
         }}
       >
         {bottomBar}

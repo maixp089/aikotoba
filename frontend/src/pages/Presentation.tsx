@@ -110,10 +110,14 @@ const Presentation = () => {
       setIsLoading(false);
     }
   };
+ // ここでheaderTitle/footerBarを定義する！
+  const footerBar = (
+    <BackToMyPage userId={userId!} />
+  );
 
   return (
     <Layout>
-      <Card>
+      <Card title="はっぴょうれんしゅう" bottomBar={footerBar}>
         <div className="space-y-4">
           <div className="flex justify-between w-full max-w-md">
             <BackToMyPage userId={userId!} />{" "}
@@ -158,8 +162,6 @@ const Presentation = () => {
 };
 
 export default Presentation;
-
-
 
 
 // // // 修正前のコード（developの内容保存）

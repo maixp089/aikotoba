@@ -17,12 +17,7 @@ type Score = {
 };
 
 const Record = () => {
-  // 以下モックデータをコメントアウト
-  // const sortedData = [...mockScoreAdviceData].sort((a, b) => {
-  // const dateA = new Date(`${a.date}T${a.time}`);
-  // const dateB = new Date(`${b.date}T${b.time}`);
-  // return dateA.getTime() - dateB.getTime();
-  // });
+ 
   const { userId } = useParams<{ userId: string }>();
   const [scores, setScores] = useState<Score[]>([]);
   const [user, setUser] = useState<User | null>(null);
@@ -75,94 +70,66 @@ const Record = () => {
   );
   // 直近3件に絞る
   const recent5 = sortedData.slice(0, 5);
+  
+  // ここでheaderTitle/footerBarを定義する！
+  const headerTitle = user ? `${user.name} さんの記録` : "きろく";
+  const footerBar = (
+    <BackToMyPage userId={userId!} />
+  );
 
   return (
-    <Layout>
-      <Card>
-        <div className="flex flex-col items-center space-y-6 py-6 px-4">
-          {/* 上部ボタン */}
-          <div className="flex justify-between w-full max-w-md">
-            <BackToMyPage userId={userId!} />{" "}
-            {/*「!」追加：絶対userIdがundefinedじゃないことを宣言*/}
-            <div className="bg-black text-white rounded px-4 py-2 text-sm">
-              {user ? `${user.name} さん` : "ユーザー名取得中..."}
-            </div>
+  <Layout>
+    <Card title={headerTitle} bottomBar={footerBar}>
+      <div>
+        {/* 上部ボタン */}
+        <div>
+          <BackToMyPage userId={userId!} />
+          <div>
+            {user ? `${user.name} さん` : "ユーザー名取得中..."}
           </div>
-          {/* ここから表示を条件分岐 */}
-          {loading ? (
-            <div>読み込み中...</div>
-          ) : !user ? (
-            <div>ユーザー情報が見つかりません</div>
-          ) : sortedData.length === 0 ? (
-            <div>まだ記録がありません</div>
-          ) : (
-            <>
-              {/* 記録一覧 */}
-              <div className="w-full max-w-md space-y-2">
-                {recent5.map((entry) => {
-                  const date = parseDate(entry.presentation_created_at);
-                  // 月・日・時刻を整形
-                  const month = date.getMonth() + 1;
-                  const day = date.getDate();
-                  const hour = date.getHours();
-                  const min = date.getMinutes().toString().padStart(2, "0");
-                  return (
-                    <div
-                      key={entry.presentation_id}
-                      className="border border-black rounded text-center py-3 bg-white hover:bg-gray-100 cursor-pointer"
-                      style={{
-                        width: "100%",
-                        padding: "10px ",
-                        marginBottom: "10px",
-                        borderRadius: "16px",
-                        border: "2px solid #aad5bb",
-                        fontSize: "1.13em",
-                        background: "#f6ffef",
-                        fontFamily: "inherit",
-                        boxShadow: "0 2px 10px #cce7d266",
-                        outline: "none",
-                        transition: "border 0.2s",
-                        boxSizing: "border-box",
-                      }}
-                      onClick={() =>
-                        navigate(`/evaluation/${entry.presentation_id}`)
-                      }
-                    >
-                      {month}月{day}日 {hour}時{min}分 のきろく
-                    </div>
-                  );
-                })}
-              </div>
-              {/* 全部見るボタンの配置 */}
-              <div className="flex justify-center mt-4">
-                <button
-                  onClick={() => alert("全記録画面へ（本番はnavigateでOK）")}
-                  className="inline-block hover:brightness-95 transition duration-200"
-                  style={{
-                    display: "inline-block",
-                    padding: "6px 20px",
-                    background:
-                      "linear-gradient(90deg,#fcfff5 60%, #d4efd7 100%)",
-                    color: "#47704c",
-                    borderRadius: "14px",
-                    fontSize: "1.1rem",
-                    fontWeight: "bold",
-                    textDecoration: "none",
-                    boxShadow: "0 2px 8px #b7d7bb44",
-                    border: "2px solid #aad5bb",
-                    letterSpacing: "0.02em",
-                    fontFamily: "inherit",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  ぜんぶ見る
-                </button>
-              </div>
-            </>
-          )}
         </div>
-      </Card>
-    </Layout>
+        {/* ここから表示を条件分岐 */}
+        {loading ? (
+          <div>読み込み中...</div>
+        ) : !user ? (
+          <div>ユーザー情報が見つかりません</div>
+        ) : sortedData.length === 0 ? (
+          <div>まだ記録がありません</div>
+        ) : (
+          <>
+            {/* 記録一覧 */}
+            <div>
+              {recent5.map((entry) => {
+                const date = parseDate(entry.presentation_created_at);
+                const month = date.getMonth() + 1;
+                const day = date.getDate();
+                const hour = date.getHours();
+                const min = date.getMinutes().toString().padStart(2, "0");
+                return (
+                  <div
+                    key={entry.presentation_id}
+                    onClick={() =>
+                      navigate(`/evaluation/${entry.presentation_id}`)
+                    }
+                  >
+                    {month}月{day}日 {hour}時{min}分 のきろく
+                  </div>
+                );
+              })}
+            </div>
+            {/* 全部見るボタンの配置 */}
+            <div>
+              <button
+                onClick={() => alert("全記録画面へ（本番はnavigateでOK）")}
+              >
+                ぜんぶ見る
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </Card>
+  </Layout>
   );
 };
 
