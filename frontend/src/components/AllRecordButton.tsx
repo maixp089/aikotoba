@@ -1,9 +1,15 @@
 import { useNavigate } from "react-router-dom";
-const ToRanking = () => {
+
+type SeeAllRecordsProps = {
+  userId: string;
+};
+
+const SeeAllRecordsButton = ({ userId }: SeeAllRecordsProps) => {
   const navigate = useNavigate();
   const onClick = () => {
-    navigate("/ranking");
+    navigate(`/all-records/${userId}`); // ここは遷移先パスに合わせて変えてね！
   };
+
   return (
     <div>
       <button
@@ -25,10 +31,10 @@ const ToRanking = () => {
           boxSizing: "border-box",
         }}
       >
-        ランキング
+        ぜんぶ見る
       </button>
     </div>
   );
 };
 
-export default ToRanking;
+export default SeeAllRecordsButton;

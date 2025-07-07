@@ -1,24 +1,35 @@
-# app/api/audio.py
-
-from fastapi import APIRouter, UploadFile, File, HTTPException, Depends
+# # app/api/audio.py
+from fastapi import APIRouter, UploadFile, File, HTTPException, Depends, Form
 from sqlalchemy.orm import Session
 from ..whisper.transcription import transcribe_audio
 from app.llm.client import call_gpt4o_mini
-from app.db.database import get_db
-from app.db import crud, schemas
+from app.db import models, schemas, database
+import uuid
+import datetime
 
 router = APIRouter()
+
+# DBセッション依存
+def get_db():
+    db = database.SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 @router.post("/audio-feedback")
 async def audio_feedback(
     file: UploadFile = File(...),
-    db: Session = Depends(get_db),  # ← DBセッションを取得するための依存注入。DB操作に必須。
+    user_id: str = Form(...),  # Formでuser_idを受け取る
+    db: Session = Depends(get_db)
 ):
-    # ファイル形式のチェック。対応していない拡張子なら400エラーを返す
     if not file.filename.endswith((".wav", ".mp3", ".m4a", ".webm")):
         raise HTTPException(status_code=400, detail="Unsupported file type")
 
-    # 音声ファイルの文字起こしを非同期で実行
+    if user_id is None:
+        raise HTTPException(status_code=400, detail="user_idが必要です")
+
+    # 1) 文字起こし実行
     transcript = await transcribe_audio(file)
 
     # LLMで文字起こしテキストに対してフィードバックを取得
@@ -29,29 +40,89 @@ async def audio_feedback(
         print("== LLM呼び出しで例外 ==", e)
         raise HTTPException(status_code=500, detail="LLMの呼び出しに失敗しました")
 
-    # DBに保存するためのPydanticスキーマを作成
-    feedback_in = schemas.FeedbackCreate(
-        transcript=transcript,
-        word_score=feedback_result.get("word_score"),
-        flow_score=feedback_result.get("flow_score"),
-        expression_score=feedback_result.get("expression_score"),
-        hook_score=feedback_result.get("hook_score"),
-        confidence_score=feedback_result.get("confidence_score"),
-        total_score=feedback_result.get("total_score"),
-        well_done=feedback_result.get("well_done"),
-        next_challenge=feedback_result.get("next_challenge"),
-        # user_idやpresentation_idなど必要なフィールドもあればここでセット
-    )
+    # 3) DB保存処理
+    try:
+        # Presentationレコード作成
+        presentation = models.Presentation(
+            user_id=uuid.UUID(user_id),
+            transcript=transcript,
+            audio_url=None,  # 今はファイル保存処理なしのためNone
+            created_at=datetime.datetime.utcnow(),
+        )
+        db.add(presentation)
+        db.commit()
+        db.refresh(presentation)
 
-    # crud.pyのcreate_feedback関数を呼び、DBにデータを保存
-    feedback_db = crud.create_feedback(db, feedback_in)
+        # Feedbackレコード作成
+        feedback = models.Feedback(
+            user_id=uuid.UUID(user_id),
+            presentation_id=presentation.id,
+            total_score=feedback_result["total_score"],
+            well_done=feedback_result["well_done"],
+            next_challenge=feedback_result["next_challenge"],
+            created_at=datetime.datetime.utcnow(),
+        )
+        db.add(feedback)
+        db.commit()
 
-    # 保存したDBレコードをレスポンスとして返す
-    return feedback_db
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"DB保存失敗: {str(e)}")
+
+    # 4) フラットなレスポンスで返す
+    return {
+        "transcript": transcript,
+        "word_score": feedback_result["word_score"],
+        "flow_score": feedback_result["flow_score"],
+        "expression_score": feedback_result["expression_score"],
+        "hook_score": feedback_result["hook_score"],
+        "confidence_score": feedback_result["confidence_score"],
+        "total_score": feedback_result["total_score"],
+        "well_done": feedback_result["well_done"],
+        "next_challenge": feedback_result["next_challenge"],
+    }
 
 
-# # #　============以下developの内容============
-# # # app/api/audio.py
+# # app/api/audio.py(FEでの動作確認時に使用していたコード)
+# from fastapi import APIRouter, UploadFile, File, HTTPException
+# from ..whisper.transcription import transcribe_audio
+# from app.llm.client import call_gpt4o_mini
+
+# router = APIRouter()
+
+# @router.post("/audio-feedback")
+# async def audio_feedback(file: UploadFile = File(...)):
+#     if not file.filename.endswith((".wav", ".mp3", ".m4a", ".webm")):
+#         raise HTTPException(status_code=400, detail="Unsupported file type")
+
+#     # 1) 文字起こし実行
+#     transcript = await transcribe_audio(file)
+
+#     # 2) LLMにフィードバック依頼 (例外キャッチで原因確認)
+#     try:
+#         feedback_result = call_gpt4o_mini(transcript)
+#         print("== LLMの戻り値 ==", feedback_result)
+#     except Exception as e:
+#         print("== LLM呼び出しで例外 ==", e)
+#         raise HTTPException(status_code=500, detail="LLMの呼び出しに失敗しました")
+
+#     # 3) フラットなレスポンスで返す
+#     return {
+#         "transcript": transcript,
+#         "word_score": feedback_result["word_score"],
+#         "flow_score": feedback_result["flow_score"],
+#         "expression_score": feedback_result["expression_score"],
+#         "hook_score": feedback_result["hook_score"],
+#         "confidence_score": feedback_result["confidence_score"],
+#         "total_score": feedback_result["total_score"],
+#         "well_done": feedback_result["well_done"],
+#         "next_challenge": feedback_result["next_challenge"]
+#     }
+
+
+
+# # app/api/audio.py
+
 # from fastapi import APIRouter, UploadFile, File, HTTPException
 # from ..whisper.transcription import transcribe_audio
 # from app.llm.client import call_gpt4o_mini

@@ -1,10 +1,13 @@
 import { useNavigate } from "react-router-dom";
-const BackToMyPage = () => {
+type BackToMyPageProps = {
+  userId: string;  // ユーザーIDがstring型なら
+};
+const BackToMyPage = ({ userId }: BackToMyPageProps) => {
   const navigate = useNavigate();
-
   const onClick = () => {
-    navigate("/mypage");
-  };
+    navigate(`/users/${userId}/mypage`);
+   };
+  
   return (
     <div>
       <button

@@ -1,9 +1,9 @@
 echo "---- よく使うコマンド メニュー ----"
-echo "1)  docker compose up -d              # Dockerをバックグラウンド起動"
-echo "2)  docker compose down               # Dockerを停止＆片付け"
-echo "3)  git status                        # 変更内容を確認"
-echo "4)  git pull                          # 今いるブランチの最新を取得＆マージ"
-echo "5)  git push                          # 変更をリモートに送信"
+echo "1)  docker compose up -d              # Dockerをバックグラウンド起動（コンテナ起動）"
+echo "2)  docker compose down               # Dockerを停止＆片付け（コンテナ削除）"
+echo "3)  docker compose restart            # Dockerを再起動（すべてのコンテナを再起動）"
+echo "4)  docker compose logs -f backend    # backendのログをリアルタイムで見る"
+echo "5)  git status                        # Gitの現在の状態を確認"
 echo "6)  git commit -m 'コメント'           # 変更を記録（コミット）"
 echo "------- branch(ブランチ)関連 -------"
 echo "7)  git branch                        # ブランチ一覧を表示"
@@ -28,10 +28,10 @@ case "$num" in
     docker compose down
     ;;
   3)
-    git status
+    docker compose restart
     ;;
   4)
-    git pull
+    docker compose logs -f backend
     ;;
   5)
     git push

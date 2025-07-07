@@ -37,6 +37,7 @@ GET /users/search?firebase_uid=test_uid_999
 
 ### レスポンス例（登録あり）
 
+```sh
 {
   "id": "b121d128-2ae7-455e-8efb-7ef9c7e9d3c8",
   "firebase_uid": "test_uid_999",
@@ -44,10 +45,10 @@ GET /users/search?firebase_uid=test_uid_999
   "icon_image": "sample_icon.png",
   "created_at": "2025-07-04T06:52:09.000Z"
 }
-
+```
 ### レスポンス例（登録なし）
 
-null
+```null```
 
 ---
 
@@ -62,14 +63,14 @@ null
 | 認証             | なし                                   |
 
 ### リクエスト例
-
+```sh
 {
   "firebase_uid": "test_uid_999",
   "name": "山田太郎",
   "age": 10,
   "icon_image": "sample_icon.png"
 }
-
+```
 ### リクエストボディ仕様
 
 | フィールド     | 型      | 必須 | 説明                   |
@@ -80,7 +81,7 @@ null
 | icon_image     | string  | △    | プロフィール画像URL    |
 
 ### レスポンス例（成功時）
-
+```sh
 {
   "id": "b121d128-2ae7-455e-8efb-7ef9c7e9d3c8",
   "firebase_uid": "test_uid_999",
@@ -89,13 +90,13 @@ null
   "icon_image": "sample_icon.png",
   "created_at": "2025-07-04T06:52:09.000Z"
 }
-
+```
 ### レスポンス例（重複エラー）
-
+```
 {
   "detail": "このfirebase_uidは既に登録されています"
 }
-
+```
 ---
 
 ## 3. ユーザー情報取得
@@ -108,11 +109,12 @@ null
 | 概要           | 指定IDのユーザー情報取得               |
 
 ### リクエスト例
-
+```
 GET /users/b121d128-2ae7-455e-8efb-7ef9c7e9d3c8
+```
 
 ### レスポンス例（成功時）
-
+```
 {
   "id": "b121d128-2ae7-455e-8efb-7ef9c7e9d3c8",
   "firebase_uid": "test_uid_999",
@@ -121,13 +123,13 @@ GET /users/b121d128-2ae7-455e-8efb-7ef9c7e9d3c8
   "icon_image": "sample_icon.png",
   "created_at": "2025-07-04T06:52:09.000Z"
 }
-
+```
 ### レスポンス例（該当なし）
-
+```
 {
   "detail": "ユーザーが見つかりません"
 }
-
+```
 ---
 
 ## 4. 音声評価（AIスコア取得）
@@ -146,7 +148,7 @@ GET /users/b121d128-2ae7-455e-8efb-7ef9c7e9d3c8
 - 拡張子例：.webm, .mp3, .wav, .m4a
 
 #### JavaScript送信例
-
+```
 const blob = new Blob(audioChunks, { type: 'audio/webm' });
 const formData = new FormData();
 formData.append('file', blob, 'recording.webm');
@@ -158,9 +160,9 @@ fetch('http://localhost:8000/audio-feedback', {
   .then(data => {
     // スコアやコメントをdataから取得
   });
-
+```
 ### レスポンス例
-
+```
 {
   "transcript":"こんにちは。みんなも一緒にサッカーしませんか",
   "word_score": 82,
@@ -172,7 +174,7 @@ fetch('http://localhost:8000/audio-feedback', {
   "well_done": "堂々とした発表でした！",
   "next_challenge": "もう少し具体例を入れてみましょう。"
 }
-
+```
 ---
 
 ## 5. フィードバック取得
@@ -185,11 +187,11 @@ fetch('http://localhost:8000/audio-feedback', {
 | 内容           | 最新フィードバックの取得           |
 
 ### リクエスト例
-
+```sh
 GET /audio-feedback?user_id=123
-
+```
 ### レスポンス例
-
+```
 {
   "id": "b123a1c2-d456-789e-0f12-34567abcdef1",
   "user_id": 123,
@@ -204,7 +206,7 @@ GET /audio-feedback?user_id=123
   "next_challenge": "もう少し具体例を入れてみましょう。",
   "created_at": "2025-07-04T12:34:56"
 }
-
+```
 ---
 
 ## 6. スコア一覧取得
@@ -217,7 +219,7 @@ GET /audio-feedback?user_id=123
 | 概要           | 指定ユーザーのスコア履歴一覧を取得       |
 
 ### レスポンス例
-
+```sh
 [
   {
     "presentation_id": "c2b...9e2",
@@ -234,7 +236,7 @@ GET /audio-feedback?user_id=123
     "next_challenge": "話の順番を意識しよう。"
   }
 ]
-
+```
 ---
 
 ## 7. ランキング取得
@@ -247,12 +249,12 @@ GET /audio-feedback?user_id=123
 | 概要           | 今週のユーザーランキングを取得             |
 
 ### リクエスト例
-
+```sh
 GET /ranking
 GET /ranking?week=2025-07-01
-
+```
 ### レスポンス例
-
+```sh
 [
   {
     "rank": 1,
@@ -276,7 +278,7 @@ GET /ranking?week=2025-07-01
     "score": 85
   }
 ]
-
+```
 ### フィールド説明
 
 | フィールド    | 型    | 説明                         |

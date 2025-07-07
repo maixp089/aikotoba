@@ -1,8 +1,13 @@
 import { useNavigate } from "react-router-dom";
-const ToRecord = () => {
+
+type ToRecordProps = {
+  userId: string;
+};
+
+const ToRecord = ({ userId }: ToRecordProps) => {
   const navigate = useNavigate();
   const onClick = () => {
-    navigate("/record");
+    navigate(`/users/${userId}/record`);
   };
   return (
     <div>
@@ -25,7 +30,7 @@ const ToRecord = () => {
           boxSizing: "border-box",
         }}
       >
-        記録一覧
+        きろくへ
       </button>
     </div>
   );
