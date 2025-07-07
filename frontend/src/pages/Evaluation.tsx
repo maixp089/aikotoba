@@ -5,23 +5,15 @@ import {
   Card,
 } from "../components";
 import { useParams, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 const Evaluation = () => {
   const { userId } = useParams();
+  console.log("userId:", userId)
   const location = useLocation();
   const feedback = location.state?.feedback;
 
-  const [user, setUser] = useState(null);
-
-  // ユーザー情報をfetch
-  useEffect(() => {
-    if (!userId) return;
-    fetch(`http://localhost:8000/api/users/${userId}`)
-      .then((res) => res.json())
-      .then((data) => setUser(data))
-      .catch(() => setUser(null));
-  }, [userId]);
+  // ログでuserIdの値が確認できる（デバッグ用、不要なら消してOK）
+  console.log("userId:", userId);
 
   if (!feedback) {
     return (
@@ -111,7 +103,7 @@ const Evaluation = () => {
         </div>
         <div className="flex justify-center gap-15">
           {/* 振り返りボタン */}
-          <ToRecord />
+          <ToRecord userId={userId!} />
           {/* ホームへボタン */}
           <BackToMyPage userId={userId!} />
         </div>
@@ -121,6 +113,7 @@ const Evaluation = () => {
 };
 
 export default Evaluation;
+
 
 
 // // // // 修正前のコード（developの内容保存）

@@ -102,7 +102,7 @@ const Presentation = () => {
       console.log("APIレスポンス", data);
 
       // フィードバックをstateで渡して評価ページへ遷移
-      navigate("/users/:userId/evaluation", { state: { feedback: data } });
+      navigate(`/users/${userId}/evaluation`, { state: { feedback: data } });
     } catch (error) {
       alert("音声送信に失敗しました");
       console.error(error);

@@ -7,7 +7,7 @@ type ToRecordProps = {
 const ToRecord = ({ userId }: ToRecordProps) => {
   const navigate = useNavigate();
   const onClick = () => {
-    navigate(`/record/${userId}`);
+    navigate(`/users/${userId}/record`);
   };
   return (
     <div>
@@ -30,7 +30,7 @@ const ToRecord = ({ userId }: ToRecordProps) => {
           boxSizing: "border-box",
         }}
       >
-        き
+        きろくへ
       </button>
     </div>
   );

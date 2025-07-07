@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 type BackToMyPageProps = {
   userId: string;  // ユーザーIDがstring型なら
-  // userId: number; // 数値型の場合はこっち
 };
 const BackToMyPage = ({ userId }: BackToMyPageProps) => {
   const navigate = useNavigate();
