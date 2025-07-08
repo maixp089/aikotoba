@@ -91,7 +91,7 @@ const Record = () => {
     <IconButton
       onClick={() => navigate(`/users/${userId}/mypage`)}
       label=""
-      iconSrc="/icons/back.png"
+      iconSrc="/icons/home.png"
     />
     <IconButton
       onClick={() => alert("このページはまだ準備中です！")}
