@@ -5,14 +5,17 @@ import "../App.css";
 import robotYellow from "../assets/images/robot_yellow.png";
 import Rec from "../components/Rec";
 import IconButton from "../components/IconButton";
-import BackgroundWrapper from "../components/Background"; // 追加！
+import BackgroundWrapper from "../components/Background";
+import { useLocation } from "react-router-dom"; // 時間とテーマを取得するため
 
 const images = [robotYellow];
 const durations = [3000, 370];
 const RECORDING_TIME_SEC = 10;
 
 const Presentation = () => {
+  const navigate = useNavigate();
   const { userId } = useParams<{ userId: string }>();
+
   const [index, setIndex] = useState(0);
   const [audioState, setAudioState] = useState<"ready" | "recording" | "done">(
     "ready"
@@ -25,7 +28,8 @@ const Presentation = () => {
   const stopTimerRef = useRef<NodeJS.Timeout | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const navigate = useNavigate();
+  const location = useLocation();
+  const { theme } = location.state || {}; // ← ここで前ページの時間とテーマを取得！time,
 
   useEffect(() => {
     const timerId = setTimeout(() => {
@@ -142,6 +146,7 @@ const Presentation = () => {
       style={{
         display: "flex",
         alignItems: "center", // ←中央揃え
+        whiteSpace: "nowrap",
         justifyContent: "flex-start",
         width: "100%",
         padding: "0 18px",
@@ -164,8 +169,10 @@ const Presentation = () => {
           marginBottom: 0,
         }}
       />
-      {/* テーマ名を右に出したい場合はここにテキスト */}
-      <span style={{ marginLeft: 12, color: "#fff", fontSize: 20 }}>すきなスポーツ</span>
+      {/* ここを動的に！ */}
+      <span style={{ marginLeft: 12, color: "#fff", fontSize: 20 }}>
+        {theme}
+      </span>
     </div>
   );
   const footerBar = (
@@ -198,26 +205,26 @@ const Presentation = () => {
   );
 
   return (
-  <BackgroundWrapper>
-    <Layout>
-      <Card title={headerTitle} bottomBar={footerBar}>
-        <div className="space-y-4">
-          {/* ちょっと待ってね メッセージ（ロボットの上） */}
-          {isLoading && (
-            <p
-              className="text-center"
-              style={{
-                color: "#f2687b",
-                fontSize: "1.3rem",
-                fontWeight: "bold",
-                fontFamily: "'Kosugi Maru', 'M PLUS Rounded 1c', sans-serif",
-                marginTop: "8px", // ← ここを "-8px" から "8px" に変更
-                marginBottom: "-12px",
-              }}
-            >
-              ちょっと待ってね
-            </p>
-          )}
+    <BackgroundWrapper>
+      <Layout>
+        <Card title={headerTitle} bottomBar={footerBar}>
+          <div className="space-y-4">
+            {/* ちょっと待ってね メッセージ（ロボットの上） */}
+            {isLoading && (
+              <p
+                className="text-center"
+                style={{
+                  color: "#f2687b",
+                  fontSize: "1.3rem",
+                  fontWeight: "bold",
+                  fontFamily: "'Kosugi Maru', 'M PLUS Rounded 1c', sans-serif",
+                  marginTop: "8px", // ← ここを "-8px" から "8px" に変更
+                  marginBottom: "-12px",
+                }}
+              >
+                ちょっと待ってね
+              </p>
+            )}
 
             {/* マイク＆ロボット */}
             <div
@@ -276,50 +283,50 @@ const Presentation = () => {
               </p>
             )}
 
-          {/* 練習ボタン */}
-          <div className="flex flex-col items-center space-y-2 mt-5">
-            <button
-              onClick={audioState === "recording" ? handleStop : handleStart}
-              disabled={isLoading}
-              style={{
-                width: "210px",
-                background: "#f2687b",
-                color: "#fff",
-                borderRadius: "34px",
-                fontSize: "1.1rem",
-                fontWeight: "bold",
-                boxShadow: "0 5px #c35665",
-                letterSpacing: "1.4px",
-                fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', sans-serif",
-                border: "none",
-                textAlign: "center",
-                outline: "none",
-                padding: "13px 0",
-                margin: 0,
-                cursor: "pointer",
-                transition: "background 0.1s",
-                display: "block",
-              }}
-            >
-              {audioState === "recording" ? (
-                <span>
-                  <ruby></ruby>
-                  <span style={{ marginLeft: 9 }}>とめる</span>
-                </span>
-              ) : (
-                <span>
-                  <ruby>
-                    練習<rt style={{ fontSize: "0.5em" }}>れんしゅう</rt>
-                  </ruby>
-                  <span style={{ marginLeft: 9 }}>する</span>
-                </span>
-              )}
-            </button>
+            {/* 練習ボタン */}
+            <div className="flex flex-col items-center space-y-2 mt-5">
+              <button
+                onClick={audioState === "recording" ? handleStop : handleStart}
+                disabled={isLoading}
+                style={{
+                  width: "210px",
+                  background: "#f2687b",
+                  color: "#fff",
+                  borderRadius: "34px",
+                  fontSize: "1.1rem",
+                  fontWeight: "bold",
+                  boxShadow: "0 5px #c35665",
+                  letterSpacing: "1.4px",
+                  fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', sans-serif",
+                  border: "none",
+                  textAlign: "center",
+                  outline: "none",
+                  padding: "13px 0",
+                  margin: 0,
+                  cursor: "pointer",
+                  transition: "background 0.1s",
+                  display: "block",
+                }}
+              >
+                {audioState === "recording" ? (
+                  <span>
+                    <ruby></ruby>
+                    <span style={{ marginLeft: 9 }}>とめる</span>
+                  </span>
+                ) : (
+                  <span>
+                    <ruby>
+                      練習<rt style={{ fontSize: "0.5em" }}>れんしゅう</rt>
+                    </ruby>
+                    <span style={{ marginLeft: 9 }}>する</span>
+                  </span>
+                )}
+              </button>
+            </div>
           </div>
-        </div>
-      </Card>
-    </Layout>
-  </BackgroundWrapper>
+        </Card>
+      </Layout>
+    </BackgroundWrapper>
   );
 };
 
