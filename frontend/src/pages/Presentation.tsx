@@ -14,7 +14,9 @@ const RECORDING_TIME_SEC = 10;
 const Presentation = () => {
   const { userId } = useParams<{ userId: string }>();
   const [index, setIndex] = useState(0);
-  const [audioState, setAudioState] = useState<"ready" | "recording" | "done">("ready");
+  const [audioState, setAudioState] = useState<"ready" | "recording" | "done">(
+    "ready"
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [timer, setTimer] = useState<number>(RECORDING_TIME_SEC);
 
@@ -135,50 +137,87 @@ const Presentation = () => {
     }
   };
 
+  const headerTitle = (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center", // ←中央揃え
+        justifyContent: "flex-start",
+        width: "100%",
+        padding: "0 18px",
+        background: "#4bb3a7",
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
+        height: 60, // ←画像サイズに合わせて高さを抑える
+        minHeight: undefined, // ←minHeight消す
+      }}
+    >
+      <img
+        src="/icons/theme.png"
+        alt="テーマ"
+        style={{
+          width: 60, // ヘッダー内だとちょっと小さめ推奨
+          height: 60,
+          pointerEvents: "none",
+          userSelect: "none",
+          marginTop: 0,
+          marginBottom: 0,
+        }}
+      />
+      {/* テーマ名を右に出したい場合はここにテキスト */}
+      <span style={{ marginLeft: 12, color: "#fff", fontSize: 20 }}>すきなスポーツ</span>
+    </div>
+  );
   const footerBar = (
     <div
       style={{
         display: "flex",
-        justifyContent: "flex-start",
         alignItems: "center",
-        padding: "20px 0 0 20px",
+        justifyContent: "space-around",
         width: "100%",
-        boxSizing: "border-box",
+        padding: "0 18px",
+        background: "#4bb3a7",
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
+        minHeight: 80,
       }}
     >
       <IconButton
         onClick={() => navigate(-1)}
         iconSrc="/icons/back.png"
         alt="もどる"
+        size={55}
+      />
+      <IconButton
+        onClick={() => navigate(-1)}
+        iconSrc="/icons/home.png"
+        alt="ホーム"
         size={66}
       />
     </div>
   );
 
   return (
-    <BackgroundWrapper>
-      <Layout>
-        <Card
-          title={<span style={{ visibility: "hidden" }}>はっぴょうれんしゅう</span>}
-          bottomBar={footerBar}
-        >
-          <div className="space-y-4">
-            {/* ちょっと待ってね メッセージ（ロボットの上） */}
-            {isLoading && (
-              <p
-                className="text-center"
-                style={{
-                  color: "#f2687b",
-                  fontSize: "1.3rem",
-                  fontWeight: "bold",
-                  fontFamily: "'Kosugi Maru', 'M PLUS Rounded 1c', sans-serif",
-                  marginTop: "8px",
-                  marginBottom: "-12px",
-                }}
-              >
-                ちょっと待ってね
-              </p>
-            )}
+  <BackgroundWrapper>
+    <Layout>
+      <Card title={headerTitle} bottomBar={footerBar}>
+        <div className="space-y-4">
+          {/* ちょっと待ってね メッセージ（ロボットの上） */}
+          {isLoading && (
+            <p
+              className="text-center"
+              style={{
+                color: "#f2687b",
+                fontSize: "1.3rem",
+                fontWeight: "bold",
+                fontFamily: "'Kosugi Maru', 'M PLUS Rounded 1c', sans-serif",
+                marginTop: "8px", // ← ここを "-8px" から "8px" に変更
+                marginBottom: "-12px",
+              }}
+            >
+              ちょっと待ってね
+            </p>
+          )}
 
             {/* マイク＆ロボット */}
             <div
@@ -237,49 +276,50 @@ const Presentation = () => {
               </p>
             )}
 
-            {/* 練習ボタン */}
-            <div className="flex flex-col items-center space-y-2 mt-5">
-              <button
-                onClick={audioState === "recording" ? handleStop : handleStart}
-                disabled={isLoading}
-                style={{
-                  width: "210px",
-                  background: "#f2687b",
-                  color: "#fff",
-                  borderRadius: "34px",
-                  fontSize: "1.1rem",
-                  fontWeight: "bold",
-                  boxShadow: "0 5px #c35665",
-                  letterSpacing: "1.4px",
-                  fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', sans-serif",
-                  border: "none",
-                  textAlign: "center",
-                  outline: "none",
-                  padding: "13px 0",
-                  margin: 0,
-                  cursor: "pointer",
-                  transition: "background 0.1s",
-                  display: "block",
-                }}
-              >
-                {audioState === "recording" ? (
-                  <span>
-                    <span style={{ marginLeft: 9 }}>とめる</span>
-                  </span>
-                ) : (
-                  <span>
-                    <ruby>
-                      練習<rt style={{ fontSize: "0.5em" }}>れんしゅう</rt>
-                    </ruby>
-                    <span style={{ marginLeft: 9 }}>する</span>
-                  </span>
-                )}
-              </button>
-            </div>
+          {/* 練習ボタン */}
+          <div className="flex flex-col items-center space-y-2 mt-5">
+            <button
+              onClick={audioState === "recording" ? handleStop : handleStart}
+              disabled={isLoading}
+              style={{
+                width: "210px",
+                background: "#f2687b",
+                color: "#fff",
+                borderRadius: "34px",
+                fontSize: "1.1rem",
+                fontWeight: "bold",
+                boxShadow: "0 5px #c35665",
+                letterSpacing: "1.4px",
+                fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', sans-serif",
+                border: "none",
+                textAlign: "center",
+                outline: "none",
+                padding: "13px 0",
+                margin: 0,
+                cursor: "pointer",
+                transition: "background 0.1s",
+                display: "block",
+              }}
+            >
+              {audioState === "recording" ? (
+                <span>
+                  <ruby></ruby>
+                  <span style={{ marginLeft: 9 }}>とめる</span>
+                </span>
+              ) : (
+                <span>
+                  <ruby>
+                    練習<rt style={{ fontSize: "0.5em" }}>れんしゅう</rt>
+                  </ruby>
+                  <span style={{ marginLeft: 9 }}>する</span>
+                </span>
+              )}
+            </button>
           </div>
-        </Card>
-      </Layout>
-    </BackgroundWrapper>
+        </div>
+      </Card>
+    </Layout>
+  </BackgroundWrapper>
   );
 };
 
