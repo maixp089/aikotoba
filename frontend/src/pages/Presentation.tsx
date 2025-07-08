@@ -1,27 +1,26 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { BackToMyPage, Layout, Card } from "../components";
+import {  Layout, Card } from "../components";
 import "../App.css";
-import robo1 from "../assets/images/robo1.jpg";
-import robo2 from "../assets/images/robo2.jpg";
-import Rec from "../components/Rec"; // ★修正ポイント：Recコンポーネントをimport追加
+import robotYellow from "../assets/images/robot_yellow.png";
+import Rec from "../components/Rec";
+import IconButton from "../components/IconButton";
 
-const images = [robo1, robo2];
+const images = [robotYellow];
 const durations = [3000, 370];
-
-const RECORDING_TIME_SEC = 10; // 録音時間10秒
+const RECORDING_TIME_SEC = 10;
 
 const Presentation = () => {
   const { userId } = useParams<{ userId: string }>();
   const [index, setIndex] = useState(0);
   const [audioState, setAudioState] = useState<"ready" | "recording" | "done">("ready");
   const [isLoading, setIsLoading] = useState(false);
-  const [timer, setTimer] = useState<number>(RECORDING_TIME_SEC); // ★修正ポイント：タイマー状態を追加
+  const [timer, setTimer] = useState<number>(RECORDING_TIME_SEC);
 
   const audioRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const stopTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null); // ★修正ポイント：カウントダウン用intervalを追加
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const navigate = useNavigate();
 
@@ -53,27 +52,23 @@ const Presentation = () => {
       }
     };
 
-    // ★修正ポイント：録音開始時にタイマー初期化と1秒ごとのカウントダウン開始を追加
     mediaRecorder.onstart = () => {
       setAudioState("recording");
-      setTimer(RECORDING_TIME_SEC); // タイマー初期化
+      setTimer(RECORDING_TIME_SEC);
       intervalRef.current = setInterval(() => {
         setTimer((prev) => {
           if (prev <= 1) {
             if (audioRef.current && audioRef.current.state === "recording") {
               audioRef.current.stop();
             }
-            if (intervalRef.current) {
-              clearInterval(intervalRef.current);
-              intervalRef.current = null;
-            }
+            clearInterval(intervalRef.current!);
+            intervalRef.current = null;
             return 0;
           }
           return prev - 1;
         });
       }, 1000);
 
-      // 以前の自動停止タイマーも維持
       stopTimerRef.current = setTimeout(() => {
         if (audioRef.current && audioRef.current.state === "recording") {
           audioRef.current.stop();
@@ -81,17 +76,13 @@ const Presentation = () => {
       }, RECORDING_TIME_SEC * 1000);
     };
 
-    // ★修正ポイント：録音停止時にintervalとタイマークリアを追加
     mediaRecorder.onstop = async () => {
       setAudioState("done");
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-      if (stopTimerRef.current) {
-        clearTimeout(stopTimerRef.current);
-        stopTimerRef.current = null;
-      }
+      clearInterval(intervalRef.current!);
+      intervalRef.current = null;
+      clearTimeout(stopTimerRef.current!);
+      stopTimerRef.current = null;
+
       const blob = new Blob(chunksRef.current, { type: "audio/webm" });
       await sendAudioToAPI(blob);
     };
@@ -103,18 +94,13 @@ const Presentation = () => {
     }
   };
 
-  // ★修正ポイント：録音停止時にintervalもクリアする処理を追加
   const handleStop = () => {
     if (audioRef.current && audioState === "recording") {
       audioRef.current.stop();
-      if (stopTimerRef.current) {
-        clearTimeout(stopTimerRef.current);
-        stopTimerRef.current = null;
-      }
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
+      clearTimeout(stopTimerRef.current!);
+      clearInterval(intervalRef.current!);
+      stopTimerRef.current = null;
+      intervalRef.current = null;
     }
   };
 
@@ -147,58 +133,152 @@ const Presentation = () => {
       setIsLoading(false);
     }
   };
- // ここでheaderTitle/footerBarを定義する！
+
+
   const footerBar = (
-    <BackToMyPage userId={userId!} />
-  );
+  <div style={{
+    display: "flex",
+    justifyContent: "flex-start",   // ← 左寄せ
+    alignItems: "center",
+    padding: "20px 0 0 20px",      // ← 左パディングを追加
+    width: "100%",
+    boxSizing: "border-box",
+  }}>
+    <IconButton
+      onClick={() => navigate(-1)}
+      iconSrc="/icons/back.png"
+      alt="もどる"
+      size={66}
+    />
+  </div>
+);
+
+
 
   return (
     <Layout>
-      <Card title="はっぴょうれんしゅう" bottomBar={footerBar}>
+      <Card
+        title={<span style={{ visibility: "hidden" }}>はっぴょうれんしゅう</span>}
+        bottomBar={footerBar}
+      >
         <div className="space-y-4">
-          <div className="flex justify-between w-full max-w-md">
-            <BackToMyPage userId={userId!} />
-          </div>
-          <h1 className="text-green-500 text-3xl text-center">ろぼにはなしてね🎙️</h1>
-
-          <div className="relative w-full max-w-3xl mx-auto h-96 overflow-hidden rounded-xl shadow-lg">
-            {images.map((src, i) => (
-              <img
-                key={i}
-                src={src}
-                className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ${
-                  i === index ? "opacity-100" : "opacity-0"
-                }`}
-                alt={`slide-${i}`}
-              />
-            ))}
-          </div>
-
-          {/* ★修正ポイント：録音中のタイマー表示とRecコンポーネント表示に変更 */}
-          {audioState === "recording" && (
-            <>
-              <p className="text-center text-xl text-red-600 font-bold mt-2">
-                残り時間: {timer}秒
-              </p>
-              <Rec />
-            </>
+          {/* ちょっと待ってね メッセージ（ロボットの上） */}
+          {isLoading && (
+            <p
+              className="text-center"
+              style={{
+                color: "#f2687b",
+                fontSize: "1.3rem",
+                fontWeight: "bold",
+                fontFamily: "'Kosugi Maru', 'M PLUS Rounded 1c', sans-serif",
+                marginTop: "8px",         // ← ここを "-8px" から "8px" に変更
+                marginBottom: "-12px",
+              }}
+            >
+              ちょっと待ってね
+            </p>
           )}
 
+          {/* マイク＆ロボット */}
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "flex-end",
+              justifyContent: "center",
+              height: 210,
+              minHeight: 120,
+              marginBottom: 12,
+              marginTop: -30,
+              gap: 0,
+            }}
+          >
+            {/* マイク */}
+            <div
+              style={{
+                marginRight: "-50px",
+                marginBottom: "1px",
+                fontSize: "300px",
+                lineHeight: 1,
+              }}
+            >
+              <Rec />
+            </div>
+
+            {/* ロボット */}
+            <img
+              src={images[index]}
+              alt="robot"
+              style={{
+                width: "150px",
+                height: "150px",
+                objectFit: "contain",
+                borderRadius: "32px",
+                boxShadow: "0 2px 12px #cce7d277",
+                background: "none",
+                marginLeft: "70px",
+              }}
+            />
+          </div>
+
+          {/* 残り時間 */}
+          {audioState === "recording" && (
+            <p
+              className="text-center font-bold mt-2"
+              style={{
+                fontSize: "1.3rem",
+                color: "#999999",
+                fontFamily: "'Kosugi Maru', 'M PLUS Rounded 1c', sans-serif",
+                letterSpacing: "1px",
+              }}
+            >
+              あと {timer}秒
+            </p>
+          )}
+
+          {/* 練習ボタン */}
           <div className="flex flex-col items-center space-y-2 mt-5">
             <button
               onClick={audioState === "recording" ? handleStop : handleStart}
               disabled={isLoading}
-              className="text-xl bg-red-500 text-white px-10 py-4 rounded hover:bg-green-600"
+              style={{
+                width: "210px",
+                background: "#f2687b",
+                color: "#fff",
+                borderRadius: "34px",
+                fontSize: "1.1rem",
+                fontWeight: "bold",
+                boxShadow: "0 5px #c35665",
+                letterSpacing: "1.4px",
+                fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', sans-serif",
+                border: "none",
+                textAlign: "center",
+                outline: "none",
+                padding: "13px 0",
+                margin: 0,
+                cursor: "pointer",
+                transition: "background 0.1s",
+                display: "block",
+              }}
             >
-              {audioState === "recording" ? "録音停止" : "れんしゅうをはじめる"}
-            </button>
+              {audioState === "recording" ? (
+                <span>
+                  <ruby>
 
-            {isLoading && (
-              <p className="text-xl text-red-600 mt-2">
-                まるつけするね！<br />
-                ちょっとまっててね...
-              </p>
-            )}
+                  </ruby>
+                  <span style={{ marginLeft: 9 }}>とめる</span>
+                </span>
+              ) : (
+                <span>
+                  <ruby>
+                    練習<rt style={{ fontSize: "0.5em" }}>れんしゅう</rt>
+                  </ruby>
+                  <span style={{ marginLeft: 9 }}>する</span>
+                </span>
+              )}
+            </button>
+            
           </div>
         </div>
       </Card>
@@ -207,166 +287,3 @@ const Presentation = () => {
 };
 
 export default Presentation;
-
-// import { BackToMyPage, Layout, Card } from "../components";
-// import "../App.css";
-// import { useState, useEffect, useRef } from "react";
-// import { useParams, useNavigate } from "react-router-dom";
-// import robo1 from "../assets/images/robo1.jpg";
-// import robo2 from "../assets/images/robo2.jpg";
-
-// const images = [robo1, robo2];
-// const durations = [3000, 370];
-
-// const Presentation = () => {
-//   const { userId } = useParams<{ userId: string }>(); //追加：BackToMyPageを適用するため
-//   const [index, setIndex] = useState(0);
-//   const [audioState, setAudioState] = useState<"ready" | "recording" | "done">("ready");
-//   const [isLoading, setIsLoading] = useState(false);
-
-//   const audioRef = useRef<MediaRecorder | null>(null);
-//   const chunksRef = useRef<Blob[]>([]);
-//   const stopTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-//   const navigate = useNavigate();
-
-//   // スライド画像切り替え処理
-//   useEffect(() => {
-//     const timer = setTimeout(() => {
-//       setIndex((prev) => (prev + 1) % images.length);
-//     }, durations[index]);
-//     return () => clearTimeout(timer);
-//   }, [index]);
-
-//   // マイクアクセス許可とMediaRecorderの設定
-//   useEffect(() => {
-//     navigator.mediaDevices
-//       .getUserMedia({ audio: true })
-//       .then(handleSuccess)
-//       .catch((err) => {
-//         alert("マイクがつかえません。許可してね。");
-//         console.error(err);
-//       });
-//   }, []);
-
-//   const handleSuccess = (stream: MediaStream) => {
-//     const mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
-//     audioRef.current = mediaRecorder;
-//     chunksRef.current = [];
-
-//     mediaRecorder.ondataavailable = (e) => {
-//       if (e.data.size > 0) {
-//         chunksRef.current.push(e.data);
-//       }
-//     };
-
-//     mediaRecorder.onstart = () => {
-//       setAudioState("recording");
-//       stopTimerRef.current = setTimeout(() => {
-//         mediaRecorder.stop();
-//       }, 10 * 1000); // 自動停止10秒
-//     };
-
-//     mediaRecorder.onstop = async () => {
-//       setAudioState("done");
-//       const blob = new Blob(chunksRef.current, { type: "audio/webm" });
-//       await sendAudioToAPI(blob);
-//     };
-//   };
-
-//   const handleStart = () => {
-//     if (audioRef.current && audioState === "ready") {
-//       audioRef.current.start();
-//     }
-//   };
-
-//   const handleStop = () => {
-//     if (audioRef.current && audioState === "recording") {
-//       audioRef.current.stop();
-//       if (stopTimerRef.current) clearTimeout(stopTimerRef.current);
-//     }
-//   };
-
-//   // 録音データをAPIに送信し、レスポンス受信後に評価ページへ遷移
-//   const sendAudioToAPI = async (blob: Blob) => {
-//     // ここにユーザーIDをセット（仮に固定値）
-//     // const userId = "a787f6df-1ebb-41fb-ae56-78c8159378aa";
-//     if (!userId) {
-//     alert("ユーザー情報が取得できませんでした");
-//     return;
-//   }
-
-//     setIsLoading(true);
-//     const formData = new FormData();
-//     formData.append("file", blob, "recording.webm");
-//     formData.append("user_id", userId);
-
-//     try {
-//       const res = await fetch("http://localhost:8000/api/audio-feedback", {
-//         method: "POST",
-//         body: formData,
-//       });
-//       if (!res.ok) throw new Error("送信失敗");
-
-//       const data = await res.json();
-//       console.log("APIレスポンス", data);
-
-//       // フィードバックをstateで渡して評価ページへ遷移
-//       navigate(`/users/${userId}/evaluation`, { state: { feedback: data } });
-//     } catch (error) {
-//       alert("音声送信に失敗しました");
-//       console.error(error);
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-
-//   return (
-//     <Layout>
-//       <Card>
-//         <div className="space-y-4">
-//           <div className="flex justify-between w-full max-w-md">
-//             <BackToMyPage userId={userId!} />{" "}
-//           </div>
-//           <h1 className="text-green-500 text-3xl text-center">ろぼにはなしてね🎙️</h1>
-
-//           {/* スライド */}
-//           <div className="relative w-full max-w-3xl mx-auto h-96 overflow-hidden rounded-xl shadow-lg">
-//             {images.map((src, i) => (
-//               <img
-//                 key={i}
-//                 src={src}
-//                 className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ${
-//                   i === index ? "opacity-100" : "opacity-0"
-//                 }`}
-//                 alt={`slide-${i}`}
-//               />
-//             ))}
-//           </div>
-
-//           {/* 録音ボタン */}
-//           <div className="flex flex-col items-center space-y-2 mt-5">
-//             <button
-//               onClick={audioState === "recording" ? handleStop : handleStart}
-//               disabled={isLoading}
-//               className="text-xl bg-red-500 text-white px-10 py-4 rounded hover:bg-green-600"
-//             >
-//               {audioState === "recording" ? "録音停止" : "れんしゅうをはじめる"}
-//             </button>
-
-//             {isLoading && (
-//               <p className="text-xl text-red-600 mt-2">
-//                 まるつけするね！<br />
-//                 ちょっとまっててね...
-//               </p>
-//             )}
-//           </div>
-//         </div>
-//       </Card>
-//     </Layout>
-//   );
-// };
-
-// export default Presentation;
-
-

@@ -2,7 +2,7 @@ import React from "react";
 
 type Props = {
   children: React.ReactNode;
-  title?: string;
+  title?: React.ReactNode; //エラー解決のため追加★
   bottomBar?: React.ReactNode;
   style?: React.CSSProperties;
 };
@@ -48,7 +48,8 @@ const Card = ({ children, title, bottomBar, style }: Props) => (
           flex: "0 0 auto",
         }}
       >
-        {title ? title : ""}
+         {title ? title : ""}　//titleがあれば表示、なければ空追加★
+
       </div>
     )}
     {/* メイン（中央だけスクロール領域！） */}
