@@ -10,9 +10,13 @@ import { useLocation } from "react-router-dom"; // 時間とテーマを取得�
 
 const images = [robotYellow];
 const durations = [3000, 370];
-const RECORDING_TIME_SEC = 10;
 
 const Presentation = () => {
+  const location = useLocation();
+  const { theme } = location.state || {}; // ← ★ここで前ページの時間とテーマを取得！timeを変更する場合は追加
+
+  const RECORDING_TIME_SEC = 10; //★timeを設定するなら「time ?? 10」これにする
+
   const navigate = useNavigate();
   const { userId } = useParams<{ userId: string }>();
 
@@ -27,9 +31,6 @@ const Presentation = () => {
   const chunksRef = useRef<Blob[]>([]);
   const stopTimerRef = useRef<NodeJS.Timeout | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  const location = useLocation();
-  const { theme } = location.state || {}; // ← ここで前ページの時間とテーマを取得！time,
 
   useEffect(() => {
     const timerId = setTimeout(() => {
