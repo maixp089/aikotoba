@@ -19,6 +19,7 @@ class User(UserBase):
         orm_mode = True
 
 class ScoreRecord(BaseModel):
+    feedback_id: int 
     presentation_id: int
     transcript: str
     audio_url: Optional[str]
