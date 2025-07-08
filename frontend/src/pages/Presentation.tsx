@@ -189,7 +189,7 @@ const Presentation = () => {
         size={55}
       />
       <IconButton
-        onClick={() => navigate(-1)}
+        onClick={() => navigate(`/users/${userId}/mypage`)}
         iconSrc="/icons/home.png"
         alt="ホーム"
         size={66}
