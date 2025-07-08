@@ -1,13 +1,10 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import {
-  Layout,
-  BackToMyPage,
-  ToRecord,
-  Card,
-} from "../components";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Layout, Card } from "../components";
+import BackgroundWrapper from "../components/Background";
+import BackIconButton from "../components/IconButton";  // ← こちらをインポート
 
-// 型定義（APIのレスポンスに合わせる！）
+// API のレスポンスに合わせた型定義
 type Feedback = {
   id: number;
   user_id: string;
@@ -15,23 +12,19 @@ type Feedback = {
   total_score: number;
   well_done: string;
   next_challenge: string;
-  created_at: string; // ISO文字列
+  created_at: string; // ISO 文字列
 };
 
-const EvaluationDetail = () => {
-  // パラメータでfeedback_idを取得（ルーティング例：/evaluation/:feedback_id）
-  const { feedback_id } = useParams<{ feedback_id: string }>();
-  const { userId } = useParams();
-  // データ取得用state
+const EvaluationDetail: React.FC = () => {
+  const { feedback_id, userId } = useParams<{ feedback_id: string; userId: string }>();
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  // データ取得処理
   useEffect(() => {
     if (!feedback_id) return;
     setLoading(true);
-    setError(null);
     fetch(`/api/audio-feedback/${feedback_id}`)
       .then((res) => {
         if (!res.ok) throw new Error("記録が見つかりませんでした");
@@ -64,43 +57,176 @@ const EvaluationDetail = () => {
     );
   }
 
-  // 日時表示をちょっと加工
+  // 日付フォーマット
   const date = new Date(feedback.created_at);
-  const displayDate = `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日 ${
-    date.getHours()
-  }時${date.getMinutes()}分`;
+  const displayDate = `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日 ${date.getHours()}時${date.getMinutes()}分`;
+
+  // フッターバー：もどるボタンのみ
+  const footerBar = (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",  // 中央寄せ
+        padding: "12px 0",
+      }}
+    >
+      <BackIconButton
+        onClick={() => navigate(`/users/${userId}/mypage`)}
+        size={60}
+      />
+    </div>
+  );
 
   return (
-    <Layout>
-      <Card>
-        <div className="flex flex-col items-center space-y-5 py-10">
-          <h1 className="text-2xl font-semibold">{displayDate} の点数は</h1>
-          <div className="flex items-center gap-2">
-            <div className="text-8xl font-bold text-orange-600">
-              {feedback.total_score}
+    <BackgroundWrapper>
+      <Layout>
+        <Card 
+         title={"\u200B"}    // ゼロ幅スペースを渡して“空文字”の見た目に
+         bottomBar={footerBar}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              padding: "40px 30px",
+              gap: "30px",
+            }}
+          >
+            {/* 得点表示 */}
+            <div
+              style={{
+                backgroundColor: "white",
+                borderRadius: "20px",
+                padding: "30px",
+                textAlign: "center",
+                boxShadow: "0 2px 12px rgba(0, 0, 0, 0.08)",
+                border: "1px solid #e8e8e8",
+                width: "100%",
+                maxWidth: "280px",
+                position: "relative",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  top: "-12px",
+                  left: "20px",
+                  backgroundColor: "#ffa726",
+                  color: "white",
+                  padding: "6px 16px",
+                  borderRadius: "12px",
+                  fontSize: "0.9rem",
+                  fontWeight: 500,
+                }}
+              >
+                スコア
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "baseline",
+                  justifyContent: "center",
+                  marginTop: "10px",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "4rem",
+                    fontWeight: 600,
+                    color: "#333",
+                    lineHeight: 1,
+                  }}
+                >
+                  {feedback.total_score}
+                </div>
+                <span
+                  style={{
+                    fontSize: "1.8rem",
+                    color: "#666",
+                    marginLeft: "8px",
+                  }}
+                >
+                  点
+                </span>
+              </div>
             </div>
-            <p className="text-5xl">点</p>
+
+            {/* フィードバック詳細 */}
+            <div
+              style={{
+                backgroundColor: "white",
+                borderRadius: "12px",
+                padding: "16px",
+                border: "1px solid #e0e0e0",
+                width: "100%",
+                maxWidth: "320px",
+              }}
+            >
+              {/* タグラベル */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "12px",
+                }}
+              >
+                <div
+                  style={{
+                    backgroundColor: "#4ecdc4",
+                    color: "white",
+                    padding: "4px 12px",
+                    borderRadius: "12px",
+                    fontSize: "0.8rem",
+                  }}
+                >
+                  スピーチ
+                </div>
+              </div>
+              {/* 評価日 */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "16px",
+                }}
+              >
+                <div
+                  style={{
+                    backgroundColor: "#8bc34a",
+                    color: "white",
+                    padding: "4px 8px",
+                    borderRadius: "4px",
+                    fontSize: "0.8rem",
+                    marginRight: "12px",
+                    minWidth: "80px",
+                  }}
+                >
+                  📅 評価日
+                </div>
+                <span style={{ fontSize: "0.9rem", color: "#333" }}>
+                  {displayDate}
+                </span>
+              </div>
+              {/* コメント */}
+              <div
+                style={{
+                  fontSize: "0.85rem",
+                  color: "#555",
+                  lineHeight: 1.5,
+                  backgroundColor: "#f9f9f9",
+                  padding: "12px",
+                  borderRadius: "8px",
+                }}
+              >
+                <p style={{ marginBottom: "8px" }}>{feedback.well_done}</p>
+                <p style={{ margin: 0 }}>{feedback.next_challenge}</p>
+              </div>
+            </div>
           </div>
-          <p className="text-3xl">でした</p>
-          <div className="space-y-4 justify-center gap-15 px-6">
-            {/* 良かったポイント */}
-            <div>
-              <div className="font-bold text-lg mb-1">よかったところ</div>
-              <div>{feedback.well_done}</div>
-            </div>
-            {/* 次回のチャレンジ */}
-            <div>
-              <div className="font-bold text-lg mb-1">次回のチャレンジ</div>
-              <div>{feedback.next_challenge}</div>
-            </div>
-          </div>
-        </div>
-        <div className="flex justify-center gap-15">
-          <ToRecord userId={userId!} />
-          <BackToMyPage userId={userId!} />
-        </div>
-      </Card>
-    </Layout>
+        </Card>
+      </Layout>
+    </BackgroundWrapper>
   );
 };
 

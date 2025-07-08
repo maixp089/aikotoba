@@ -15,7 +15,7 @@ const Presentation = () => {
   const location = useLocation();
   const { theme } = location.state || {}; // ← ★ここで前ページの時間とテーマを取得！timeを変更する場合は追加
 
-  const RECORDING_TIME_SEC = 10; //★timeを設定するなら「time ?? 10」これにする
+  const RECORDING_TIME_SEC = 30; //★timeを設定するなら「time ?? 10」これにする
 
   const navigate = useNavigate();
   const { userId } = useParams<{ userId: string }>();

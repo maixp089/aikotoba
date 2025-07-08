@@ -1,11 +1,25 @@
-import { ToRecord, Layout, Card } from "../components";
+import React from "react";
+import { Layout, Card } from "../components";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import BackIconButton from "../components/IconButton";
-import BackgroundWrapper from "../components/Background"; // ★追加
+import BackgroundWrapper from "../components/Background";
+import ToRecord from "../components/ToRecord";
 
-const Evaluation = () => {
-  const { userId } = useParams();
-  const location = useLocation();
+type Feedback = {
+  total_score: number;
+  well_done: string;
+  next_challenge: string;
+};
+
+interface LocationState {
+  feedback?: Feedback;
+}
+
+const Evaluation: React.FC = () => {
+  // URLパラメータ userId の型指定
+  const { userId } = useParams<{ userId: string }>();
+  // location.state の型指定
+  const location = useLocation<LocationState>();
   const feedback = location.state?.feedback;
   const navigate = useNavigate();
 
@@ -21,12 +35,13 @@ const Evaluation = () => {
     );
   }
 
+  // 下部フッターバー（緑枠内）の定義
   const footerBar = (
     <div
       style={{
         display: "flex",
         alignItems: "center",
-        justifyContent: "flex-start",
+        justifyContent: "space-between", // 両端に配置
         width: "100%",
         padding: "0 18px",
         background: "#4bb3a7",
@@ -41,6 +56,11 @@ const Evaluation = () => {
         alt="もどる"
         size={64}
       />
+      <ToRecord
+        onClick={() => navigate(`/users/${userId}/record`)}
+        alt="もどる"
+        size={70}
+      />
     </div>
   );
 
@@ -48,70 +68,154 @@ const Evaluation = () => {
     <BackgroundWrapper>
       <Layout>
         <Card title="けっかはっぴょう" bottomBar={footerBar}>
-          <div className="flex flex-col items-center py-10">
-            <h1 className="text-3xl font-semibold">今のおはなし…</h1>
-            {/* 得点 */}
-            <div className="flex items-center">
-              <div className="text-9xl font-bold text-orange-600">
-                {feedback.total_score}
-              </div>
-              <p className="text-5xl"> 点</p>
-            </div>
-            {/* アドバイス枠 */}
-            <div className="space-y-4 px-6 pt-10 justify-center gap-15">
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              padding: "40px 30px",
+              gap: "30px",
+            }}
+          >
+            {/* 得点表示 - 大きなカード風 */}
+            <div
+              style={{
+                backgroundColor: "white",
+                borderRadius: "20px",
+                padding: "30px",
+                textAlign: "center",
+                boxShadow: "0 2px 12px rgba(0, 0, 0, 0.08)",
+                border: "1px solid #e8e8e8",
+                width: "100%",
+                maxWidth: "280px",
+                position: "relative",
+              }}
+            >
+              {/* スコアラベル */}
               <div
                 style={{
-                  backgroundColor: "#f8d7da",
-                  padding: "10px",
-                  borderRadius: "8px",
-                  textAlign: "center",
+                  position: "absolute",
+                  top: "-12px",
+                  left: "20px",
+                  backgroundColor: "#ffa726",
+                  color: "white",
+                  padding: "6px 16px",
+                  borderRadius: "12px",
+                  fontSize: "0.9rem",
+                  fontWeight: "500",
                 }}
               >
-                <p
+                スコア
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "baseline",
+                  justifyContent: "center",
+                  marginTop: "10px",
+                }}
+              >
+                <div
                   style={{
-                    fontWeight: "700",
-                    fontSize: "1.6rem",
-                    color: "#721c24",
-                    marginBottom: "8px",
+                    fontSize: "4rem",
+                    fontWeight: "600",
+                    color: "#333",
+                    lineHeight: "1",
                   }}
                 >
-                  はなまる💮！
-                </p>
+                  {feedback.total_score}
+                </div>
+                <span
+                  style={{
+                    fontSize: "1.8rem",
+                    color: "#666",
+                    marginLeft: "8px",
+                  }}
+                >
+                  点
+                </span>
+              </div>
+            </div>
+
+            {/* フィードバックセクション */}
+            <div
+              style={{
+                width: "100%",
+                maxWidth: "300px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px",
+              }}
+            >
+              {/* はなまる枠 */}
+              <div
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: "15px",
+                  padding: "20px",
+                  border: "2px solid #ffcdd2",
+                  position: "relative",
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "-12px",
+                    left: "20px",
+                    backgroundColor: "#e91e63",
+                    color: "white",
+                    padding: "6px 12px",
+                    borderRadius: "12px",
+                    fontSize: "0.9rem",
+                    fontWeight: "500",
+                  }}
+                >
+                  はなまる💮
+                </div>
                 <p
                   style={{
-                    fontWeight: "normal",
-                    fontSize: "1rem",
-                    color: "#721c24",
-                    margin: 0,
+                    fontSize: "0.9rem",
+                    color: "#333",
+                    lineHeight: "1.6",
+                    margin: "10px 0 0 0",
                   }}
                 >
                   {feedback.well_done}
                 </p>
               </div>
+
+              {/* もっとチャレンジ枠 */}
               <div
                 style={{
-                  backgroundColor: "#d1ecf1",
-                  padding: "10px",
-                  borderRadius: "8px",
-                  textAlign: "center",
+                  backgroundColor: "white",
+                  borderRadius: "15px",
+                  padding: "20px",
+                  border: "2px solid #bbdefb",
+                  position: "relative",
                 }}
               >
-                <p
+                <div
                   style={{
-                    fontWeight: "700",
-                    fontSize: "1.6rem",
-                    color: "#0c5460",
-                    marginBottom: "8px",
+                    position: "absolute",
+                    top: "-12px",
+                    left: "20px",
+                    backgroundColor: "#2196f3",
+                    color: "white",
+                    padding: "6px 12px",
+                    borderRadius: "12px",
+                    fontSize: "0.9rem",
+                    fontWeight: "500",
                   }}
                 >
                   もっとチャレンジ！
-                </p>
+                </div>
                 <p
                   style={{
-                    fontWeight: "normal",
-                    fontSize: "1rem",
-                    color: "#0c5460",
-                    margin: 0,
+                    fontSize: "0.9rem",
+                    color: "#333",
+                    lineHeight: "1.6",
+                    margin: "10px 0 0 0",
                   }}
                 >
                   {feedback.next_challenge}
@@ -119,13 +223,10 @@ const Evaluation = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-center gap-4 py-5">
-            <ToRecord userId={userId!} />
-          </div>
         </Card>
       </Layout>
     </BackgroundWrapper>
-  );
-};
+  )
+}
 
-export default Evaluation;
+export default Evaluation
