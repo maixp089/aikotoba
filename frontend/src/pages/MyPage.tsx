@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Card from "../components/Card";
+import BackgroundWrapper from "../components/Background"; // ← 追加
 
-// ユーザー型
 type User = {
   id: string;
   name: string;
@@ -57,7 +57,6 @@ const MyPage = () => {
       });
   }, [userId]);
 
-  // 下部バー
   const bottomBar = (
     <div
       style={{
@@ -80,7 +79,7 @@ const MyPage = () => {
               alert("ユーザー情報が取得できていません");
               return;
             }
-            navigate(btn.to(userId!)); // ←「!」をつけてstringに断言
+            navigate(btn.to(userId!));
           }}
           style={{
             background: "none",
@@ -105,95 +104,89 @@ const MyPage = () => {
   );
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "linear-gradient(120deg,#d4efd7 0%, #f8f5e1 100%)",
-        fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', 'sans-serif'",
-      }}
-    >
-      <Card
-        title="おかえりなさい"
-        style={{ margin: "42px 0 0 0" }}
-        bottomBar={bottomBar}
+    <BackgroundWrapper>
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', 'sans-serif'",
+        }}
       >
-        {/* 画像＆名前ラベルを下に寄せる */}
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: "40px 0 16px 0", // ← ここだけ40→28に修正
-            position: "relative",
-          }}
-        >
-          {/* 斜めネームラベル */}
-          {user && (
-            <div
-              style={{
-                position: "absolute",
-                left: "18px",
-                top: "-10px", // ← 画像とのバランスで微調整
-                background: "#f4bc21",
-                color: "#fff",
-                borderRadius: "22px 18px 22px 14px",
-                padding: "4px 13px 3px 11px",
-                fontWeight: 700,
-                fontSize: "1.02rem",
-                letterSpacing: "0.09em",
-                fontFamily: "'Kosugi Maru','M PLUS Rounded 1c',sans-serif",
-                border: "2.3px solid #fff6c5",
-                minWidth: 0,
-                textAlign: "center",
-                transform: "rotate(-23deg)",
-                zIndex: 2,
-                boxShadow: "0 5px 12px #ffe39d66",
-                userSelect: "none",
-                pointerEvents: "none",
-              }}
-            >
-              {user.name + "さん"}
-            </div>
-          )}
+        <Card title="おかえりなさい" style={{ margin: "42px 0 0 0" }} bottomBar={bottomBar}>
           <div
             style={{
-              width: 170,
-              height: 170,
-              background: "#fff",
-              border: "2.5px solid #bfe3c9",
-              borderRadius: "48px",
-              boxShadow: "0 2px 12px #cce7d277",
+              width: "100%",
               display: "flex",
-              alignItems: "center",
               justifyContent: "center",
-              overflow: "hidden",
-              padding: 0,
+              alignItems: "center",
+              margin: "40px 0 16px 0",
+              position: "relative",
             }}
           >
-            {loading ? (
-              <span style={{ fontSize: "1.3em", color: "#aaa" }}>...</span>
-            ) : (
-              <img
-                src={user ? getIconSrc(user.icon_image) : "/icons/neko.png"}
-                alt="icon"
+            {user && (
+              <div
                 style={{
-                  width: "96%",
-                  height: "96%",
-                  borderRadius: "44px",
-                  objectFit: "contain",
-                  display: "block",
+                  position: "absolute",
+                  left: "18px",
+                  top: "-10px",
+                  background: "#f4bc21",
+                  color: "#fff",
+                  borderRadius: "22px 18px 22px 14px",
+                  padding: "4px 13px 3px 11px",
+                  fontWeight: 700,
+                  fontSize: "1.02rem",
+                  letterSpacing: "0.09em",
+                  fontFamily: "'Kosugi Maru','M PLUS Rounded 1c',sans-serif",
+                  border: "2.3px solid #fff6c5",
+                  textAlign: "center",
+                  transform: "rotate(-23deg)",
+                  zIndex: 2,
+                  boxShadow: "0 5px 12px #ffe39d66",
+                  userSelect: "none",
+                  pointerEvents: "none",
                 }}
-              />
+              >
+                {user.name + "さん"}
+              </div>
             )}
+            <div
+              style={{
+                width: 170,
+                height: 170,
+                background: "#fff",
+                border: "2.5px solid #bfe3c9",
+                borderRadius: "48px",
+                boxShadow: "0 2px 12px #cce7d277",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                overflow: "hidden",
+              }}
+            >
+              {loading ? (
+                <span style={{ fontSize: "1.3em", color: "#aaa" }}>...</span>
+              ) : (
+                <img
+                  src={getIconSrc(user?.icon_image || "")}
+                  alt="icon"
+                  style={{
+                    width: "96%",
+                    height: "96%",
+                    borderRadius: "44px",
+                    objectFit: "contain",
+                    display: "block",
+                  }}
+                />
+              )}
+            </div>
           </div>
-        </div>
-      </Card>
-    </div>
+        </Card>
+      </div>
+    </BackgroundWrapper>
   );
 };
 
 export default MyPage;
+

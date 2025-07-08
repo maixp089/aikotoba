@@ -5,6 +5,7 @@ import "../App.css";
 import robotYellow from "../assets/images/robot_yellow.png";
 import Rec from "../components/Rec";
 import IconButton from "../components/IconButton";
+import BackgroundWrapper from "../components/Background"; // 追加！
 
 const images = [robotYellow];
 const durations = [3000, 370];
@@ -197,6 +198,7 @@ const Presentation = () => {
   );
 
   return (
+  <BackgroundWrapper>
     <Layout>
       <Card title={headerTitle} bottomBar={footerBar}>
         <div className="space-y-4">
@@ -217,63 +219,62 @@ const Presentation = () => {
             </p>
           )}
 
-          {/* マイク＆ロボット */}
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "flex-end",
-              justifyContent: "center",
-              height: 210,
-              minHeight: 120,
-              marginBottom: 12,
-              marginTop: -30,
-              gap: 0,
-            }}
-          >
-            {/* マイク */}
+            {/* マイク＆ロボット */}
             <div
               style={{
-                marginRight: "-50px",
-                marginBottom: "1px",
-                fontSize: "300px",
-                lineHeight: 1,
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "flex-end",
+                justifyContent: "center",
+                height: 210,
+                minHeight: 120,
+                marginBottom: 12,
+                marginTop: -30,
+                gap: 0,
               }}
             >
-              <Rec />
+              {/* マイク */}
+              <div
+                style={{
+                  marginRight: "-50px",
+                  marginBottom: "1px",
+                  fontSize: "300px",
+                  lineHeight: 1,
+                }}
+              >
+                <Rec />
+              </div>
+              {/* ロボット */}
+              <img
+                src={images[index]}
+                alt="robot"
+                style={{
+                  width: "150px",
+                  height: "150px",
+                  objectFit: "contain",
+                  borderRadius: "32px",
+                  boxShadow: "0 2px 12px #cce7d277",
+                  background: "none",
+                  marginLeft: "70px",
+                }}
+              />
             </div>
 
-            {/* ロボット */}
-            <img
-              src={images[index]}
-              alt="robot"
-              style={{
-                width: "150px",
-                height: "150px",
-                objectFit: "contain",
-                borderRadius: "32px",
-                boxShadow: "0 2px 12px #cce7d277",
-                background: "none",
-                marginLeft: "70px",
-              }}
-            />
-          </div>
-
-          {/* 残り時間 */}
-          {audioState === "recording" && (
-            <p
-              className="text-center font-bold mt-2"
-              style={{
-                fontSize: "1.3rem",
-                color: "#999999",
-                fontFamily: "'Kosugi Maru', 'M PLUS Rounded 1c', sans-serif",
-                letterSpacing: "1px",
-              }}
-            >
-              あと {timer}秒
-            </p>
-          )}
+            {/* 残り時間 */}
+            {audioState === "recording" && (
+              <p
+                className="text-center font-bold mt-2"
+                style={{
+                  fontSize: "1.3rem",
+                  color: "#999999",
+                  fontFamily: "'Kosugi Maru', 'M PLUS Rounded 1c', sans-serif",
+                  letterSpacing: "1px",
+                }}
+              >
+                あと {timer}秒
+              </p>
+            )}
 
           {/* 練習ボタン */}
           <div className="flex flex-col items-center space-y-2 mt-5">
@@ -318,6 +319,7 @@ const Presentation = () => {
         </div>
       </Card>
     </Layout>
+  </BackgroundWrapper>
   );
 };
 
