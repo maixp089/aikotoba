@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import Card from "../components/Card";
+import BackgroundWrapper from "../components/Background"; // ← 追加
 
 const iconList = [
   { name: "ネコ", value: "neko", src: "/icons/neko.png" },
@@ -22,13 +23,13 @@ const NewAccount = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedIcon || !firebase_uid) return; // 必須チェック
+    if (!selectedIcon || !firebase_uid) return;
 
     const data = {
-      firebase_uid, // ← 必須！
-      name: userName, // ← 指示通りnameに！
+      firebase_uid,
+      name: userName,
       age: age ? Number(age) : null,
-      icon_image: `${selectedIcon}.png`, // or 画像URL
+      icon_image: `${selectedIcon}.png`,
     };
 
     try {
@@ -38,7 +39,6 @@ const NewAccount = () => {
         body: JSON.stringify(data),
       });
       if (!res.ok) {
-        // 重複などのエラーもここに入る
         const err = await res.json();
         alert(err.detail ?? "登録に失敗しました");
         return;
@@ -47,14 +47,12 @@ const NewAccount = () => {
       setUserName("");
       setAge("");
       setSelectedIcon(null);
-      // 登録完了時はマイページへ遷移
       navigate(`/users/${user.id}/mypage`);
     } catch {
       alert("通信エラーが発生しました");
     }
   };
 
-  // ボタンエリアをJSXで定義（下帯に渡す！）
   const bottomBar = (
     <>
       <Link
@@ -108,53 +106,29 @@ const NewAccount = () => {
   );
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "linear-gradient(120deg,#d4efd7 0%, #f8f5e1 100%)",
-        fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', 'sans-serif'",
-      }}
-    >
-      <Card title="はじめる" bottomBar={bottomBar}>
-        <form id="register-form" onSubmit={handleSubmit}>
-          {/* ユーザー名 */}
-          <input
-            type="text"
-            placeholder="おなまえ"
-            value={userName}
-            onChange={e => setUserName(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "11px 12px",
-              marginBottom: "13px",
-              borderRadius: "14px",
-              border: "2px solid #aad5bb",
-              fontSize: "1.09em",
-              background: "#f6ffef",
-              fontFamily: "inherit",
-              boxShadow: "0 2px 10px #cce7d266",
-              outline: "none",
-              transition: "border 0.2s",
-              boxSizing: "border-box",
-            }}
-            required
-          />
-          {/* 年齢 */}
-          <div style={{ marginBottom: "12px" }}>
+    <BackgroundWrapper>
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          // background: "linear-gradient(120deg,#d4efd7 0%, #f8f5e1 100%)", ← ここは不要
+          fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', 'sans-serif'",
+        }}
+      >
+        <Card title="はじめる" bottomBar={bottomBar}>
+          <form id="register-form" onSubmit={handleSubmit}>
+            {/* ユーザー名 */}
             <input
-              id="age"
-              type="number"
-              placeholder="ねんれい"
-              value={age}
-              min={0}
-              max={120}
-              onChange={e => setAge(e.target.value)}
+              type="text"
+              placeholder="おなまえ"
+              value={userName}
+              onChange={e => setUserName(e.target.value)}
               style={{
                 width: "100%",
                 padding: "11px 12px",
+                marginBottom: "13px",
                 borderRadius: "14px",
                 border: "2px solid #aad5bb",
                 fontSize: "1.09em",
@@ -162,65 +136,90 @@ const NewAccount = () => {
                 fontFamily: "inherit",
                 boxShadow: "0 2px 10px #cce7d266",
                 outline: "none",
-                color: "#444",
                 transition: "border 0.2s",
                 boxSizing: "border-box",
               }}
               required
             />
-          </div>
-
-          {/* アイコン選択エリア */}
-
-          <div
-            style={{
-              border: "2px dashed #aad5bb",
-              borderRadius: "20px",
-              minHeight: "90px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#a5b499",
-              marginBottom: "19px",
-              background: "#fcfff5",
-              fontSize: "1.04em",
-              fontFamily: "inherit",
-              boxSizing: "border-box",
-              gap: "10px",
-              flexWrap: "wrap",
-              padding: "7px",
-            }}
-          >
-            {iconList.map(icon => (
-              <div
-                key={icon.value}
-                onClick={() => setSelectedIcon(icon.value)}
+            {/* 年齢 */}
+            <div style={{ marginBottom: "12px" }}>
+              <input
+                id="age"
+                type="number"
+                placeholder="ねんれい"
+                value={age}
+                min={0}
+                max={120}
+                onChange={e => setAge(e.target.value)}
                 style={{
-                  border: selectedIcon === icon.value ? "3px solid #f2687b" : "2px solid #aad5bb",
-                  borderRadius: "15px",
-                  padding: "4px 5px",
-                  margin: "0 2px",
-                  background: selectedIcon === icon.value ? "#fff0ef" : "#fff",
-                  cursor: "pointer",
-                  textAlign: "center",
-                  boxShadow: selectedIcon === icon.value ? "0 2px 8px #f2687b33" : "",
-                  transition: "border 0.2s, background 0.2s",
-                  minWidth: 52,
-                  minHeight: 70,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  width: "100%",
+                  padding: "11px 12px",
+                  borderRadius: "14px",
+                  border: "2px solid #aad5bb",
+                  fontSize: "1.09em",
+                  background: "#f6ffef",
+                  fontFamily: "inherit",
+                  boxShadow: "0 2px 10px #cce7d266",
+                  outline: "none",
+                  color: "#444",
+                  transition: "border 0.2s",
+                  boxSizing: "border-box",
                 }}
-              >
-                <img src={icon.src} alt={icon.name} style={{ width: 38, height: 38, marginBottom: 1 }} />
-                <div style={{ fontSize: "0.92em" }}>{icon.name}</div>
-              </div>
-            ))}
-          </div>
-        </form>
-      </Card>
-    </div>
+                required
+              />
+            </div>
+
+            {/* アイコン選択エリア */}
+            <div
+              style={{
+                border: "2px dashed #aad5bb",
+                borderRadius: "20px",
+                minHeight: "90px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#a5b499",
+                marginBottom: "19px",
+                background: "#fcfff5",
+                fontSize: "1.04em",
+                fontFamily: "inherit",
+                boxSizing: "border-box",
+                gap: "10px",
+                flexWrap: "wrap",
+                padding: "7px",
+              }}
+            >
+              {iconList.map(icon => (
+                <div
+                  key={icon.value}
+                  onClick={() => setSelectedIcon(icon.value)}
+                  style={{
+                    border: selectedIcon === icon.value ? "3px solid #f2687b" : "2px solid #aad5bb",
+                    borderRadius: "15px",
+                    padding: "4px 5px",
+                    margin: "0 2px",
+                    background: selectedIcon === icon.value ? "#fff0ef" : "#fff",
+                    cursor: "pointer",
+                    textAlign: "center",
+                    boxShadow: selectedIcon === icon.value ? "0 2px 8px #f2687b33" : "",
+                    transition: "border 0.2s, background 0.2s",
+                    minWidth: 52,
+                    minHeight: 70,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <img src={icon.src} alt={icon.name} style={{ width: 38, height: 38, marginBottom: 1 }} />
+                  <div style={{ fontSize: "0.92em" }}>{icon.name}</div>
+                </div>
+              ))}
+            </div>
+          </form>
+        </Card>
+      </div>
+    </BackgroundWrapper>
   );
 };
 
