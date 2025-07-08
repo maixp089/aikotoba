@@ -1,0 +1,23 @@
+
+/* ────────────────────────────────── */
+/* 新規：カードを包むラッパー */
+/* 左画面とまったく同じ大きさ・見た目に揃えます */
+.page-wrapper {
+  /* DevTools で測定した左画面カードのサイズに合わせる */
+  width: 300px;
+  height: 520px;
+
+  /* カードの見た目 */
+  background: #FCFCE3;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  /* 内側余白を固定 */
+  box-sizing: border-box;
+  padding: 16px;
+
+  /* 中身を縦に揃えて中央寄せ */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
