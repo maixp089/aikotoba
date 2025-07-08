@@ -48,7 +48,7 @@ const Card = ({ children, title, bottomBar, style }: Props) => (
           flex: "0 0 auto",
         }}
       >
-         {title ? title : ""}　//titleがあれば表示、なければ空追加★
+         {title ? title : ""} 
 
       </div>
     )}
