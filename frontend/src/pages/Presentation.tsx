@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {  Layout, Card } from "../components";
+import { Layout, Card } from "../components";
 import "../App.css";
 import robotYellow from "../assets/images/robot_yellow.png";
 import Rec from "../components/Rec";
@@ -13,7 +13,9 @@ const RECORDING_TIME_SEC = 10;
 const Presentation = () => {
   const { userId } = useParams<{ userId: string }>();
   const [index, setIndex] = useState(0);
-  const [audioState, setAudioState] = useState<"ready" | "recording" | "done">("ready");
+  const [audioState, setAudioState] = useState<"ready" | "recording" | "done">(
+    "ready"
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [timer, setTimer] = useState<number>(RECORDING_TIME_SEC);
 
@@ -134,33 +136,69 @@ const Presentation = () => {
     }
   };
 
-
+  const headerTitle = (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center", // ←中央揃え
+        justifyContent: "flex-start",
+        width: "100%",
+        padding: "0 18px",
+        background: "#4bb3a7",
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
+        height: 60, // ←画像サイズに合わせて高さを抑える
+        minHeight: undefined, // ←minHeight消す
+      }}
+    >
+      <img
+        src="/icons/theme.png"
+        alt="テーマ"
+        style={{
+          width: 60, // ヘッダー内だとちょっと小さめ推奨
+          height: 60,
+          pointerEvents: "none",
+          userSelect: "none",
+          marginTop: 0,
+          marginBottom: 0,
+        }}
+      />
+      {/* テーマ名を右に出したい場合はここにテキスト */}
+      <span style={{ marginLeft: 12, color: "#fff", fontSize: 20 }}>すきなスポーツ</span>
+    </div>
+  );
   const footerBar = (
-  <div style={{
-    display: "flex",
-    justifyContent: "flex-start",   // ← 左寄せ
-    alignItems: "center",
-    padding: "20px 0 0 20px",      // ← 左パディングを追加
-    width: "100%",
-    boxSizing: "border-box",
-  }}>
-    <IconButton
-      onClick={() => navigate(-1)}
-      iconSrc="/icons/back.png"
-      alt="もどる"
-      size={66}
-    />
-  </div>
-);
-
-
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-around",
+        width: "100%",
+        padding: "0 18px",
+        background: "#4bb3a7",
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
+        minHeight: 80,
+      }}
+    >
+      <IconButton
+        onClick={() => navigate(-1)}
+        iconSrc="/icons/back.png"
+        alt="もどる"
+        size={55}
+      />
+      <IconButton
+        onClick={() => navigate(-1)}
+        iconSrc="/icons/home.png"
+        alt="ホーム"
+        size={66}
+      />
+    </div>
+  );
 
   return (
     <Layout>
-      <Card
-        title={<span style={{ visibility: "hidden" }}>はっぴょうれんしゅう</span>}
-        bottomBar={footerBar}
-      >
+      <Card title={headerTitle} bottomBar={footerBar}>
         <div className="space-y-4">
           {/* ちょっと待ってね メッセージ（ロボットの上） */}
           {isLoading && (
@@ -171,7 +209,7 @@ const Presentation = () => {
                 fontSize: "1.3rem",
                 fontWeight: "bold",
                 fontFamily: "'Kosugi Maru', 'M PLUS Rounded 1c', sans-serif",
-                marginTop: "8px",         // ← ここを "-8px" から "8px" に変更
+                marginTop: "8px", // ← ここを "-8px" から "8px" に変更
                 marginBottom: "-12px",
               }}
             >
@@ -264,9 +302,7 @@ const Presentation = () => {
             >
               {audioState === "recording" ? (
                 <span>
-                  <ruby>
-
-                  </ruby>
+                  <ruby></ruby>
                   <span style={{ marginLeft: 9 }}>とめる</span>
                 </span>
               ) : (
@@ -278,7 +314,6 @@ const Presentation = () => {
                 </span>
               )}
             </button>
-            
           </div>
         </div>
       </Card>

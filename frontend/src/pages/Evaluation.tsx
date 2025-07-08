@@ -1,8 +1,11 @@
-import { BackToMyPage, ToRecord, Layout, Card } from "../components";
+import { Layout, Card } from "../components";
 import { useParams, useLocation } from "react-router-dom";
+import IconButton from "../components/IconButton";
+import { useNavigate } from "react-router-dom";
 
 const Evaluation = () => {
   const { userId } = useParams();
+  const navigate = useNavigate();
   const location = useLocation();
   const feedback = location.state?.feedback;
 
@@ -16,8 +19,33 @@ const Evaluation = () => {
     );
   }
   // ここでheaderTitle/footerBarを定義する！
-  const footerBar = <BackToMyPage userId={userId!} />;
-  // title="けっかはっぴょう" bottomBar={footerBar}
+  const footerBar = (
+  <div
+    style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-around",
+      width: "100%",
+      padding: "0 18px",
+      background: "#4bb3a7",
+      borderBottomLeftRadius: 16,
+      borderBottomRightRadius: 16,
+      minHeight: 80,
+    }}
+  >
+    <IconButton
+      onClick={() => navigate(`/users/${userId}/mypage`)}
+      label=""
+      iconSrc="/icons/home.png"
+    />
+    <IconButton
+      onClick={() => navigate(`/users/${userId}/record`)}
+      label=""
+      iconSrc="/icons/record.png"
+    />
+  </div>
+);
+  
   return (
     <Layout>
       <Card title="けっかはっぴょう" bottomBar={footerBar}>
@@ -93,12 +121,6 @@ const Evaluation = () => {
               </p>
             </div>
           </div>
-        </div>
-        <div className="flex justify-center gap-15">
-          {/* 振り返りボタン */}
-          <ToRecord userId={userId!} />
-          {/* ホームへボタン */}
-          <BackToMyPage userId={userId!} />
         </div>
       </Card>
     </Layout>
