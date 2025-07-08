@@ -21,7 +21,7 @@ const menuButtons = [
     key: "practice",
     img: "/icons/practice.png",
     alt: "練習する",
-    to: (userId?: string) => `/users/${userId}/presentation`,
+    to: (userId?: string) => `/users/${userId}/presentationSetting`,
   },
   {
     key: "record",

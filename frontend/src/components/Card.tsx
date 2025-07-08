@@ -56,7 +56,7 @@ const Card = ({ children, title, bottomBar, style }: Props) => (
     <div
       style={{
         flex: "1 1 0",
-        overflowY: "auto",
+        // overflowY: "auto",
         minHeight: 0, // ←スクロールバグ防止(Safari対応)
         padding: "30px 18px 24px 18px",
       }}
