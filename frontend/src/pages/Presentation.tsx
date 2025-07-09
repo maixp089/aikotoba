@@ -13,9 +13,9 @@ const durations = [3000, 370];
 
 const Presentation = () => {
   const location = useLocation();
-  const { theme } = location.state || {}; // ← ★ここで前ページの時間とテーマを取得！timeを変更する場合は追加
+  const { time, theme } = location.state || {}; // ← ★ここで前ページの時間とテーマを取得！timeを変更する場合は追加
 
-  const RECORDING_TIME_SEC = 30; //★timeを設定するなら「time ?? 10」これにする
+  const RECORDING_TIME_SEC = time ?? 10; //★timeを設定するなら「time ?? 10」これにする
 
   const navigate = useNavigate();
   const { userId } = useParams<{ userId: string }>();
@@ -171,7 +171,19 @@ const Presentation = () => {
         }}
       />
       {/* ここを動的に！ */}
-      <span style={{ marginLeft: 12, color: "#fff", fontSize: 20 }}>
+      <span
+        style={{
+          marginLeft: 12,
+          color: "#fff",
+          fontSize: 20,
+          // ↓折り返すために追加！↓
+          whiteSpace: "normal", // ← 折り返し有効
+          wordBreak: "break-word", // ← 単語途中でも折り返す
+          display: "inline-block", // ← 高さ計算のため
+          lineHeight: 1.35, // ← ちょっと詰めて可愛く
+          maxWidth: "calc(100% - 72px)", // ← はみ出し防止
+        }}
+      >
         {theme}
       </span>
     </div>
@@ -246,7 +258,7 @@ const Presentation = () => {
               <div
                 style={{
                   marginRight: "-50px",
-                  marginBottom: "1px",
+                  marginBottom: "-20px", // ★ここでマイクの位置を微調整
                   fontSize: "300px",
                   lineHeight: 1,
                 }}
@@ -285,7 +297,16 @@ const Presentation = () => {
             )}
 
             {/* 練習ボタン */}
-            <div className="flex flex-col items-center space-y-2 mt-5">
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center", // ← 横方向中央
+                justifyContent: "center", // ← 縦方向中央（今回はあまり効かないけど一応）
+                marginTop: "32px",
+              }}
+            >
               <button
                 onClick={audioState === "recording" ? handleStop : handleStart}
                 disabled={isLoading}

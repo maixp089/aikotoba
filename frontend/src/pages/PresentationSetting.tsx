@@ -167,7 +167,7 @@ export default function PresentationSetting() {
             </div>
             {/* テーマセクション */}
             <div style={{ marginBottom: 10, marginTop: 0 }}>
-              <div style={{ fontSize: 16, fontWeight: 500, marginBottom: 4 }}>
+              <div style={{ fontSize: 16, fontWeight: 900, marginBottom: 4 }}>
                 <span role="img" aria-label="tag">
                   🏷️
                 </span>
