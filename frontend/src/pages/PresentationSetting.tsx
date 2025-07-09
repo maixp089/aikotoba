@@ -130,7 +130,7 @@ export default function PresentationSetting() {
           onClick={() => navigate(-1)}
           iconSrc="/icons/back.png"
           alt="もどる"
-          size={50}
+          size={55}
         />
       </div>
     </div>

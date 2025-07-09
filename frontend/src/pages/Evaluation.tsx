@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import ToRecord from "../components/ToRecord";
-import BackIconButton from "../components/IconButton";
+import IconButton from "../components/IconButton";
 import { Layout, Card } from "../components";
 import BackgroundWrapper from "../components/Background";
 
@@ -127,13 +127,19 @@ const Evaluation: React.FC = () => {
         width: "100%",
       }}
     >
-      <BackIconButton
+      <IconButton
         onClick={() => navigate(-1)}
         iconSrc="/icons/back.png"
         alt="もどる"
-        size={64}
+        size={55}
       />
-      <ToRecord onClick={() => navigate(`/users/${userId}/record`)} size={64} />
+      <IconButton
+        onClick={() => navigate(`/users/${userId}/mypage`)}
+        iconSrc="/icons/home.png"
+        alt="もどる"
+        size={60}
+      />
+      <ToRecord onClick={() => navigate(`/users/${userId}/record`)} size={60} />
     </div>
   );
 

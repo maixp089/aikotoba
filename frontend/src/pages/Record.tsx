@@ -148,6 +148,12 @@ const Record = () => {
       }}
     >
       <IconButton
+        onClick={() => navigate(-1)}
+        iconSrc="/icons/back.png"
+        alt="もどる"
+        size={55}
+      />
+      <IconButton
         onClick={() => navigate(`/users/${userId}/mypage`)}
         label=""
         iconSrc="/icons/home.png"
