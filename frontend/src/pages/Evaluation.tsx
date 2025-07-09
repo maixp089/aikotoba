@@ -58,7 +58,6 @@ const Evaluation: React.FC = () => {
       />
       <ToRecord
         onClick={() => navigate(`/users/${userId}/record`)}
-        label="きろく"
         size={70}
       />
     </div>
