@@ -114,7 +114,7 @@ const MyPage = () => {
           fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', 'sans-serif'",
         }}
       >
-        <Card title="おかえりなさい" style={{ margin: "42px 0 0 0" }} bottomBar={bottomBar}>
+        <Card title="おかえりなさい" style={{ margin: "0px 0 0 0" }} bottomBar={bottomBar}>
           <div
             style={{
               width: "100%",

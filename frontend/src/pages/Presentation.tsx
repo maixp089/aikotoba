@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Layout, Card } from "../components";
@@ -7,38 +8,30 @@ import Rec from "../components/Rec";
 import IconButton from "../components/IconButton";
 import BackgroundWrapper from "../components/Background";
 import { useLocation } from "react-router-dom"; // 時間とテーマを取得するため
-
 const images = [robotYellow];
 const durations = [3000, 370];
-
 const Presentation = () => {
   const location = useLocation();
   const { time, theme } = location.state || {}; // ← ★ここで前ページの時間とテーマを取得！timeを変更する場合は追加
-
   const RECORDING_TIME_SEC = time ?? 10; //★timeを設定するなら「time ?? 10」これにする
-
   const navigate = useNavigate();
   const { userId } = useParams<{ userId: string }>();
-
   const [index, setIndex] = useState(0);
   const [audioState, setAudioState] = useState<"ready" | "recording" | "done">(
     "ready"
   );
   const [isLoading, setIsLoading] = useState(false);
   const [timer, setTimer] = useState<number>(RECORDING_TIME_SEC);
-
   const audioRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const stopTimerRef = useRef<NodeJS.Timeout | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
   useEffect(() => {
     const timerId = setTimeout(() => {
       setIndex((prev) => (prev + 1) % images.length);
     }, durations[index]);
     return () => clearTimeout(timerId);
   }, [index]);
-
   useEffect(() => {
     navigator.mediaDevices
       .getUserMedia({ audio: true })
@@ -48,18 +41,15 @@ const Presentation = () => {
         console.error(err);
       });
   }, []);
-
   const handleSuccess = (stream: MediaStream) => {
     const mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
     audioRef.current = mediaRecorder;
     chunksRef.current = [];
-
     mediaRecorder.ondataavailable = (e) => {
       if (e.data.size > 0) {
         chunksRef.current.push(e.data);
       }
     };
-
     mediaRecorder.onstart = () => {
       setAudioState("recording");
       setTimer(RECORDING_TIME_SEC);
@@ -76,32 +66,27 @@ const Presentation = () => {
           return prev - 1;
         });
       }, 1000);
-
       stopTimerRef.current = setTimeout(() => {
         if (audioRef.current && audioRef.current.state === "recording") {
           audioRef.current.stop();
         }
       }, RECORDING_TIME_SEC * 1000);
     };
-
     mediaRecorder.onstop = async () => {
       setAudioState("done");
       clearInterval(intervalRef.current!);
       intervalRef.current = null;
       clearTimeout(stopTimerRef.current!);
       stopTimerRef.current = null;
-
       const blob = new Blob(chunksRef.current, { type: "audio/webm" });
       await sendAudioToAPI(blob);
     };
   };
-
   const handleStart = () => {
     if (audioRef.current && audioState === "ready") {
       audioRef.current.start();
     }
   };
-
   const handleStop = () => {
     if (audioRef.current && audioState === "recording") {
       audioRef.current.stop();
@@ -111,28 +96,23 @@ const Presentation = () => {
       intervalRef.current = null;
     }
   };
-
   const sendAudioToAPI = async (blob: Blob) => {
     if (!userId) {
       alert("ユーザー情報が取得できませんでした");
       return;
     }
-
     setIsLoading(true);
     const formData = new FormData();
     formData.append("file", blob, "recording.webm");
     formData.append("user_id", userId);
-
     try {
       const res = await fetch("http://localhost:8000/api/audio-feedback", {
         method: "POST",
         body: formData,
       });
       if (!res.ok) throw new Error("送信失敗");
-
       const data = await res.json();
       console.log("APIレスポンス", data);
-
       navigate(`/users/${userId}/evaluation`, { state: { feedback: data } });
     } catch (error) {
       alert("音声送信に失敗しました");
@@ -141,7 +121,6 @@ const Presentation = () => {
       setIsLoading(false);
     }
   };
-
   const headerTitle = (
     <div
       style={{
@@ -216,7 +195,6 @@ const Presentation = () => {
       />
     </div>
   );
-
   return (
     <BackgroundWrapper>
       <Layout>
@@ -238,7 +216,6 @@ const Presentation = () => {
                 ちょっと待ってね
               </p>
             )}
-
             {/* マイク＆ロボット */}
             <div
               style={{
@@ -280,7 +257,6 @@ const Presentation = () => {
                 }}
               />
             </div>
-
             {/* 残り時間 */}
             {audioState === "recording" && (
               <p
@@ -295,7 +271,6 @@ const Presentation = () => {
                 あと {timer}秒
               </p>
             )}
-
             {/* 練習ボタン */}
             <div
               style={{
@@ -351,5 +326,4 @@ const Presentation = () => {
     </BackgroundWrapper>
   );
 };
-
 export default Presentation;
