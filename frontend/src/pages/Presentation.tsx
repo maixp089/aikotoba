@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Layout, Card } from "../components";
@@ -8,8 +7,10 @@ import Rec from "../components/Rec";
 import IconButton from "../components/IconButton";
 import BackgroundWrapper from "../components/Background";
 import { useLocation } from "react-router-dom"; // 時間とテーマを取得するため
+
 const images = [robotYellow];
 const durations = [3000, 370];
+
 const Presentation = () => {
   const location = useLocation();
   const { time, theme } = location.state || {}; // ← ★ここで前ページの時間とテーマを取得！timeを変更する場合は追加
@@ -26,6 +27,7 @@ const Presentation = () => {
   const chunksRef = useRef<Blob[]>([]);
   const stopTimerRef = useRef<NodeJS.Timeout | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
     const timerId = setTimeout(() => {
       setIndex((prev) => (prev + 1) % images.length);
@@ -33,6 +35,7 @@ const Presentation = () => {
     return () => clearTimeout(timerId);
   }, [index]);
   useEffect(() => {
+
     navigator.mediaDevices
       .getUserMedia({ audio: true })
       .then(handleSuccess)
@@ -41,6 +44,7 @@ const Presentation = () => {
         console.error(err);
       });
   }, []);
+
   const handleSuccess = (stream: MediaStream) => {
     const mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
     audioRef.current = mediaRecorder;
@@ -50,6 +54,7 @@ const Presentation = () => {
         chunksRef.current.push(e.data);
       }
     };
+
     mediaRecorder.onstart = () => {
       setAudioState("recording");
       setTimer(RECORDING_TIME_SEC);
@@ -72,6 +77,7 @@ const Presentation = () => {
         }
       }, RECORDING_TIME_SEC * 1000);
     };
+
     mediaRecorder.onstop = async () => {
       setAudioState("done");
       clearInterval(intervalRef.current!);
@@ -82,11 +88,13 @@ const Presentation = () => {
       await sendAudioToAPI(blob);
     };
   };
+
   const handleStart = () => {
     if (audioRef.current && audioState === "ready") {
       audioRef.current.start();
     }
   };
+
   const handleStop = () => {
     if (audioRef.current && audioState === "recording") {
       audioRef.current.stop();
@@ -96,6 +104,7 @@ const Presentation = () => {
       intervalRef.current = null;
     }
   };
+
   const sendAudioToAPI = async (blob: Blob) => {
     if (!userId) {
       alert("ユーザー情報が取得できませんでした");
@@ -121,6 +130,7 @@ const Presentation = () => {
       setIsLoading(false);
     }
   };
+
   const headerTitle = (
     <div
       style={{
@@ -167,6 +177,7 @@ const Presentation = () => {
       </span>
     </div>
   );
+  
   const footerBar = (
     <div
       style={{

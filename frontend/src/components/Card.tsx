@@ -16,7 +16,7 @@ const Card = ({ children, title, bottomBar, style }: Props) => (
       borderRadius: 24,
       boxShadow: "0 6px 28px #b7d7bb66, 0 1.5px 0 #fffbe9 inset",
       width: 320,
-      height: 535,
+      height: 540,
       textAlign: "center",
       position: "relative",
       border: "3px solid #b7d7bb",
