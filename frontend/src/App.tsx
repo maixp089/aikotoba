@@ -5,12 +5,13 @@ import {
   Login,
   NewAccount,
   Presentation,
+  PresentationSetting,
   MyPage,
   Record,
   EvaluationDetail,
   Scoring,
 } from "./pages";
-import AudioRecorderTest from "./components/AudioRecorderTest";  // 追加
+import AudioRecorderTest from "./components/AudioRecorderTest"; // 追加
 
 function App() {
   return (
@@ -22,24 +23,22 @@ function App() {
       <Route path="/login" element={<Login />} />
       {/* ユーザーのマイページ */}
       <Route path="/users/:userId/mypage" element={<MyPage />} />
-       {/* 発表・評価・記録画面（ユーザー紐付けルート例） */}
+      {/* テーマと時間選択画面（ユーザー紐づけルート） */}
+      <Route path="/users/:userId/presentationSetting" element={<PresentationSetting />} />
+      {/* 発表・評価・記録画面（ユーザー紐付けルート例） */}
       <Route path="/users/:userId/presentation" element={<Presentation />} />
       <Route path="/users/:userId/record" element={<Record />} />
       <Route path="/users/:userId/scoring" element={<Scoring />} />
       <Route path="/users/:userId/evaluation" element={<Evaluation />} />
-       {/* 評価詳細（発表IDや日付で絞る場合） */}
+      {/* 評価詳細（発表IDや日付で絞る場合） */}
       <Route path="/users/:userId/evaluation/:feedback_id" element={<EvaluationDetail />} />
-       {/* 音声テスト用 */}
+      {/* 音声テスト用 */}
       <Route path="/audio-test" element={<AudioRecorderTest />} />
-
     </Routes>
   );
 }
 
 export default App;
-
-
-
 
 // // frontend/src/main.tsx修正前のコード
 // // ルーティング、画面構成
@@ -72,4 +71,3 @@ export default App;
 // }
 
 // export default App;
-
