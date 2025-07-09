@@ -250,6 +250,7 @@ const Evaluation: React.FC = () => {
                     color: "#333",
                     lineHeight: 1.6,
                     margin: 0,
+                    paddingTop: 12,
                   }}
                 >
                   {feedback.well_done}
@@ -286,6 +287,7 @@ const Evaluation: React.FC = () => {
                     color: "#333",
                     lineHeight: 1.6,
                     margin: 0,
+                    paddingTop: 12,
                   }}
                 >
                   {feedback.next_challenge}

@@ -8,6 +8,7 @@ import BackgroundWrapper from "../components/Background"; // 追加！
 type User = {
   id: string;
   name: string;
+  icon_image?: string;
 };
 
 type Score = {
@@ -73,7 +74,65 @@ const Record = () => {
   // 直近3件に絞る
   const recent3 = sortedData.slice(0, 3);
 
-  const headerTitle = user ? `${user.name} さんのきろく` : "きろく";
+  // ===== ヘッダー部分（カスタムJSX/タイトル文字なし） =====
+  const header = (
+    <div
+      style={{
+        position: "relative",
+        background: "#4bb3a7",
+        borderTopLeftRadius: 16,
+        borderTopRightRadius: 16,
+        height: 72,
+        display: "flex",
+        alignItems: "center",
+        padding: "0 24px",
+      }}
+    >
+      {user && (
+        <img
+          src={user.icon_image ? `/icons/${user.icon_image}` : "/icons/neko.png"}
+          alt="ユーザーアイコン"
+          style={{
+            width: 62,
+            height: 62,
+            borderRadius: "50%",
+            border: "2.5px solid #fff",
+            boxShadow: "0 2px 6px rgba(0,0,0,0.13)",
+            marginLeft: 0,
+            marginRight: 16,
+            objectFit: "cover",
+            background: "#fff",
+          }}
+        />
+      )}
+      {user && (
+        <div
+          style={{
+            background: "#f4bc21",
+            color: "#fff",
+            borderRadius: "26px",
+            padding: "8px 26px 7px 24px",
+            fontWeight: 900,
+            fontSize: "1.42rem",
+            letterSpacing: "0.08em",
+            fontFamily: "'Kosugi Maru','M PLUS Rounded 1c',sans-serif",
+            border: "2.8px solid #fff6c5",
+            textAlign: "center",
+            boxShadow: "0 5px 16px #ffe39d77",
+            userSelect: "none",
+            pointerEvents: "none",
+            marginLeft: 0,
+            lineHeight: 1.18,
+            minWidth: 128,
+          }}
+        >
+          {user.name + "さん"}
+        </div>
+      )}
+      {/* タイトル文字は絶対入れない！ */}
+    </div>
+  );
+
   const footerBar = (
     <div
       style={{
@@ -93,11 +152,6 @@ const Record = () => {
         label=""
         iconSrc="/icons/home.png"
       />
-      <IconButton
-        onClick={() => alert("このページはまだ準備中です！")}
-        label=""
-        iconSrc="/icons/watch.png"
-      />
     </div>
   );
 
@@ -114,7 +168,7 @@ const Record = () => {
   return (
     <BackgroundWrapper>
       <Layout>
-        <Card title={headerTitle} bottomBar={footerBar}>
+        <Card title={header} bottomBar={footerBar}>
           <div>
             {/* ここから表示を条件分岐 */}
             {loading ? (
@@ -139,9 +193,6 @@ const Record = () => {
                 >
                   ここには新しい3つだけ出てるよ
                   <br />
-                  <span style={{ fontWeight: "normal", fontSize: "0.97em" }}>
-                    ぜんぶは下のボタンで見られるよ
-                  </span>
                 </div>
                 {/* 記録一覧 */}
                 <div
