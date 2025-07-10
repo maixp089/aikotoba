@@ -128,7 +128,8 @@ const NewAccount = () => {
               style={{
                 width: "100%",
                 padding: "11px 12px",
-                marginBottom: "13px",
+                marginTop:"10px",
+                marginBottom: "30px",
                 borderRadius: "14px",
                 border: "2px solid #aad5bb",
                 fontSize: "1.09em",
@@ -154,6 +155,7 @@ const NewAccount = () => {
                 style={{
                   width: "100%",
                   padding: "11px 12px",
+                  marginBottom: "25px",
                   borderRadius: "14px",
                   border: "2px solid #aad5bb",
                   fontSize: "1.09em",

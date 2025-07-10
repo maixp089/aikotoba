@@ -91,7 +91,7 @@ export default function PresentationSetting() {
     borderRadius: 18,
     padding: "7px 14px",
     margin: "0 6px",
-    fontSize: 15,
+    fontSize: 17,
     fontWeight: selected ? 700 : 400,
     boxShadow: selected ? "0 1px 4px #b7d7bb44" : undefined,
     cursor: "pointer",
@@ -108,7 +108,7 @@ export default function PresentationSetting() {
     borderRadius: 14,
     padding: "7px 0",
     marginBottom: "6px",
-    fontSize: 14,
+    fontSize: 17,
     fontWeight: selected ? 700 : 400,
     boxShadow: selected ? "0 1.5px 6px #fa83a544" : undefined,
     cursor: "pointer",
@@ -126,103 +126,99 @@ export default function PresentationSetting() {
   });
 
   return (
-    <BackgroundWrapper>
+   <BackgroundWrapper>
       <Layout>
         <Card title={headerTitle} bottomBar={footerBar}>
-          <div
-            style={{
-              padding: 0,
-              paddingBottom: 0, // ← 明示！
-              height: "286px", // ← 高さはお好みで調整OK
-              // overflowY: "auto", // ← いったん外す！
-              margin: 0,
-              position: "relative", // ← 下端に絶対配置用
-            }}
+  <div
+    style={{
+      padding: 0,
+      margin: 0,
+      minHeight: "286px", // 高さはお好みで調整OK
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "flex-start",
+      alignItems: "center",
+    }}
+  >
+    {/* 時間セクション */}
+    <div style={{ marginBottom: 24, width: "100%" }}>
+      <div style={{ fontSize: 18, fontWeight: 900, marginBottom: 4 }}>
+        <span role="img" aria-label="clock">⏰</span>
+        <span style={{ marginLeft: 2 }}>
+          <ruby>
+            時間<rt style={{ fontSize: "0.55em" }}>じかん</rt>
+          </ruby>
+          をえらぼう！
+        </span>
+      </div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        {times.map((t) => (
+          <button
+            key={t.value}
+            onClick={() => setSelectedTime(t.value)}
+            style={timeBtnStyle(selectedTime === t.value)}
+            aria-pressed={selectedTime === t.value}
           >
-            {/* 時間セクション */}
-            <div style={{ marginBottom: 24 }}>
-              <div style={{ fontSize: 16, fontWeight: 900, marginBottom: 4 }}>
-                <span role="img" aria-label="clock">
-                  ⏰
-                </span>
-                <span style={{ marginLeft: 2 }}>
-                  <ruby>
-                    時間<rt style={{ fontSize: "0.55em" }}>じかん</rt>
-                  </ruby>
-                  をえらぼう！
-                </span>
-              </div>
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                {times.map((t) => (
-                  <button
-                    key={t.value}
-                    onClick={() => setSelectedTime(t.value)}
-                    style={timeBtnStyle(selectedTime === t.value)}
-                    aria-pressed={selectedTime === t.value}
-                  >
-                    {t.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-            {/* テーマセクション */}
-            <div style={{ marginBottom: 10, marginTop: 0 }}>
-              <div style={{ fontSize: 16, fontWeight: 900, marginBottom: 4 }}>
-                <span role="img" aria-label="tag">
-                  🏷️
-                </span>
-                <span style={{ marginLeft: 2 }}>テーマをえらぼう！</span>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                {themes.map((theme) => (
-                  <button
-                    key={theme}
-                    onClick={() => setSelectedTheme(theme)}
-                    style={themeCardStyle(selectedTheme === theme)}
-                    aria-pressed={selectedTheme === theme}
-                  >
-                    <span>{theme}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-            {/* スタートボタン（絶対配置パターン） */}
-            <button
-              onClick={handleStart}
-              style={{
-                width: "70%",
-                background: "#f2687b",
-                color: "#fff",
-                borderRadius: "24px",
-                fontSize: "1rem",
-                fontWeight: "bold",
-                boxShadow: "0 3px #c35665",
-                letterSpacing: "1.2px",
-                fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', sans-serif",
-                border: "none",
-                textAlign: "center",
-                outline: "none",
-                padding: "10px 0",
-                // margin: "20px auto -24px auto", ← marginは外す！
-                cursor: "pointer",
-                transition: "background 0.1s",
-                display: "block",
-                position: "absolute", // ← 追加
-                left: "50%",
-                bottom: 0,
-                transform: "translateX(-50%)",
-              }}
-            >
-              <span style={{ marginLeft: 5 }}>スタートする</span>
-            </button>
-          </div>
-        </Card>
+            {t.label}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    {/* テーマセクション */}
+    <div style={{ marginBottom: 18, width: "100%" }}>
+      <div style={{ fontSize: 20, fontWeight: 900, marginBottom: 4 }}>
+        <span role="img" aria-label="tag">🏷️</span>
+        <span style={{ marginLeft: 2 }}>テーマをえらぼう！</span>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
+        {themes.map((theme) => (
+          <button
+            key={theme}
+            onClick={() => setSelectedTheme(theme)}
+            style={themeCardStyle(selectedTheme === theme)}
+            aria-pressed={selectedTheme === theme}
+          >
+            <span>{theme}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    {/* スタートボタン */}
+    <button
+      onClick={handleStart}
+      style={{
+        width: "70%",
+        background: "#f2687b",
+        color: "#fff",
+        borderRadius: "24px",
+        fontSize: "1.2rem",
+        fontWeight: "bold",
+        boxShadow: "0 3px #c35665",
+        letterSpacing: "1.2px",
+        fontFamily: "'M PLUS Rounded 1c', 'Kosugi Maru', sans-serif",
+        border: "none",
+        textAlign: "center",
+        outline: "none",
+        padding: "10px 0",
+        cursor: "pointer",
+        transition: "background 0.1s",
+        display: "block",
+        margin: "0 auto 16px auto", // ← 下部に余白つけたい場合
+      }}
+    >
+      <span style={{ marginLeft: 5 }}>スタートする</span>
+    </button>
+  </div>
+</Card>
       </Layout>
     </BackgroundWrapper>
   );
