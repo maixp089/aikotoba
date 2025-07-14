@@ -32,7 +32,7 @@ const BackToMyPage = ({ userId, color }: BackToMyPageProps) => {
           boxSizing: "border-box",
         }}
       >
-        もどる
+        
       </button>
     </div>
   );

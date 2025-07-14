@@ -25,6 +25,7 @@ const Evaluation: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
   const location = useLocation();
   const feedback = (location.state as LocationState | undefined)?.feedback; // 型アサーションに変更
+
   const navigate = useNavigate();
 
   // ユーザー情報を取得
@@ -33,6 +34,7 @@ const Evaluation: React.FC = () => {
     if (!userId) return;
     fetch(`http://localhost:8000/users/${userId}`)
       .then((res) => (res.ok ? res.json() : Promise.reject()))
+
       .then((u: User) => setUser(u))
       .catch(() => {});
   }, [userId]);
@@ -104,7 +106,6 @@ const Evaluation: React.FC = () => {
             marginLeft: 0,
             lineHeight: 1.18,
             minWidth: 128,
-          }}
         >
           {user.name + "さん"}
         </div>
@@ -257,6 +258,7 @@ const Evaluation: React.FC = () => {
                     lineHeight: 1.6,
                     margin: 0,
                     paddingTop: 12,
+
                   }}
                 >
                   {feedback.well_done}
@@ -306,5 +308,6 @@ const Evaluation: React.FC = () => {
     </BackgroundWrapper>
   );
 };
-
+          
 export default Evaluation;
+
