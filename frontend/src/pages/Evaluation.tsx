@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import ToRecord from "../components/ToRecord";
-import BackIconButton from "../components/IconButton";
+import IconButton from "../components/IconButton";
 import { Layout, Card } from "../components";
 import BackgroundWrapper from "../components/Background";
 
@@ -23,8 +23,9 @@ interface LocationState {
 
 const Evaluation: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
-  const location = useLocation<LocationState>();
-  const feedback = location.state?.feedback;
+  const location = useLocation();
+  const feedback = (location.state as LocationState | undefined)?.feedback; // 型アサーションに変更
+
   const navigate = useNavigate();
 
   // ユーザー情報を取得
@@ -32,7 +33,8 @@ const Evaluation: React.FC = () => {
   useEffect(() => {
     if (!userId) return;
     fetch(`http://localhost:8000/users/${userId}`)
-      .then(res => res.ok ? res.json() : Promise.reject())
+      .then((res) => (res.ok ? res.json() : Promise.reject()))
+
       .then((u: User) => setUser(u))
       .catch(() => {});
   }, [userId]);
@@ -72,28 +74,28 @@ const Evaluation: React.FC = () => {
           src={getIconSrc(user.icon_image)}
           alt="ユーザーアイコン"
           style={{
-          width: 62, // ←大きめ
-          height: 62,
-          borderRadius: "50%",
-          border: "2.5px solid #fff",
-          boxShadow: "0 2px 6px rgba(0,0,0,0.13)",
-          marginLeft: -10,// ←左端
-          marginRight: 16, // 名前帯と離す
-          objectFit: "cover",
-          background: "#fff",
+            width: 62, // ←大きめ
+            height: 62,
+            borderRadius: "50%",
+            border: "2.5px solid #fff",
+            boxShadow: "0 2px 6px rgba(0,0,0,0.13)",
+            marginLeft: -10, // ←左端
+            marginRight: 16, // 名前帯と離す
+            objectFit: "cover",
+            background: "#fff",
           }}
         />
       )}
       {/* 名前帯UI（大きく） */}
-    {user && (
-      <div
-        style={{
-          background: "#f4bc21",
+      {user && (
+        <div
+          style={{
+            background: "#f4bc21",
             color: "#fff",
             borderRadius: "26px",
-            padding: "8px 26px 7px 24px",
+            padding: "8px 26px 7px 24px", // ←内側余白多め
             fontWeight: 900,
-            fontSize: "1.42rem",
+            fontSize: "1.2rem", // ←大きく
             letterSpacing: "0.08em",
             fontFamily: "'Kosugi Maru','M PLUS Rounded 1c',sans-serif",
             border: "2.8px solid #fff6c5",
@@ -104,7 +106,6 @@ const Evaluation: React.FC = () => {
             marginLeft: 0,
             lineHeight: 1.18,
             minWidth: 128,
-        }}
         >
           {user.name + "さん"}
         </div>
@@ -127,16 +128,19 @@ const Evaluation: React.FC = () => {
         width: "100%",
       }}
     >
-      <BackIconButton
+      <IconButton
         onClick={() => navigate(-1)}
         iconSrc="/icons/back.png"
         alt="もどる"
-        size={64}
+        size={55}
       />
-      <ToRecord
-        onClick={() => navigate(`/users/${userId}/record`)}
-        size={64}
+      <IconButton
+        onClick={() => navigate(`/users/${userId}/mypage`)}
+        iconSrc="/icons/home.png"
+        alt="もどる"
+        size={60}
       />
+      <ToRecord onClick={() => navigate(`/users/${userId}/record`)} size={60} />
     </div>
   );
 
@@ -253,6 +257,8 @@ const Evaluation: React.FC = () => {
                     color: "#333",
                     lineHeight: 1.6,
                     margin: 0,
+                    paddingTop: 12,
+
                   }}
                 >
                   {feedback.well_done}
@@ -289,6 +295,7 @@ const Evaluation: React.FC = () => {
                     color: "#333",
                     lineHeight: 1.6,
                     margin: 0,
+                    paddingTop: 12,
                   }}
                 >
                   {feedback.next_challenge}
@@ -301,5 +308,6 @@ const Evaluation: React.FC = () => {
     </BackgroundWrapper>
   );
 };
-
+          
 export default Evaluation;
+

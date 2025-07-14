@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Layout, Card } from "../components";
 import BackgroundWrapper from "../components/Background";
-import BackIconButton from "../components/IconButton";  // ← こちらをインポート
+import IconButton from "../components/IconButton";  // ← こちらをインポート
 
 // API のレスポンスに合わせた型定義
 type Feedback = {
@@ -15,12 +15,20 @@ type Feedback = {
   created_at: string; // ISO 文字列
 };
 
+type User = {
+  id: string;
+  name: string;
+  age: number;
+  icon_image: string;
+};
+
 const EvaluationDetail: React.FC = () => {
   const { feedback_id, userId } = useParams<{ feedback_id: string; userId: string }>();
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     if (!feedback_id) return;
@@ -34,6 +42,18 @@ const EvaluationDetail: React.FC = () => {
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
   }, [feedback_id]);
+
+  // ユーザー情報取得
+useEffect(() => {
+  if (!userId) return;
+  fetch(`http://localhost:8000/users/${userId}`)
+    .then((res) => res.ok ? res.json() : Promise.reject())
+    .then((u: User) => setUser(u))
+    .catch(() => {});
+}, [userId]);
+
+const getIconSrc = (icon: string) =>
+  icon ? `/icons/${icon}` : "/icons/neko.png";
 
   if (loading) {
     return (
@@ -59,20 +79,93 @@ const EvaluationDetail: React.FC = () => {
 
   // 日付フォーマット
   const date = new Date(feedback.created_at);
-  const displayDate = `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日 ${date.getHours()}時${date.getMinutes()}分`;
+  const displayDate = `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日 `;
+  
+  // カスタムヘッダー
+const header = (
+  <div
+    style={{
+      position: "relative",
+      background: "#4bb3a7",
+      borderTopLeftRadius: 16,
+      borderTopRightRadius: 16,
+      height: 72,
+      display: "flex",
+      alignItems: "center",
+      padding: "0 24px",
+    }}
+  >
+    {/* ユーザーアイコン */}
+    {user && (
+      <img
+        src={getIconSrc(user.icon_image)}
+        alt="ユーザーアイコン"
+        style={{
+          width: 62,
+          height: 62,
+          borderRadius: "50%",
+          border: "2.5px solid #fff",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.13)",
+          marginLeft: -10,
+          marginRight: 16,
+          objectFit: "cover",
+          background: "#fff",
+        }}
+      />
+    )}
+    {/* 名前帯 */}
+    {user && (
+      <div
+        style={{
+          background: "#f4bc21",
+          color: "#fff",
+          borderRadius: "26px",
+          padding: "8px 26px 7px 24px",
+          fontWeight: 900,
+          fontSize: "1.2rem",
+          letterSpacing: "0.08em",
+          fontFamily: "'Kosugi Maru','M PLUS Rounded 1c',sans-serif",
+          border: "2.8px solid #fff6c5",
+          textAlign: "center",
+          boxShadow: "0 5px 16px #ffe39d77",
+          userSelect: "none",
+          pointerEvents: "none",
+          marginLeft: 0,
+          lineHeight: 1.18,
+          minWidth: 128,
+        }}
+      >
+        {user.name + "さん"}
+      </div>
+    )}
+  </div>
+);
 
   // フッターバー：もどるボタンのみ
   const footerBar = (
     <div
       style={{
         display: "flex",
-        justifyContent: "center",  // 中央寄せ
-        padding: "12px 0",
+        alignItems: "center",
+        justifyContent: "space-around",
+        width: "100%",
+        padding: "0 18px",
+        background: "#4bb3a7",
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
+        minHeight: 80,
       }}
     >
-      <BackIconButton
+      <IconButton
+        onClick={() => navigate(-1)}
+        iconSrc="/icons/back.png"
+        alt="もどる"
+        size={55}
+      />
+      <IconButton
         onClick={() => navigate(`/users/${userId}/mypage`)}
-        size={60}
+        label=""
+        iconSrc="/icons/home.png"
       />
     </div>
   );
@@ -80,10 +173,7 @@ const EvaluationDetail: React.FC = () => {
   return (
     <BackgroundWrapper>
       <Layout>
-        <Card 
-         title={"\u200B"}    // ゼロ幅スペースを渡して“空文字”の見た目に
-         bottomBar={footerBar}
-        >
+        <Card title={header} bottomBar={footerBar}>
           <div
             style={{
               display: "flex",
@@ -180,8 +270,11 @@ const EvaluationDetail: React.FC = () => {
                     fontSize: "0.8rem",
                   }}
                 >
-                  スピーチ
+                  テーマ
                 </div>
+                <span style={{ fontSize: "0.8rem", color: "#333" }}>
+                    すきなたべもの {/*ここはいずれDBからもってくる*/}
+                </span>
               </div>
               {/* 評価日 */}
               <div

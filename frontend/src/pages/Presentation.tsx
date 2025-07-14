@@ -14,19 +14,15 @@ const durations = [3000, 370];
 const Presentation = () => {
   const location = useLocation();
   const { time, theme } = location.state || {}; // ← ★ここで前ページの時間とテーマを取得！timeを変更する場合は追加
-
   const RECORDING_TIME_SEC = time ?? 10; //★timeを設定するなら「time ?? 10」これにする
-
   const navigate = useNavigate();
   const { userId } = useParams<{ userId: string }>();
-
   const [index, setIndex] = useState(0);
   const [audioState, setAudioState] = useState<"ready" | "recording" | "done">(
     "ready"
   );
   const [isLoading, setIsLoading] = useState(false);
   const [timer, setTimer] = useState<number>(RECORDING_TIME_SEC);
-
   const audioRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
   const stopTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -38,8 +34,8 @@ const Presentation = () => {
     }, durations[index]);
     return () => clearTimeout(timerId);
   }, [index]);
-
   useEffect(() => {
+
     navigator.mediaDevices
       .getUserMedia({ audio: true })
       .then(handleSuccess)
@@ -53,7 +49,6 @@ const Presentation = () => {
     const mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
     audioRef.current = mediaRecorder;
     chunksRef.current = [];
-
     mediaRecorder.ondataavailable = (e) => {
       if (e.data.size > 0) {
         chunksRef.current.push(e.data);
@@ -76,7 +71,6 @@ const Presentation = () => {
           return prev - 1;
         });
       }, 1000);
-
       stopTimerRef.current = setTimeout(() => {
         if (audioRef.current && audioRef.current.state === "recording") {
           audioRef.current.stop();
@@ -90,7 +84,6 @@ const Presentation = () => {
       intervalRef.current = null;
       clearTimeout(stopTimerRef.current!);
       stopTimerRef.current = null;
-
       const blob = new Blob(chunksRef.current, { type: "audio/webm" });
       await sendAudioToAPI(blob);
     };
@@ -117,22 +110,18 @@ const Presentation = () => {
       alert("ユーザー情報が取得できませんでした");
       return;
     }
-
     setIsLoading(true);
     const formData = new FormData();
     formData.append("file", blob, "recording.webm");
     formData.append("user_id", userId);
-
     try {
       const res = await fetch("http://localhost:8000/api/audio-feedback", {
         method: "POST",
         body: formData,
       });
       if (!res.ok) throw new Error("送信失敗");
-
       const data = await res.json();
       console.log("APIレスポンス", data);
-
       navigate(`/users/${userId}/evaluation`, { state: { feedback: data } });
     } catch (error) {
       alert("音声送信に失敗しました");
@@ -188,6 +177,7 @@ const Presentation = () => {
       </span>
     </div>
   );
+  
   const footerBar = (
     <div
       style={{
@@ -216,7 +206,6 @@ const Presentation = () => {
       />
     </div>
   );
-
   return (
     <BackgroundWrapper>
       <Layout>
@@ -238,7 +227,6 @@ const Presentation = () => {
                 ちょっと待ってね
               </p>
             )}
-
             {/* マイク＆ロボット */}
             <div
               style={{
@@ -280,7 +268,6 @@ const Presentation = () => {
                 }}
               />
             </div>
-
             {/* 残り時間 */}
             {audioState === "recording" && (
               <p
@@ -295,7 +282,6 @@ const Presentation = () => {
                 あと {timer}秒
               </p>
             )}
-
             {/* 練習ボタン */}
             <div
               style={{
@@ -353,3 +339,5 @@ const Presentation = () => {
 };
 
 export default Presentation;
+
+
