@@ -29,7 +29,7 @@ const Home = () => {
   return (
     <div
       style={{
-        minHeight: "105vh",
+        minHeight: "100vh",
         width: "100vw",
         background: "linear-gradient(120deg,#d4efd7 0%, #f8f5e1 100%)",
         display: "flex",
