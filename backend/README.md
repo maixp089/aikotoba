@@ -95,4 +95,82 @@ docker compose down
 * `.env` ファイルの設定は環境に合わせて変更する
 ---
 
+## 使用技術・依存ライブラリ
+- Python 3.10以上
+- FastAPI
+- SQLAlchemy
+- Alembic
+- PostgreSQL
+- OpenAI API（Whisper, GPT）
+- その他: requirements.txt 参照
+
+### 主要依存パッケージ（抜粋）
+- fastapi
+- uvicorn
+- sqlalchemy
+- alembic
+- psycopg2-binary
+- python-dotenv
+- openai
+- python-multipart
+
+---
+
+## セットアップ手順（Docker未使用の場合）
+
+1. Python仮想環境の作成（推奨）
+```bash
+python -m venv venv
+source venv/bin/activate  # Windowsは venv\Scripts\activate
+```
+2. 依存パッケージのインストール
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 開発・テスト・起動コマンド
+
+- 開発サーバー起動（ローカル）
+```bash
+uvicorn app.main:app --reload
+```
+- マイグレーション
+```bash
+alembic upgrade head
+```
+- テスト（pytest等を導入した場合）
+```bash
+pytest
+```
+
+---
+
+## 環境変数設定例（.envサンプル）
+
+```
+# .env.example
+DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+OPENAI_API_KEY=sk-xxxxxxx
+SECRET_KEY=your_secret_key
+```
+
+---
+
+## APIエンドポイント概要（例）
+
+- GET `/` ... 動作確認用
+- GET `/users` ... ユーザー一覧取得
+- POST `/users` ... ユーザー新規作成
+- GET `/users/{user_id}` ... ユーザー詳細取得
+- DELETE `/users/{user_id}` ... ユーザー削除
+- GET `/score` ... スコア取得
+- POST `/audio/upload` ... 音声アップロード
+- POST `/audio/transcribe` ... 音声→テキスト変換
+
+詳細は [docs/API.md](../docs/API.md) も参照してください。
+
+---
+
 以上
