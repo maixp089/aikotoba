@@ -41,5 +41,6 @@
 **備考：**  
 - PK：主キー（Primary Key）  
 - FK：外部キー（Foreign Key）  
-- 日時型（datetime）はUTC基準
+- 日時型（datetime）はUTC基準  
 
+**ER図：[docs/aikotoba.er.png](/docs/aikotoba.er.png)**  
