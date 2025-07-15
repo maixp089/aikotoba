@@ -4,11 +4,15 @@
 あいことばは、小学4年生（10歳）くらいの子どもたちを主な対象とした「自分の考えを自信を持って話す力」を育てるWebアプリです。
 プレゼンを録音・AIがフィードバック・点数化・ランキング形式で、楽しみながらプレゼン力を高められます。
 
+---
+
 ## 目的・背景（Why this app?）
 日本の子どもは「みんなの前で発表するのが苦手」「自分の意見を伝える自信がない」傾向が強い。
 学校や家庭だけでは体系的なプレゼン教育や語彙力のトレーニング機会が少ない。
 授業や発表の場で自分の言葉で意見を伝えられるようになりたい。
 そんな子どもたちが、皆の前で自信を持って発表できるためのアプリです！
+
+---
 
 ## 主な機能（Features）
 
@@ -26,6 +30,8 @@
 
 - 最高スコアがマイページに表示されます。
 
+---
+
 ## 技術構成（Tech stack）
 | 項目           | 技術／サービス名                             | 備考・説明                        |
 |----------------|------------------------------------------|---------------------------------|
@@ -37,11 +43,14 @@
 | AI解析         | GPT-4o-mini                               | フィードバック生成／自動採点     |
 | 認証           | Firebase Authentication（Googleログイン）  | 安全なログイン・ユーザー管理      |
 
+---
+
 ## 各種リンク（Useful Links）
 
 ### 🟦 API関連
 
 - [API設計書 / API Documentation (API.md)](./docs/API.md)
+- [DB設計書 / DB Documentation (DB.md)](./docs/DB.md)
 - [ER図イメージ / ER Diagram](./docs/aikotoba.er.png)
 
 ### 🟩 テスト関連（Testing）
@@ -55,6 +64,8 @@
 - [バックエンドREADME / Backend README](./backend/README.md)
 - [コーディング規約 / Coding Guidelines](./docs/Coding_Style.md)
 - [シェルスクリプト使い方 / Shell Script Usage](./docs/sh.info.md)
+
+---
 
 ## ディレクトリ構成（Directory Structure）
 
@@ -101,7 +112,7 @@ backend/
 ├── requirements.txt   # Python依存パッケージ
 └── ...
 ```
-
+---
 
 ## 開発ルール（Development Rules）
 ### 1. ブランチ運用
@@ -161,7 +172,7 @@ backend/
 
 ---
 
-## 共通セットアップ手順
+## 共通セットアップ手順(General Setup Instructions)
 
 ### 1. リポジトリのクローン
 ```bash
