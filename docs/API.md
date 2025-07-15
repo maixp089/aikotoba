@@ -1,14 +1,13 @@
 ## 目次
 
-| No. | 機能名                  | メソッド | エンドポイント              | 主なパラメータ・備考          |
-|-----|-------------------------|----------|-----------------------------|------------------------------|
-| 1   | ユーザー存在チェック    | GET      | /users/search               | firebase_uid（query, 必須）  |
-| 2   | ユーザー新規登録        | POST     | /users                      | JSON（firebase_uid, name, age, icon_image）|
-| 3   | ユーザー情報取得        | GET      | /users/{user_id}            | user_id（パス, 必須）        |
-| 4   | 音声評価（AIスコア取得）| POST     | /audio-feedback             | FormData（file, user_id）    |
-| 5   | フィードバック取得      | GET      | /audio-feedback             | user_id（query, 必須）       |
-| 6   | スコア一覧取得          | GET      | /users/{user_id}/scores     | user_id（パス, 必須）        |
-| 7   | ランキング取得          | GET      | /ranking                    | week（query, 任意）          |
+| No. | 機能名                  | メソッド | エンドポイント                        | 主なパラメータ・備考          |
+|-----|-------------------------|----------|---------------------------------------|------------------------------|
+| 1   | ユーザー存在チェック    | GET      | /users/search                         | firebase_uid（query, 必須）  |
+| 2   | ユーザー新規登録        | POST     | /users                                | JSON（firebase_uid, name, age, icon_image）|
+| 3   | ユーザー情報取得        | GET      | /users/{user_id}                      | user_id（パス, 必須）        |
+| 4   | 音声評価（AIスコア取得）| POST     | /audio-feedback                       | FormData（file, user_id）    |
+| 5   | スコア一覧取得          | GET      | /users/{user_id}/scores               | user_id（パス, 必須）        |
+| 6   | スコア詳細取得          | GET      | /api/audio-feedback/{feedback_id}     | feedback_id（パス, 必須）    |
 
 ---
 
@@ -177,39 +176,7 @@ fetch('http://localhost:8000/audio-feedback', {
 ```
 ---
 
-## 5. フィードバック取得
-
-| 項目           | 内容                              |
-|----------------|-----------------------------------|
-| メソッド       | GET                               |
-| エンドポイント | `/audio-feedback`                 |
-| クエリパラメータ | `user_id`（UUID, 必須）          |
-| 内容           | 最新フィードバックの取得           |
-
-### リクエスト例
-```sh
-GET /audio-feedback?user_id=123
-```
-### レスポンス例
-```
-{
-  "id": "b123a1c2-d456-789e-0f12-34567abcdef1",
-  "user_id": 123,
-  "transcript": "こんにちは。みんなも一緒にサッカーしませんか",
-  "word_score": 82,
-  "flow_score": 78,
-  "expression_score": 85,
-  "hook_score": 70,
-  "confidence_score": 88,
-  "total_score": 81,
-  "well_done": "堂々とした発表でした！",
-  "next_challenge": "もう少し具体例を入れてみましょう。",
-  "created_at": "2025-07-04T12:34:56"
-}
-```
----
-
-## 6. スコア一覧取得
+## 5. スコア一覧取得
 
 | 項目           | 内容                                    |
 |----------------|-----------------------------------------|
@@ -239,56 +206,32 @@ GET /audio-feedback?user_id=123
 ```
 ---
 
-## 7. ランキング取得
+## 6. スコア詳細取得
 
-| 項目           | 内容                                       |
-|----------------|--------------------------------------------|
-| メソッド       | GET                                        |
-| エンドポイント | `/ranking`                                 |
-| クエリパラメータ | `week`（任意, 例: 2025-07-01）           |
-| 概要           | 今週のユーザーランキングを取得             |
+| 項目           | 内容                                    |
+|----------------|-----------------------------------------|
+| メソッド       | GET                                     |
+| エンドポイント | `/api/audio-feedback/{feedback_id}`      |
+| パスパラメータ | `feedback_id`（int, 必須）              |
+| 概要           | 指定フィードバックIDの詳細を取得         |
 
 ### リクエスト例
-```sh
-GET /ranking
-GET /ranking?week=2025-07-01
 ```
+GET /api/audio-feedback/123
+```
+
 ### レスポンス例
-```sh
-[
-  {
-    "rank": 1,
-    "user_id": "b121d128-2ae7-455e-8efb-7ef9c7e9d3c8",
-    "name": "Aくん",
-    "icon_image": "icon1.png",
-    "score": 97
-  },
-  {
-    "rank": 2,
-    "user_id": "a5e42d12-15b4-4129-9947-879b2d36b13f",
-    "name": "Bくん",
-    "icon_image": "icon2.png",
-    "score": 90
-  },
-  {
-    "rank": 3,
-    "user_id": "ef891024-4421-4a72-81b5-cf2e1db18eb9",
-    "name": "Cくん",
-    "icon_image": "icon3.png",
-    "score": 85
-  }
-]
 ```
-### フィールド説明
-
-| フィールド    | 型    | 説明                         |
-|---------------|-------|------------------------------|
-| rank          | int   | 順位                         |
-| user_id       | UUID  | ユーザーID                   |
-| name          | string| ユーザー名                   |
-| icon_image    | string| プロフィール画像             |
-| score         | int   | 今週の合計スコア or 最新スコア|
-
+{
+  "id": 123,
+  "user_id": "b121d128-2ae7-455e-8efb-7ef9c7e9d3c8",
+  "presentation_id": 456,
+  "total_score": 81,
+  "well_done": "堂々とした発表でした！",
+  "next_challenge": "もう少し具体例を入れてみましょう。",
+  "created_at": "2025-07-04T12:34:56"
+}
+```
 ---
 
 ## 備考・リンク

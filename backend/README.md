@@ -39,19 +39,19 @@ python-multipart
 ```
 backend/
 ├── app/
-│   ├── api/           # APIルーター群
-│   │   ├── users.py
-│   │   ├── score.py
-│   │   ├── audio.py
-│   │   ├── audio_feedback.py
-│   ├── db/            # DB関連
+│   ├── api/                # APIルーター群
+│   │   ├── users.py          # user関連
+│   │   ├── score.py          # 評価関連
+│   │   ├── audio.py          # 音声認識→フィードバック
+│   │   ├── audio_feedback.py # 記録ページ
+│   ├── db/                 # DB関連
 │   │   ├── models.py
 │   │   ├── schemas.py
 │   │   ├── database.py
 │   │   └── seed.py
-│   ├── llm/           # LLM（GPT）連携
+│   ├── llm/                # LLM（GPT）連携
 │   │   └── client.py
-│   ├── whisper/       # Whisper連携
+│   ├── whisper/            # Whisper連携
 │   │   ├── client.py
 │   │   └── transcription.py
 │   └── main.py        # エントリーポイント
@@ -79,7 +79,7 @@ cd sec9_teamB
 
 ### 3. .envファイル作成
 
-`.env` ファイルをルートに作成し、下記を記入（例）：
+`.env` ファイルを直ルートに作成し、下記を記入（例）：
 
 ```
 POSTGRES_DB=app_db
@@ -87,9 +87,9 @@ POSTGRES_USER=app_user
 POSTGRES_PASSWORD=securepassword
 POSTGRES_HOST=db
 POSTGRES_PORT=5432
+
 OPENAI_API_KEY=sk-xxxxxxx
 WHISPER_API_KEY=sk-xxxxxxx
-SECRET_KEY=your_secret_key
 ```
 
 ### 4. Dockerで起動
