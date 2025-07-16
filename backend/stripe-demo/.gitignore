@@ -1,0 +1,22 @@
+# --- バックエンド ---
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env/
+*.egg-info/
+*.egg
+.Python
+
+# FastAPI/SQLAlchemy
+*.db
+*.sqlite3
+alembic/versions/*.pyc
+alembic/versions/__pycache__/
+
+# --- Docker ---
+*.pid
+*.pid.lock
+db_data/
+postgres_data/
+*.sock

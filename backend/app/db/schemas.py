@@ -8,6 +8,7 @@ class UserBase(BaseModel):
     name: str    
     age: int | None = None
     icon_image: str | None = None
+    paid: bool = False  # ←★有償フラグを追加
 
 class UserCreate(UserBase):
     pass
@@ -15,6 +16,7 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: UUID
     created_at: datetime
+
     class Config:
         orm_mode = True
 

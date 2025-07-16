@@ -47,3 +47,13 @@ def read_user(user_id: UUID, db: Session = Depends(get_db)):
     if user is None:
         raise HTTPException(status_code=404, detail="ユーザーが見つかりません")
     return user
+
+# 4. paidフラグをTrueにするAPI（決済後に呼び出す）//★追加　決済後「練習する」ボタン使える
+@router.post("/{user_id}/paid")
+def set_paid(user_id: UUID, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="ユーザーが見つかりません")
+    user.paid = True
+    db.commit()
+    return {"ok": True}

@@ -1,7 +1,8 @@
-from sqlalchemy import Column, String, Integer, Text, DateTime, ForeignKey
+from sqlalchemy import Column, String, Integer, Text, DateTime, ForeignKey, Boolean
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+import sqlalchemy
 import uuid
 import datetime
 
@@ -15,9 +16,16 @@ class User(Base):
     age = Column(Integer)
     icon_image = Column(String(255))
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    paid = Column(
+        Boolean, 
+        nullable=False,                            # ←null許可しない
+        default=False,                             # ←Python上のデフォルト
+        server_default=sqlalchemy.sql.expression.false()  # ←DBレベルでもデフォルト
+    )
 
-    presentations = relationship("Presentation", back_populates="user", cascade="all, delete-orphan") #１ユーザー複数発表
-    feedbacks = relationship("Feedback", back_populates="user", cascade="all, delete-orphan") #1ユーザー複数フィードバック
+    presentations = relationship("Presentation", back_populates="user", cascade="all, delete-orphan")
+    feedbacks = relationship("Feedback", back_populates="user", cascade="all, delete-orphan")
+    payments = relationship("Payment", back_populates="user", cascade="all, delete-orphan")
 
 class Presentation(Base):
     __tablename__ = "presentations"
@@ -27,7 +35,7 @@ class Presentation(Base):
     audio_url = Column(String(255))
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
-    user = relationship("User", back_populates="presentations") 
+    user = relationship("User", back_populates="presentations")
     feedbacks = relationship("Feedback", back_populates="presentation", cascade="all, delete-orphan")
 
 class Feedback(Base):
@@ -40,6 +48,16 @@ class Feedback(Base):
     next_challenge = Column(Text)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
-    user = relationship("User", back_populates="feedbacks") #
+    user = relationship("User", back_populates="feedbacks")
     presentation = relationship("Presentation", back_populates="feedbacks")
+    
+class Payment(Base):
+    __tablename__ = "payments"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    amount = Column(Integer, nullable=False)
+    status = Column(String(20), nullable=False)
+    stripe_session_id = Column(String(255))
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
+    user = relationship("User", back_populates="payments")
