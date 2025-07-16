@@ -159,7 +159,7 @@ npm run dev
 
 #### 👤 マイページ (`MyPage.tsx`)
 - ユーザー情報表示
-- 練習履歴とスコア表示
+- 最高スコアの表示
 - ナビゲーションメニュー
 
 #### 🎤 プレゼンテーション画面 (`Presentation.tsx`)
@@ -448,7 +448,8 @@ export default defineConfig({
 - TypeScriptの厳密モード使用
 - ESLint + Prettierでコード品質管理
 - コンポーネントは関数型コンポーネント
-- Hooksを活用した状態管理
+- Hooksを活用した状態管理  
+
 [詳しくはコチラ](../docs/Coding_Style.md)
 
 ### ファイル命名規則

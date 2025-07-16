@@ -3,27 +3,33 @@ import { useNavigate } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../lib/firebase";
 import Card from "../components/Card";
+import log from "loglevel";
 
 const Home = () => {
   const navigate = useNavigate();
 
   const handleStart = async () => {
+    log.info("Google認証開始");
     try {
       const result = await signInWithPopup(auth, googleProvider);
+      log.info("Google認証成功", result.user.uid);
       const firebase_uid = result.user.uid;
+      log.info("ユーザー検索API呼び出し", firebase_uid);
       const res = await fetch(
         `http://localhost:8000/users/search?firebase_uid=${firebase_uid}`
       );
       const data = await res.json();
       if (data) {
+        log.info("既存ユーザー、マイページへ遷移", data.id);
         navigate(`/users/${data.id}/mypage`);
       } else {
+        log.info("新規ユーザー、登録画面へ遷移", firebase_uid);
         navigate("/new-account", { state: { firebase_uid } });
       }
     } catch (e) {
-  console.error(e); // ← 追加
-  alert("Googleログインに失敗しました");
-}
+      log.error("Googleログイン失敗", e);
+      alert("Googleログインに失敗しました");
+    }
   };
 
   return (

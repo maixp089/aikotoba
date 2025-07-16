@@ -7,6 +7,7 @@ import Rec from "../components/Rec";
 import IconButton from "../components/IconButton";
 import BackgroundWrapper from "../components/Background";
 import { useLocation } from "react-router-dom"; // 時間とテーマを取得するため
+import log from "loglevel";
 
 const images = [robotYellow];
 const durations = [3000, 370];
@@ -46,6 +47,7 @@ const Presentation = () => {
   }, []);
 
   const handleSuccess = (stream: MediaStream) => {
+    log.info("マイク取得成功");
     const mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
     audioRef.current = mediaRecorder;
     chunksRef.current = [];
@@ -56,6 +58,7 @@ const Presentation = () => {
     };
 
     mediaRecorder.onstart = () => {
+      log.info("録音開始");
       setAudioState("recording");
       setTimer(RECORDING_TIME_SEC);
       intervalRef.current = setInterval(() => {
@@ -79,6 +82,7 @@ const Presentation = () => {
     };
 
     mediaRecorder.onstop = async () => {
+      log.info("録音終了");
       setAudioState("done");
       clearInterval(intervalRef.current!);
       intervalRef.current = null;
@@ -90,12 +94,14 @@ const Presentation = () => {
   };
 
   const handleStart = () => {
+    log.info("録音ボタン押下: state=", audioState);
     if (audioRef.current && audioState === "ready") {
       audioRef.current.start();
     }
   };
 
   const handleStop = () => {
+    log.info("録音停止ボタン押下: state=", audioState);
     if (audioRef.current && audioState === "recording") {
       audioRef.current.stop();
       clearTimeout(stopTimerRef.current!);
@@ -106,7 +112,9 @@ const Presentation = () => {
   };
 
   const sendAudioToAPI = async (blob: Blob) => {
+    log.info("音声データAPI送信開始", { userId, blob });
     if (!userId) {
+      log.error("ユーザー情報が取得できませんでした");
       alert("ユーザー情報が取得できませんでした");
       return;
     }
@@ -121,11 +129,11 @@ const Presentation = () => {
       });
       if (!res.ok) throw new Error("送信失敗");
       const data = await res.json();
-      console.log("APIレスポンス", data);
+      log.info("APIレスポンス受信", data);
       navigate(`/users/${userId}/evaluation`, { state: { feedback: data } });
     } catch (error) {
+      log.error("音声送信に失敗", error);
       alert("音声送信に失敗しました");
-      console.error(error);
     } finally {
       setIsLoading(false);
     }
