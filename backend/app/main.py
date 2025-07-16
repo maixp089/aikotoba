@@ -5,6 +5,7 @@ from app.api import score
 from app.api import audio_feedback
 from app.api.audio import router as audio_router
 # from app.api import feedback 　# フィードバックAPIはフロントエンドから直接呼び出さないので、ルーティングから外す
+from loguru import logger
 
 
 app = FastAPI()
@@ -23,6 +24,9 @@ app.include_router(score.router)
 app.include_router(audio_feedback.router)
 app.include_router(audio_router, prefix="/api")
 # app.include_router(feedback.router, prefix="/api") 　# 不要につきコメントアウト
+
+logger.add("debug.log", rotation="1 MB")  # 1MBごとにローテーション
+logger.debug("アプリケーションが起動しました")
 
 @app.get("/")
 def read_root():
