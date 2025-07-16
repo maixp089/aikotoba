@@ -18,8 +18,14 @@ const Home = () => {
       const res = await fetch(
         `http://localhost:8000/users/search?firebase_uid=${firebase_uid}`
       );
+      if (!res.ok) {
+        log.error("ユーザー検索APIエラー", res.status);
+        alert("ユーザー検索に失敗しました");
+        return;
+      }
       const data = await res.json();
-      if (data) {
+      if (data && data.id) {
+        // idが存在するかチェック
         log.info("既存ユーザー、マイページへ遷移", data.id);
         navigate(`/users/${data.id}/mypage`);
       } else {

@@ -127,8 +127,17 @@ const Presentation = () => {
         method: "POST",
         body: formData,
       });
-      if (!res.ok) throw new Error("送信失敗");
+      if (!res.ok) {
+        log.error("音声フィードバックAPIエラー", res.status);
+        alert("音声フィードバックAPIに失敗しました");
+        return;
+      }
       const data = await res.json();
+      if (!data || !data.total_score) {
+        log.error("APIレスポンスのバリデーション失敗", data);
+        alert("APIレスポンスが不正です");
+        return;
+      }
       log.info("APIレスポンス受信", data);
       navigate(`/users/${userId}/evaluation`, { state: { feedback: data } });
     } catch (error) {

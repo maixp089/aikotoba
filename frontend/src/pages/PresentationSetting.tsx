@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Layout, Card } from "../components";
 import BackgroundWrapper from "../components/Background";
 import IconButton from "../components/IconButton";
+import log from "loglevel";
 
 const themes = ["すきなスポーツ", "さいきんうれしかったこと", "すきなたべもの"];
 
@@ -27,14 +28,44 @@ export default function PresentationSetting() {
 
   // --- ユーザー情報のfetch ---
   useEffect(() => {
-    if (!userId) return;
+    if (!userId) {
+      log.error("userIdがURLにありません");
+      alert("ユーザー情報が取得できませんでした");
+      return;
+    }
     fetch(`http://localhost:8000/users/${userId}`)
-      .then((res) => res.ok ? res.json() : Promise.reject())
-      .then((data: User) => setUser(data))
+      .then((res) => {
+        if (!res.ok) {
+          log.error("ユーザー情報取得APIエラー", res.status);
+          alert("ユーザー情報の取得に失敗しました");
+          return Promise.reject();
+        }
+        return res.json();
+      })
+      .then((data: User) => {
+        if (!data || !data.id) {
+          log.error("ユーザーデータのバリデーション失敗", data);
+          alert("ユーザー情報が不正です");
+          setUser(null);
+          return;
+        }
+        setUser(data);
+      })
       .catch(() => setUser(null));
   }, [userId]);
 
   const handleStart = () => {
+    if (!userId) {
+      log.error("userIdがありません。発表画面に遷移できません");
+      alert("ユーザー情報が取得できませんでした");
+      return;
+    }
+    if (!selectedTheme || !selectedTime) {
+      log.error("テーマまたは時間が未選択");
+      alert("テーマと時間を選択してください");
+      return;
+    }
+    log.info("発表画面へ遷移", { userId, selectedTheme, selectedTime });
     navigate(`/users/${userId}/presentation`, {
       state: { time: selectedTime, theme: selectedTheme },
     });
