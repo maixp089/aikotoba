@@ -19,7 +19,6 @@
 - 音声認識
   - 発表を録音すると、AIが音声をテキストに変換（音声認識）
   - 変換されたテキストをもとに、AIがフィードバックや採点を自動で生成
-
 - AIによる自動フィードバック  
   音声データをAIが解析し、下記の5項目の観点で採点・総合スコアとアドバイスを返します。
     - 語彙力（言葉の増え方）
@@ -27,8 +26,9 @@
     - 伝える力
     - 心のつかみ方
     - 自信の見せ方
-
 - 最高スコアがマイページに表示されます。
+- 決済機能（Stripe連携 
+  - Stripeを利用した有料機能の決済が可能です。
 
 ---
 
@@ -42,6 +42,7 @@
 | 音声認識       | OpenAI Whisper                            | 音声→テキスト変換               |
 | AI解析         | GPT-4o-mini                               | フィードバック生成／自動採点     |
 | 認証           | Firebase Authentication（Googleログイン）  | 安全なログイン・ユーザー管理      |
+| 決済       | Stripe                               | 有料機能の決済処理          |
 
 ---
 
@@ -73,6 +74,7 @@
 ```
 sec9_teamB/
 ├── backend/           # バックエンド（fastAPIサーバー）
+│   └── stripe-demo/   # Stripe決済デモAPIサーバー（決済機能用）
 ├── frontend/          # フロントエンド（Reactアプリ）
 ├── docs/              # ドキュメント類
 ├── docker-compose.yml # Docker構成ファイル
@@ -108,6 +110,7 @@ backend/
 │   ├── llm/           # LLM連携関連
 │   ├── whisper/       # Whisper連携関連
 │   └── main.py        # FastAPIエントリーポイント
+├── stripe-demo/       # 決済機能関連
 ├── alembic/           # マイグレーション管理
 ├── requirements.txt   # Python依存パッケージ
 └── ...
@@ -191,8 +194,46 @@ cd sec9_teamB
 
 ---
 
+## .envファイルの設定
+
+- プロジェクト直下に `.env` ファイルを作成し、下記のように記載してください。
+
+```env
+# --- データベース(PostgreSQL)設定 ---
+POSTGRES_DB=app_db             
+POSTGRES_USER=app_user          
+POSTGRES_PASSWORD=securepassword 
+POSTGRES_HOST=db               
+POSTGRES_PORT=5432              
+
+# --- OpenAI Whisper APIキー ---
+WHISPER_API_KEY=sk-xxxxxxx     
+
+# --- OpenAI GPT/LLM APIキー ---
+LLM_API_KEY=sk-xxxxxxx         
+```
+
+- frontend側に `.env` ファイルを作成し、下記のように記載してください。
+```env
+# --- Firebase設定 ---
+VITE_FIREBASE_API_KEY=your_api_key_here
+VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+
+# --- Stripe（決済）用公開キー ---
+VITE_STRIPE_PUBLISHABLE_KEY=pk_test_xxx  
+```
+- backend/stripe-demo内に `.env` ファイルを作成し、下記のように記載してください。
+```env
+STRIPE_SECRET_KEY=sk_test_xxx    
+```  
+---
+
 ## ライセンス
-- MIT License
+- MIT License  
 このアプリはMs.Engineer2504teamBが開発しています。
 
 ---

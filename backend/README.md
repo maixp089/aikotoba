@@ -5,6 +5,7 @@
 本バックエンドは、**FastAPI** を用いたWeb APIサーバーです。  
 音声認識（Whisper）、AIフィードバック（OpenAI GPT）、ユーザー・発表・スコア管理など、プレゼン練習アプリの中核ロジックを担います。
 
+- **決済API（Stripe）**: Stripeを利用した有料機能の決済APIを提供
 - **API設計書・ER図・DB設計書**は [docs/](../docs/) を参照してください。
 
 ---
@@ -17,6 +18,7 @@
 - PostgreSQL
 - OpenAI API（Whisper, GPT）
 - Docker / Docker Compose
+- Stripe（決済API）
 - その他: requirements.txt 参照
 
 ### requirements.txt 抜粋
@@ -55,11 +57,22 @@ backend/
 │   │   ├── client.py
 │   │   └── transcription.py
 │   └── main.py        # エントリーポイント
+├── stripe-demo/        # Stripe決済デモAPIサーバー（決済機能用）
 ├── alembic/           # マイグレーション
 ├── alembic.ini
 ├── requirements.txt
 └── ...
 ```
+
+---
+
+##  決済API概要（Stripe）
+
+- Stripeを利用した決済APIサーバー（`stripe-demo/` ディレクトリ）を同梱
+- エンドポイント例：
+  - POST `/create-checkout-session` ... Stripe Checkoutセッション作成
+  - POST `/webhook` ... Stripe Webhook受信
+- 詳細は `backend/stripe-demo/server.js` を参照
 
 ---
 
@@ -79,7 +92,7 @@ cd sec9_teamB
 
 ### 3. .envファイル作成
 
-`.env` ファイルを直ルートに作成し、下記を記入（例）：
+`.env` ファイルを直ルートに作成し、下記を記入：
 
 ```
 POSTGRES_DB=app_db
@@ -96,11 +109,15 @@ WHISPER_API_KEY=sk-xxxxxxx
 
 ```bash
 docker compose up -d --build
+cd backend/stripe-demo
+npm install
+node server.js   # Stripe決済サーバー起動
 ```
 
 - FastAPI（swagger）: [http://localhost:8000/docs](http://localhost:8000/docs)
 - pgAdmin: [http://localhost:5050](http://localhost:5050)  
   （初期ログインは `docker-compose.yml` 参照）
+- Stripe決済API: [http://localhost:4242](http://localhost:4242)
 
 ### コンテナ起動状況を確認
 
@@ -258,5 +275,23 @@ volumes:
 ---
 
 このREADMEは随時アップデートされます。不明点はチームまでご相談ください。
+
+---
+
+## stripe-demo用 .envファイルの設定例と各変数の説明
+
+backend/stripe-demo ディレクトリ内に `.env` ファイルを作成し、下記のように記載してください。
+
+```env
+# --- Stripe（決済）用APIキー ---
+STRIPE_SECRET_KEY=sk_test_xxx      # Stripeのシークレットキー（サーバー用）
+STRIPE_WEBHOOK_SECRET=whsec_xxx    # Stripe Webhook用シークレット（Webhook利用時のみ必須）
+```
+
+### 各変数の用途
+- `STRIPE_SECRET_KEY`：Stripe決済サーバー（stripe-demo）で利用するシークレットキーです。
+- `STRIPE_WEBHOOK_SECRET`：StripeのWebhookイベント検証用シークレットです（Webhook利用時のみ必須）。
+
+> ※APIキーやパスワードなどの機密情報は絶対にGit管理しないでください（.gitignoreで除外済み）。
 
 ---

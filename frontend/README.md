@@ -10,6 +10,7 @@
 - **AI評価**: 音声を自動で文字起こしし、AIがフィードバックを生成
 - **スコア管理**: 練習履歴とスコアの保存・表示
 - **レスポンシブデザイン**: モバイルファーストのUI/UX
+- **決済機能（Stripe）**: Stripeを利用した有料機能の決済が可能
 
 ---
 
@@ -116,7 +117,12 @@ VITE_FIREBASE_PROJECT_ID=your_project_id
 VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
 VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
+
+# Stripe（決済）用公開キー
+VITE_STRIPE_PUBLISHABLE_KEY=pk_test_xxx   # Stripeの公開キー（フロント用）
 ```
+
+（Stripe決済機能を利用する場合は、バックエンドのstripe-demoサーバーも起動してください）
 
 ### 5. 開発サーバー起動
 ```bash
@@ -241,6 +247,7 @@ npm run format
 
 ### バックエンドAPI連携
 - **ベースURL**: `http://localhost:8000`
+- **決済API**: `http://localhost:4242`（Stripe決済サーバー）
 - **プロキシ設定**: Viteの設定でAPIリクエストをプロキシ
 
 ### 主要APIエンドポイント
@@ -506,5 +513,32 @@ export default defineConfig({
 - [React Router DOM](https://reactrouter.com/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [ESLint](https://eslint.org/)
+
+---
+
+## .envファイルの設定例と各変数の説明（フロントエンド用）
+
+frontend側に `.env` ファイルを作成し、下記のように記載してください。
+
+```env
+# --- Firebase設定 ---
+VITE_FIREBASE_API_KEY=your_api_key_here
+VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+
+# --- Stripe（決済）用公開キー ---
+VITE_STRIPE_PUBLISHABLE_KEY=pk_test_xxx   # Stripeの公開キー（フロント用）
+```
+
+### 各変数の用途
+- `VITE_FIREBASE_API_KEY` など：Firebase認証・DB連携に必要な各種設定値です。
+- `VITE_STRIPE_PUBLISHABLE_KEY`：Stripe決済のフロントエンド連携用「公開キー」です（バックエンドのシークレットキーとは異なります）。
+
+> ※APIキーやパスワードなどの機密情報は絶対にGit管理しないでください（.gitignoreで除外済み）。
+
+---
 
 
