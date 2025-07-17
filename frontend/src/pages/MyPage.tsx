@@ -1,23 +1,24 @@
-import { useEffect, useState } from "react"
-import { useParams, useNavigate } from "react-router-dom"
-import Card from "../components/Card"
-import BackgroundWrapper from "../components/Background"
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import Card from "../components/Card";
+import BackgroundWrapper from "../components/Background";
 
 type User = {
-  id: string
-  name: string
-  age: number
-  icon_image: string
-}
+  id: string;
+  name: string;
+  age: number;
+  icon_image: string;
+  paid: boolean; // 有償フラグ追加
+};
 
 type Score = {
-  feedback_id: string
-  presentation_id: string
-  presentation_created_at: string
-  total_score: number
-  well_done: string
-  next_challenge: string
-}
+  feedback_id: string;
+  presentation_id: string;
+  presentation_created_at: string;
+  total_score: number;
+  well_done: string;
+  next_challenge: string;
+};
 
 const menuButtons = [
   {
@@ -38,72 +39,68 @@ const menuButtons = [
     alt: "きろく",
     to: (userId: string) => `/users/${userId}/record`,
   },
-]
+];
 
 const MyPage = () => {
-  const { userId } = useParams<{ userId: string }>()
-  const [user, setUser] = useState<User | null>(null)
-  const [scores, setScores] = useState<Score[]>([])
-  const [loading, setLoading] = useState(true)
-  const [scoresLoading, setScoresLoading] = useState(true)
-  const navigate = useNavigate()
+  const { userId } = useParams<{ userId: string }>();
+  const [user, setUser] = useState<User | null>(null);
+  const [scores, setScores] = useState<Score[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [scoresLoading, setScoresLoading] = useState(true);
+  const navigate = useNavigate();
 
   const getIconSrc = (icon_image: string) => {
-    return icon_image ? `/icons/${icon_image}` : "/icons/neko.png"
-  }
+    return icon_image ? `/icons/${icon_image}` : "/icons/neko.png";
+  };
 
   // ユーザー情報取得
   useEffect(() => {
-    if (!userId) return
+    if (!userId) return;
     fetch(`http://localhost:8000/users/${userId}`)
       .then((res) => {
-        if (!res.ok) throw new Error("ユーザー取得失敗")
-        return res.json()
+        if (!res.ok) throw new Error("ユーザー取得失敗");
+        return res.json();
       })
       .then((data) => {
-        setUser(data)
-        setLoading(false)
+        setUser(data);
+        setLoading(false);
       })
       .catch(() => {
-        setLoading(false)
-      })
-  }, [userId])
+        setLoading(false);
+      });
+  }, [userId]);
 
   // スコア情報取得
   useEffect(() => {
-    if (!userId) return
-    setScoresLoading(true)
+    if (!userId) return;
+    setScoresLoading(true);
     fetch(`http://localhost:8000/users/${userId}/scores`)
       .then((res) => {
-        if (!res.ok) throw new Error("スコア取得失敗")
-        return res.json()
+        if (!res.ok) throw new Error("スコア取得失敗");
+        return res.json();
       })
       .then((data) => {
-        setScores(data)
-        setScoresLoading(false)
+        setScores(data);
+        setScoresLoading(false);
       })
       .catch(() => {
-        setScores([])
-        setScoresLoading(false)
-      })
-  }, [userId])
+        setScores([]);
+        setScoresLoading(false);
+      });
+  }, [userId]);
 
   // ハイスコア計算
   const getHighScore = () => {
-    if (scores.length === 0) return 0
-
-    // スコアを新しい順にソート
+    if (scores.length === 0) return 0;
     const sortedData = [...scores].sort(
-      (a, b) => new Date(b.presentation_created_at).getTime() - new Date(a.presentation_created_at).getTime(),
-    )
-
-    // 最新3件
-    const displayScores = sortedData.slice(0, 3)
-
-    // 最新3件の中からハイスコアを取得
-    if (displayScores.length === 0) return 0
-    return Math.max(...displayScores.map((score) => score.total_score))
-  }
+      (a, b) =>
+        new Date(b.presentation_created_at).getTime() -
+        new Date(a.presentation_created_at).getTime()
+    );
+    const displayScores = sortedData.slice(0, 3);
+    if (displayScores.length === 0) return 0;
+    return Math.max(...displayScores.map((score) => score.total_score));
+  };
 
   const bottomBar = (
     <div
@@ -123,11 +120,27 @@ const MyPage = () => {
         <button
           key={btn.key}
           onClick={() => {
-            if ((btn.key === "practice" || btn.key === "record") && !userId) {
-              alert("ユーザー情報が取得できていません")
-              return
+            if ((btn.key === "practice") && !userId) {
+              alert("ユーザー情報が取得できていません");
+              return;
             }
-            navigate(btn.to(userId!))
+            // 「練習する」ボタンだけ有償判定
+            if (btn.key === "practice") {
+              if (!user?.paid) {
+                // 未課金なら/payへ
+                navigate(`/users/${userId}/pay`)
+                return;
+              }
+              // 有償会員なら本来のページへ
+              navigate(btn.to(userId!)); // ここで userId! （「絶対ある」と保証）
+              return;
+            }
+            // 他ボタンはそのまま
+            if ((btn.key === "record") && !userId) {
+              alert("ユーザー情報が取得できていません");
+              return;
+            }
+            navigate(btn.to(userId!));
           }}
           style={{
             background: "none",
@@ -141,11 +154,15 @@ const MyPage = () => {
             padding: 0,
           }}
         >
-          <img src={btn.img || "/placeholder.svg"} alt={btn.alt} style={{ width: 64, height: 64, marginBottom: 2 }} />
+          <img
+            src={btn.img || "/placeholder.svg"}
+            alt={btn.alt}
+            style={{ width: 64, height: 64, marginBottom: 2 }}
+          />
         </button>
       ))}
     </div>
-  )
+  );
 
   return (
     <BackgroundWrapper>
@@ -225,7 +242,6 @@ const MyPage = () => {
                 />
               )}
             </div>
-
             {/* キャラクター吹き出し（猫の画像の下） */}
             <div
               style={{
@@ -245,8 +261,6 @@ const MyPage = () => {
                   objectFit: "contain",
                 }}
               />
-
-
               {/* 吹き出し */}
               <div
                 style={{
@@ -284,9 +298,6 @@ const MyPage = () => {
                     borderRight: "10px solid #fff",
                   }}
                 />
-
-    
-
                 {/* ハイスコア表示 */}
                 <div
                   style={{
@@ -350,7 +361,7 @@ const MyPage = () => {
         </Card>
       </div>
     </BackgroundWrapper>
-  )
-}
+  );
+};
 
-export default MyPage
+export default MyPage;

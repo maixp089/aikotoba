@@ -12,6 +12,7 @@
     "format": "prettier --write src/**/*.{ts,tsx,js,jsx,json,css,md}"
   },
   "dependencies": {
+    "@stripe/stripe-js": "^7.4.0",
     "@tailwindcss/vite": "^4.1.11",
     "firebase": "^11.10.0",
     "loglevel": "^1.9.2",

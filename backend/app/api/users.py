@@ -54,3 +54,13 @@ def read_user(user_id: UUID, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="ユーザーが見つかりません")
     logger.info(f"ユーザー情報取得成功: user_id={user.id}")
     return user
+
+# 4. paidフラグをTrueにするAPI（決済後に呼び出す）//★追加　決済後「練習する」ボタン使える
+@router.post("/{user_id}/paid")
+def set_paid(user_id: UUID, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="ユーザーが見つかりません")
+    user.paid = True
+    db.commit()
+    return {"ok": True}
