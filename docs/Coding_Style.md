@@ -59,10 +59,74 @@ npm install --save-dev eslint prettier eslint-config-airbnb eslint-plugin-react 
 - フォーマッター: `black`
 - 型チェック: `mypy`
 
-#### 導入例
-```bash
-pip install black flake8 mypy
+### 開発用ツールの導入方法（Docker環境）
+
+開発用ツール（black、flake8、mypy）は Docker 環境で管理します。  
+ローカルPCへの直接 `pip install` は不要です。
+
+#### 【導入パターン】
+
+#### パターン① とりあえずまとめて管理する場合（シンプルにしたい場合）
+
+`backend/requirements.txt` に開発ツールもそのまま追記してください。
+
 ```
+#requirements.txt
+fastapi  
+uvicorn  
+sqlalchemy  
+psycopg2-binary  
+↓ 開発用ツールも追加  
+flake8  
+black 
+mypy
+```
+この場合、Dockerビルド時(`docker compose up -d --build
+`)に自動でインストールされます。
+
+#### パターン② 本番と開発で分けたい場合（推奨）
+
+`backend/requirements.txt`（本番用）と  
+`backend/requirements-dev.txt`（開発用）に分けて管理します。
+```
+# requirements-dev.txt
+-r requirements.txt
+
+flake8
+black
+mypy
+
+Dockerfileで以下を実行：
+
+COPY requirements.txt .
+COPY requirements-dev.txt .
+RUN pip install -r requirements-dev.txt
+```
+---
+
+### 【実行方法】
+
+Dockerコンテナ内で以下を実行してください。
+
+### Lintチェック
+docker compose exec backend flake8
+
+### フォーマット（チェックだけ）
+docker compose exec backend black --check .
+
+### フォーマット実行（自動修正）
+docker compose exec backend black .
+
+### 型チェック
+docker compose exec backend mypy .
+
+---
+
+### 【注意】
+
+- `pip install`はローカルで直接実行しません。  
+- Docker環境で統一管理してください。
+
 
 ---
 

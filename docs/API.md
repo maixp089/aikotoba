@@ -1,5 +1,5 @@
 ## 目次
-
+① アプリ本体API（FastAPI：ポート8000）
 | No. | 機能名                  | メソッド | エンドポイント                        | 主なパラメータ・備考          |
 |-----|-------------------------|----------|---------------------------------------|------------------------------|
 | 1   | ユーザー存在チェック    | GET      | /users/search                         | firebase_uid（query, 必須）  |
@@ -8,17 +8,36 @@
 | 4   | 音声評価（AIスコア取得）| POST     | /audio-feedback                       | FormData（file, user_id）    |
 | 5   | スコア一覧取得          | GET      | /users/{user_id}/scores               | user_id（パス, 必須）        |
 | 6   | スコア詳細取得          | GET      | /api/audio-feedback/{feedback_id}     | feedback_id（パス, 必須）    |
-| 7   | 決済セッション作成（Stripe）| POST     | /create-checkout-session                | JSON（userId）                |
+
+
+➁ 決済API（Stripe専用サーバー：ポート4242 / backend/stripe-demo）
+| No. | 機能名                  | メソッド | エンドポイント                        | 主なパラメータ・備考          |
+|-----|-------------------------|----------|---------------------------------------|------------------------------|
+| 7   | 決済セッション作成（Stripe）| POST     | 	/api/payments/checkout-session              | JSON（user_id）　　 ※ backend/stripe-demo（ポート4242）で実行              |
+
+
 
 ---
 
 ## 共通事項
 
-- ベースURL例：`http://localhost:8000`
-- 認証：基本なし（Googleログイン後のfirebase_uidまたはuser_idを利用）
-- データ形式：JSON（音声アップロードのみmultipart/form-data）
-- **Swagger（API仕様＆Try機能）**：  
-  [http://localhost:8000/docs](http://localhost:8000/docs)
+- ベースURL（アプリ本体API）：  
+  `http://localhost:8000`（FastAPI）
+
+- 決済API（Stripe用）：  
+  `http://localhost:4242`（Express / backend/stripe-demo）
+
+- 認証：  
+  基本なし（Googleログイン後のfirebase_uidまたはuser_idを利用）
+
+- データ形式：  
+  JSON（音声アップロードのみ multipart/form-data）
+
+- **API仕様（Swagger）**：  
+  アプリ本体API（FastAPI）：[http://localhost:8000/docs](http://localhost:8000/docs)
+
+※ 決済API（Stripe）はSwaggerに含まれていません
+
 ---
 
 ## 1. ユーザー存在チェック
@@ -240,17 +259,19 @@ GET /api/audio-feedback/123
 | 項目           | 内容                                    |
 |----------------|-----------------------------------------|
 | メソッド       | POST                                    |
-| エンドポイント | `/create-checkout-session`               |
+| エンドポイント |	`/api/payments/checkout-session`            |
 | 内容           | Stripe決済用のCheckoutセッション作成     |
-| リクエスト     | JSON（userId）                          |
+| リクエスト     | JSON（user_id必須）                          |
 | レスポンス     | JSON（id: セッションID）                 |
 | サーバー       | backend/stripe-demo（ポート4242）        |
 
 ### リクエスト例
 ```json
-POST http://localhost:4242/create-checkout-session
+POST http://localhost:4242/api/payments/checkout-session
+Content-Type: application/json
+
 {
-  "userId": "b121d128-2ae7-455e-8efb-7ef9c7e9d3c8"
+  "user_id": "b121d128-2ae7-455e-8efb-7ef9c7e9d3c8"
 }
 ```
 
@@ -261,9 +282,5 @@ POST http://localhost:4242/create-checkout-session
 }
 ```
 
----
 
-## 備考・リンク
 
-- 画面設計 Notion：https://www.notion.so/2238f7a03628802b8610f45128158766?pvs=21
-- DB設計 Notion：https://www.notion.so/DB-2238f7a036288046a982cf6a2022cebe?pvs=21

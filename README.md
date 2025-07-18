@@ -24,8 +24,8 @@
     - 語彙力（言葉の増え方）
     - 論理性（お話の流れ）
     - 伝える力
-    - 心のつかみ方
-    - 自信の見せ方
+    - 聴衆の心のつかみ方
+    - 自信
 - 最高スコアがマイページに表示されます。
 - 決済機能（Stripe連携 
   - Stripeを利用した有料機能の決済が可能です。
@@ -80,7 +80,7 @@ sec9_teamB/
 ├── docker-compose.yml # Docker構成ファイル
 ├── README.md          # プロジェクト説明
 ├── tool.sh            # シェルスクリプト
-├── .env               # 直ルートenvファイル（postgre関連、Whispe-API、LLM-API）Git管理外
+├── .env               # 直ルートenvファイル（postgre関連、Whisper_API_key、LLM_API_key）Git管理外
 └── ...
 ```
 
@@ -97,7 +97,7 @@ frontend/
 │   └── main.tsx       # エントリーポイント
 ├── public/            # 画像（アイコン等）
 ├── package.json       # npmパッケージ管理
-├── .env               # front側envファイル（Firebase関連）
+├── .env               # front側envファイル（Firebase、stripe関連）
 └── ...
 ```
 
@@ -113,6 +113,7 @@ backend/
 ├── stripe-demo/       # 決済機能関連
 ├── alembic/           # マイグレーション管理
 ├── requirements.txt   # Python依存パッケージ
+├── .env               # backend側envファイル（STRIPE_SECRET_KEY）
 └── ...
 ```
 ---
