@@ -8,6 +8,7 @@
 | 4   | 音声評価（AIスコア取得）| POST     | /audio-feedback                       | FormData（file, user_id）    |
 | 5   | スコア一覧取得          | GET      | /users/{user_id}/scores               | user_id（パス, 必須）        |
 | 6   | スコア詳細取得          | GET      | /api/audio-feedback/{feedback_id}     | feedback_id（パス, 必須）    |
+| 7   | 決済セッション作成（Stripe）| POST     | /create-checkout-session                | JSON（userId）                |
 
 ---
 
@@ -232,6 +233,34 @@ GET /api/audio-feedback/123
   "created_at": "2025-07-04T12:34:56"
 }
 ```
+---
+
+## 7. 決済セッション作成（Stripe）
+
+| 項目           | 内容                                    |
+|----------------|-----------------------------------------|
+| メソッド       | POST                                    |
+| エンドポイント | `/create-checkout-session`               |
+| 内容           | Stripe決済用のCheckoutセッション作成     |
+| リクエスト     | JSON（userId）                          |
+| レスポンス     | JSON（id: セッションID）                 |
+| サーバー       | backend/stripe-demo（ポート4242）        |
+
+### リクエスト例
+```json
+POST http://localhost:4242/create-checkout-session
+{
+  "userId": "b121d128-2ae7-455e-8efb-7ef9c7e9d3c8"
+}
+```
+
+### レスポンス例
+```json
+{
+  "id": "cs_test_a1b2c3d4e5f6g7h8i9"
+}
+```
+
 ---
 
 ## 備考・リンク

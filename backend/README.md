@@ -66,16 +66,6 @@ backend/
 
 ---
 
-##  決済API概要（Stripe）
-
-- Stripeを利用した決済APIサーバー（`stripe-demo/` ディレクトリ）を同梱
-- エンドポイント例：
-  - POST `/create-checkout-session` ... Stripe Checkoutセッション作成
-  - POST `/webhook` ... Stripe Webhook受信
-- 詳細は `backend/stripe-demo/server.js` を参照
-
----
-
 ## 🚀 開発環境構築・起動手順
 
 ### 1. 前提条件
@@ -92,18 +82,10 @@ cd sec9_teamB
 
 ### 3. .envファイル作成
 
-`.env` ファイルを直ルートに作成し、下記を記入：
-
-```
-POSTGRES_DB=app_db
-POSTGRES_USER=app_user
-POSTGRES_PASSWORD=securepassword
-POSTGRES_HOST=db
-POSTGRES_PORT=5432
-
-OPENAI_API_KEY=sk-xxxxxxx
-WHISPER_API_KEY=sk-xxxxxxx
-```
+- backend/stripe-demo内に `.env` ファイルを作成し、下記のように記載してください。
+```env
+STRIPE_SECRET_KEY=sk_test_xxx    
+``` 
 
 ### 4. Dockerで起動
 
@@ -159,6 +141,7 @@ docker compose exec backend python app/db/seed.py
 - GET `/users/{user_id}/scores` ... 発表スコア履歴取得
 - POST `/api/audio-feedback` ... 音声ファイルアップロード→文字起こし＋AIフィードバック
 - GET `/api/audio-feedback/{feedback_id}` ... フィードバック詳細取得
+- POST `/users/{user_id}/paid` ... ユーザーの有償フラグ（paid）をtrueにする（決済完了後に呼び出し）
 
 > 詳細なAPI仕様・リクエスト/レスポンス例は [docs/API.md](../docs/API.md) を参照
 
@@ -190,7 +173,14 @@ docker compose exec backend python app/db/seed.py
 - `/api/audio-feedback` で音声ファイルを受け取り
 - 文字起こし→AIフィードバック→DB保存→結果返却
 
-### 6. スキーマ例（Pydantic）
+### 6. 決済API（Stripe）
+
+- Stripeを利用した決済APIサーバー（`stripe-demo/` ディレクトリ）を同梱
+- エンドポイント例：
+  - POST `/create-checkout-session` ... Stripe Checkoutセッション作成
+- 詳細は `backend/stripe-demo/server.js` を参照
+
+### 7. スキーマ例（Pydantic）
 
 ```python
 class User(BaseModel):
@@ -276,22 +266,5 @@ volumes:
 
 このREADMEは随時アップデートされます。不明点はチームまでご相談ください。
 
----
 
-## stripe-demo用 .envファイルの設定例と各変数の説明
 
-backend/stripe-demo ディレクトリ内に `.env` ファイルを作成し、下記のように記載してください。
-
-```env
-# --- Stripe（決済）用APIキー ---
-STRIPE_SECRET_KEY=sk_test_xxx      # Stripeのシークレットキー（サーバー用）
-STRIPE_WEBHOOK_SECRET=whsec_xxx    # Stripe Webhook用シークレット（Webhook利用時のみ必須）
-```
-
-### 各変数の用途
-- `STRIPE_SECRET_KEY`：Stripe決済サーバー（stripe-demo）で利用するシークレットキーです。
-- `STRIPE_WEBHOOK_SECRET`：StripeのWebhookイベント検証用シークレットです（Webhook利用時のみ必須）。
-
-> ※APIキーやパスワードなどの機密情報は絶対にGit管理しないでください（.gitignoreで除外済み）。
-
----
