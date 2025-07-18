@@ -76,6 +76,9 @@ frontend/
 │   │   ├── Evaluation.tsx             # 評価画面
 │   │   ├── Record.tsx 　              # 記録画面
 │   │   ├── EvaluationDetail.tsx 　    # 記録詳細画面
+│   │   ├── Pay.tsx 　                 # 決済画面
+│   │   ├── Cancel.tsx 　              # 決済キャンセル画面
+│   │   ├── Success.tsx 　             # 決済成功画面
 │   │   └── ...
 │   ├── App.tsx           # メインアプリケーション
 │   ├── main.tsx          # エントリーポイント
