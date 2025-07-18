@@ -57,7 +57,7 @@
 ### 🟩 テスト関連（Testing）
 
 - [テスト設計書 / Test Design Document](./docs/Test_Design_Document.md)
-- [テスト報告書 / Test Report](./docs/Test_report.md)
+- [テスト報告書 / Test Report](./docs/Test_Report.md)
 
 ### 🟨 開発・その他（Development & Others）
 
