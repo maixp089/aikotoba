@@ -5,6 +5,7 @@
 このアプリケーションは、AIを活用したプレゼンテーション練習支援システムのフロントエンドです。ユーザーが音声でプレゼンテーションを録音し、AIが自動で文字起こしとフィードバックを提供します。
 
 ### 🎯 主な機能
+
 - **Google認証**: Firebase Authenticationを使用した安全なログイン
 - **プレゼンテーション録音**: リアルタイム音声録音機能
 - **AI評価**: 音声を自動で文字起こしし、AIがフィードバックを生成
@@ -17,23 +18,28 @@
 ## 🛠 使用技術・依存ライブラリ
 
 ### コア技術
+
 - **React 19.1.0**: 最新のReactフレームワーク
 - **TypeScript 5.8.3**: 型安全性を確保
 - **Vite 7.0.0**: 高速なビルドツール
 
 ### UI/UX
+
 - **カスタムCSS**: アプリ固有のスタイリング
 
 ### 認証・バックエンド連携
+
 - **Firebase 11.10.0**: Google認証とプロジェクト管理
 - **React Router DOM 7.6.3**: クライアントサイドルーティング
 
 ### 開発ツール
+
 - **ESLint 9.29.0**: コード品質管理
 - **Prettier 3.6.1**: コードフォーマット
 - **TypeScript ESLint 8.34.1**: TypeScript用リンティング
 
 ### 依存パッケージ詳細
+
 ```json
 {
   "dependencies": {
@@ -94,23 +100,27 @@ frontend/
 ## 🚀 セットアップ手順
 
 ### 1. 前提条件
+
 - Node.js 18.0.0以上
 - npm または yarn
 - Git
 
 ### 2. プロジェクトクローン
+
 ```bash
 git clone https://github.com/ms-engineer-bc25-04/sec9_teamB.git
 cd sec9_teamB/frontend
 ```
 
 ### 3. 依存パッケージのインストール
+
 ```bash
 npm install
 ```
 
-### 4. 環境変数設定
-`.env`ファイルをプロジェクトルートに作成し、Firebase設定を追加：
+### 4. 環境変数設定 
+
+`.env`ファイルをfrontendルートに作成し、Firebase設定を追加：
 
 ```env
 # Firebase設定
@@ -125,9 +135,12 @@ VITE_FIREBASE_APP_ID=your_app_id
 VITE_STRIPE_PUBLISHABLE_KEY=pk_test_xxx   # Stripeの公開キー（フロント用）
 ```
 
-（Stripe決済機能を利用する場合は、バックエンドのstripe-demoサーバーも起動してください）
+（Stripe決済機能を利用する場合は、バックエンドのstripe-demoサーバーも起動してください）  
+
+[※全ての環境変数設定（共通セットアップ手順）](./README.md) 
 
 ### 5. 開発サーバー起動
+
 ```bash
 npm run dev
 ```
@@ -139,44 +152,59 @@ npm run dev
 ## 📱 画面構成・ルーティング
 
 ### ルーティング構造
+
 ```typescript
 // App.tsx のルーティング設定
 <Routes>
-  {/* パブリックルート */}
-  <Route path="/" element={<Home />} />
-  <Route path="/new-account" element={<NewAccount />} />
-  
-  {/* ユーザー認証済みルート */}
-  <Route path="/users/:userId/mypage" element={<MyPage />} />
-  <Route path="/users/:userId/presentationSetting" element={<PresentationSetting />} />
-  <Route path="/users/:userId/presentation" element={<Presentation />} />
-  <Route path="/users/:userId/record" element={<Record />} />
-  <Route path="/users/:userId/evaluation" element={<Evaluation />} />
-  <Route path="/users/:userId/evaluation/:feedback_id" element={<EvaluationDetail />} />
-  
-  {/* 開発用ルート */}
-  <Route path="/audio-test" element={<AudioRecorderTest />} />
+      {/* ホーム */}
+      <Route path="/" element={<Home />} />
+      {/* 新規登録・ログイン */}
+      <Route path="/new-account" element={<NewAccount />} />
+      <Route path="/login" element={<Login />} />
+      {/* ユーザーのマイページ */}
+      <Route path="/users/:userId/mypage" element={<MyPage />} />
+      {/* テーマと時間選択画面 */}
+      <Route path="/users/:userId/presentationSetting" element={<PresentationSetting />} />
+      {/* 発表・評価・記録画面 */}
+      <Route path="/users/:userId/presentation" element={<Presentation />} />
+      <Route path="/users/:userId/record" element={<Record />} />
+      <Route path="/users/:userId/scoring" element={<Scoring />} />
+      <Route path="/users/:userId/evaluation" element={<Evaluation />} />
+      {/* 評価詳細 */}
+      <Route path="/users/:userId/evaluation/:feedback_id" element={<EvaluationDetail />} />
+      {/* 音声テスト用 */}
+      <Route path="/audio-test" element={<AudioRecorderTest />} />
+      {/* Pay決済ページ */}
+      <Route path="/users/:userId/pay" element={<Pay />} />
+      {/* Pay決済完了ページ */}
+      <Route path="/success" element={<Success />} />
+      {/* Pay決済キャンセルページ */}
+       <Route path="/cancel" element={<Cancel />} />
 </Routes>
 ```
 
 ### 主要画面の説明
 
 #### 🏠 ホーム画面 (`Home.tsx`)
+
 - Googleログイン機能
 - アプリケーションの入り口
 - グラデーション背景とカードUI
 
 #### 👤 マイページ (`MyPage.tsx`)
+
 - ユーザー情報表示
 - 最高スコアの表示
 - ナビゲーションメニュー
 
 #### 🎤 プレゼンテーション画面 (`Presentation.tsx`)
+
 - 音声録音機能
 - タイマー表示
 - リアルタイム録音状態管理
 
 #### 📊 評価画面 (`Evaluation.tsx`)
+
 - AIフィードバック表示
 - スコア表示
 - 詳細な評価結果
@@ -186,6 +214,7 @@ npm run dev
 ## 🔧 開発・ビルド・起動コマンド
 
 ### 開発コマンド
+
 ```bash
 # 開発サーバー起動
 npm run dev
@@ -198,6 +227,7 @@ npm run preview
 ```
 
 ### コード品質管理
+
 ```bash
 # Lintチェック
 npm run lint
@@ -216,19 +246,22 @@ npm run format
 ### 主要コンポーネント
 
 #### `Card.tsx`
+
 - アプリケーション全体で使用されるカードUI
 - タイトル、コンテンツ、フッターバーをサポート
 - レスポンシブデザイン対応
 
 #### `IconButton.tsx`
+
 - アイコンボタンの統一コンポーネント
 - サイズ、アイコン、アクションをカスタマイズ可能
 
 ### コンポーネント使用例
+
 ```typescript
 // Cardコンポーネントの使用例
-<Card 
-  title="カスタムタイトル" 
+<Card
+  title="カスタムタイトル"
   bottomBar={customFooter}
   style={{ margin: "20px" }}
 >
@@ -249,6 +282,7 @@ npm run format
 ## 🔌 API連携
 
 ### バックエンドAPI連携
+
 - **ベースURL**: `http://localhost:8000`
 - **決済API**: `http://localhost:4242`（Stripe決済サーバー）
 - **プロキシ設定**: Viteの設定でAPIリクエストをプロキシ
@@ -256,6 +290,7 @@ npm run format
 ### 主要APIエンドポイント
 
 #### ユーザー関連
+
 ```typescript
 // ユーザー検索
 GET /users/search?firebase_uid=${firebase_uid}
@@ -268,6 +303,7 @@ GET /users/${userId}/scores
 ```
 
 #### 音声・評価関連
+
 ```typescript
 // 音声フィードバック送信
 POST /api/audio-feedback
@@ -279,18 +315,19 @@ Body: {
 ```
 
 ### API使用例
+
 ```typescript
 // 音声データ送信の例
 const sendAudioToAPI = async (blob: Blob) => {
   const formData = new FormData();
   formData.append("file", blob, "recording.webm");
   formData.append("user_id", userId);
-  
+
   const res = await fetch("http://localhost:8000/api/audio-feedback", {
     method: "POST",
     body: formData,
   });
-  
+
   const data = await res.json();
   return data;
 };
@@ -301,11 +338,13 @@ const sendAudioToAPI = async (blob: Blob) => {
 ## 🔐 認証システム
 
 ### Firebase Authentication
+
 - Googleログイン機能
 - セキュアなユーザー管理
 - トークンベース認証
 
 ### 認証フロー
+
 1. ホーム画面でGoogleログイン
 2. Firebase UIDをバックエンドで検索
 3. ユーザー存在確認
@@ -313,6 +352,7 @@ const sendAudioToAPI = async (blob: Blob) => {
 5. 既存ユーザーの場合はマイページへ
 
 ### 認証コード例
+
 ```typescript
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../lib/firebase";
@@ -324,7 +364,7 @@ const handleLogin = async () => {
     // バックエンドでユーザー検索
     const res = await fetch(`/users/search?firebase_uid=${firebase_uid}`);
     const data = await res.json();
-    
+
     if (data) {
       navigate(`/users/${data.id}/mypage`);
     } else {
@@ -342,11 +382,13 @@ const handleLogin = async () => {
 ## 🎯 音声録音機能
 
 ### MediaRecorder API使用
+
 - Web Audio APIを使用した音声録音
 - リアルタイム録音状態管理
 - 自動停止機能
 
 ### 録音機能の実装
+
 ```typescript
 // 録音開始
 const handleStart = () => {
@@ -374,17 +416,20 @@ mediaRecorder.onstop = async () => {
 ## 🎨 UI/UX設計
 
 ### デザインシステム
-- **カラーパレット**: 
+
+- **カラーパレット**:
   - プライマリ: `#4bb3a7` (ティール)
   - セカンダリ: `#f4bc21` (イエロー)
   - 背景: グラデーション (`#d4efd7` → `#f8f5e1`)
 
 ### レスポンシブデザイン
+
 - モバイルファーストアプローチ
 - タブレット・デスクトップ対応
 - フレキシブルレイアウト
 
 ### アニメーション・インタラクション
+
 - スムーズな画面遷移
 - ホバーエフェクト
 - ローディング状態表示
@@ -394,11 +439,13 @@ mediaRecorder.onstop = async () => {
 ## 🧪 テスト・デバッグ
 
 ### 開発用機能
+
 - `/audio-test` ルートで音声録音テスト
 - コンソールログでのデバッグ情報
 - エラーハンドリング
 
 ### デバッグツール
+
 ```typescript
 // 開発環境でのデバッグ
 console.log("APIレスポンス", data);
@@ -410,15 +457,18 @@ console.error("エラー詳細:", error);
 ## 📦 ビルド・デプロイ
 
 ### 本番ビルド
+
 ```bash
 npm run build
 ```
 
 ### ビルド成果物
+
 - `dist/` ディレクトリに最適化されたファイルが生成
 - 静的ファイルとしてデプロイ可能
 
 ### デプロイ先
+
 - Vercel
 - Netlify
 - Firebase Hosting
@@ -429,23 +479,26 @@ npm run build
 ## 🔧 設定ファイル
 
 ### Vite設定 (`vite.config.ts`)
+
 ```typescript
 export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': 'http://localhost:8000', 
+      "/api": "http://localhost:8000",
     },
   },
 });
 ```
 
 ### TypeScript設定 (`tsconfig.app.json`)
+
 - 厳密な型チェック
 - React JSXサポート
 - モダンなES2022ターゲット
 
 ### ESLint設定 (`eslint.config.js`)
+
 - React Hooksルール
 - TypeScriptサポート
 - コード品質管理
@@ -455,20 +508,23 @@ export default defineConfig({
 ## 🤝 開発ガイドライン
 
 ### コーディング規約
+
 - TypeScriptの厳密モード使用
 - ESLint + Prettierでコード品質管理
 - コンポーネントは関数型コンポーネント
-- Hooksを活用した状態管理  
+- Hooksを活用した状態管理
 
 [詳しくはコチラ](../docs/Coding_Style.md)
 
 ### ファイル命名規則
+
 - コンポーネント: PascalCase (`MyComponent.tsx`)
 - ページ: PascalCase (`Home.tsx`)
 - ユーティリティ: camelCase (`firebase.ts`)
 - 定数: UPPER_SNAKE_CASE
 
 ### コミットメッセージ規約
+
 ```
 - fix：バグ修正
 - add：新規（ファイル）機能追加
@@ -483,21 +539,25 @@ export default defineConfig({
 ### よくある問題
 
 #### 1. 音声録音が動作しない
+
 - ブラウザのマイク権限を確認
 - HTTPS環境での実行を確認
 - MediaRecorder APIのサポート確認
 
 #### 2. Firebase認証エラー
+
 - 環境変数の設定確認
 - Firebaseプロジェクトの設定確認
 - ドメインの許可リスト確認
 
 #### 3. API通信エラー
+
 - バックエンドサーバーの起動確認
 - プロキシ設定の確認
 - CORS設定の確認
 
 ### デバッグ手順
+
 1. ブラウザの開発者ツールでエラー確認
 2. ネットワークタブでAPI通信確認
 3. コンソールログで詳細確認
@@ -507,14 +567,14 @@ export default defineConfig({
 ## 📚 参考資料・リソース
 
 ### 公式ドキュメント
+
 - [React 19 Documentation](https://react.dev/)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 - [Vite Documentation](https://vitejs.dev/)
 - [Firebase Documentation](https://firebase.google.com/docs)
 
 ### 関連ライブラリ
+
 - [React Router DOM](https://reactrouter.com/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [ESLint](https://eslint.org/)
-
-

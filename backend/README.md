@@ -86,6 +86,7 @@ cd sec9_teamB
 ```env
 STRIPE_SECRET_KEY=sk_test_xxx    
 ``` 
+[※全ての環境変数設定（共通セットアップ手順）](./README.md) 
 
 ### 4. Dockerで起動
 

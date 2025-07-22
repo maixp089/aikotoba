@@ -48,6 +48,11 @@
 
 ## 各種リンク（Useful Links）
 
+### 🟦 ローカルサービス（Local Services）
+
+- [pgAdmin (http://localhost:5050)](http://localhost:5050) — PostgreSQL管理ツール（pgAdmin）
+- [バックエンドAPI (http://localhost:8000)](http://localhost:8000) — FastAPIサーバー（APIドキュメント: /docs）
+
 ### 🟦 API関連
 
 - [API設計書 / API Documentation (API.md)](./docs/API.md)
