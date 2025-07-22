@@ -57,7 +57,7 @@ backend/
 │   │   ├── client.py
 │   │   └── transcription.py
 │   └── main.py        # エントリーポイント
-├── stripe-demo/        # Stripe決済デモAPIサーバー（決済機能用）
+├── stripe-demo/       # Stripe決済デモAPIサーバー（決済機能用）
 ├── alembic/           # マイグレーション
 ├── alembic.ini
 ├── requirements.txt

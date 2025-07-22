@@ -52,6 +52,8 @@
 
 - [pgAdmin (http://localhost:5050)](http://localhost:5050) — PostgreSQL管理ツール（pgAdmin）
 - [バックエンドAPI (http://localhost:8000)](http://localhost:8000) — FastAPIサーバー（APIドキュメント: /docs）
+- [Stripeデモサーバー (http://localhost:4242)](http://localhost:4242) — Stripe決済デモサーバー
+- [フロントエンド (http://localhost:5173)](http://localhost:5173) — Reactフロントエンド
 
 ### 🟦 API関連
 
